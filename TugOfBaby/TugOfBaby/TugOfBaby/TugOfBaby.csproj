@@ -111,6 +111,7 @@
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectManager.cs" />
+    <Compile Include="HeadsUpDisplay.cs" />
     <Compile Include="Reward.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

@@ -24,7 +24,7 @@ namespace TugOfBaby
 
         public GameObject GetBaby()
         {
-            return GetPlayer("baby");
+            return GetPlayer("Child/child_face");
         }
 
         public GameObject GetDevil()
