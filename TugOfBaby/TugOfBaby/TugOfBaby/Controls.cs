@@ -86,6 +86,28 @@ namespace TugOfBaby
                 gameObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
             }
 
+            /*
+            if (padState.ThumbSticks.Left.X == 0)
+            {
+                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
+            }
+
+            if (padState.ThumbSticks.Left.Y == 0)
+            {
+                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
+            }
+
+            if (padState.ThumbSticks.Right.X == 0)
+            {
+                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
+            }
+
+            if (padState.ThumbSticks.Right.Y == 0)
+            {
+                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
+            }
+             */
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 game.Exit();
 
