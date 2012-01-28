@@ -31,6 +31,9 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        public const float REAPERVELOCITY = 2.0f;
+        public Vector2 babyDir = new Vector2();
+
         GameState _state;
 
 
@@ -47,7 +50,11 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
+<<<<<<< HEAD
+        GameObject _reaper;
         Ragdoll _ragdoll;
+=======
+>>>>>>> 44580e3b1d57a201912d2d5575d2f427a3d41ea9
 
         //Debug view
         bool _showDebug = false;
@@ -83,54 +90,29 @@ namespace TugOfBaby
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _gameObjectManager = new GameObjectManager(_world);
-            _renderManager = new RenderManager(_gameObjectManager);
-            CreateBaby();
+            _renderManager = new RenderManager();
+            _gameObjectManager = new GameObjectManager(_world, _renderManager);
             
+
+
             base.Initialize();
         }
 
         private void CreateBaby()
         {
-            const float dampingRatio = 1f;
-            const float frequency = 25f;
-
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
+          
             _angel = _gameObjectManager.GetAngel();
-<<<<<<< HEAD
-            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
+            _reaper = _gameObjectManager.GetReaper();
 
-            _controls = new Controls(this);
-            //_controls.Angel = _angel;
-            _controls.Baby = _baby;
-            //_controls.Devil = _devil;
-            
-            
-            base.Initialize();
-=======
-
-            DistanceJoint jLeftArm = new DistanceJoint(_devil.Body, _baby.Body,
-                                                       new Vector2(0f, 0f),
-                                                       new Vector2(0f, 0f));
-            jLeftArm.CollideConnected = true;
-            jLeftArm.DampingRatio = dampingRatio;
-            jLeftArm.Frequency = frequency;
-            jLeftArm.Length = 2f;
+            RopeJoint jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
+            jLeftArm.MaxLength = 2f;
             _world.AddJoint(jLeftArm);
 
-            DistanceJoint jRightArm = new DistanceJoint(_angel.Body, _baby.Body,
-                                                       new Vector2(0f, 0f),
-                                                       new Vector2(0f, 0f));
-            jRightArm.CollideConnected = true;
-            jRightArm.DampingRatio = dampingRatio;
-            jRightArm.Frequency = frequency;
-            jRightArm.Length = 2f;
+            RopeJoint jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
+            jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
-
-            //_ragdoll = new Ragdoll(_world, new Vector2(5, 5));
->>>>>>> 760285cc1de46471970353cbcbaa471fbaa526a1
         }
 
         /// <summary>
@@ -143,11 +125,21 @@ namespace TugOfBaby
             spriteBatch = new SpriteBatch(GraphicsDevice);
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
-            _renderManager.LoadContent(Content);
+            _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
             _menu = new GameMenu(Content, this);
+
+            CreateBaby();
+            _controls = new Controls(this);
+            _controls.Angel = _angel;
+            _controls.Baby = _baby;
+            _controls.Devil = _devil;
+
+            //_gameObjectManager.GetItem("knife");
+            //_gameObjectManager.GetItem("bunny");
+
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -179,8 +171,16 @@ namespace TugOfBaby
             // Allows the game to exit
             _controls.Update();
 
+            if (_baby.HeldItem != null)
+            {
+                
+                _hud.PushItem(_baby.HeldItem);
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
+
+            reaperMove();
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
@@ -217,6 +217,7 @@ namespace TugOfBaby
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
+            _renderManager.Update(gameTime, _gameObjectManager.GetAll());
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
             base.Update(gameTime);
@@ -248,7 +249,7 @@ namespace TugOfBaby
             }
             else
             {
-                _renderManager.Draw(spriteBatch);
+                _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
             }
 
@@ -271,6 +272,35 @@ namespace TugOfBaby
             base.Draw(gameTime);
 
         }
+
+        public void reaperMove()
+        {
+            babyDir = new Vector2();
+
+            babyDir = (_baby.Position - _reaper.Position);
+
+            _reaper.Body.ApplyLinearImpulse(babyDir * 0.005f);
+
+            //Console.WriteLine(Vector2.Distance(_baby.Position, _reaper.Position));
+            /*
+            if(Vector2.Distance(_baby.Position, _reaper.Position) < 300)
+                GamePad.SetVibration(PlayerIndex.One, 0.25f, 0.25f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 200)
+                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
+                GamePad.SetVibration(PlayerIndex.One, 1, 1);
+            */
+        }
+
+        /*public void statusQuo(GameTime pollTime)
+            {
+            TimeSpan
+
+
+            }
+        */
         #region Properties
         public GameState State
         {
@@ -279,6 +309,7 @@ namespace TugOfBaby
         }
         #endregion
     }
+
     public enum GameState
     {
         Menu,
