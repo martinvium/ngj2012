@@ -14,13 +14,17 @@ namespace TugOfBaby
     {
         private const int MAX_MENU_ITEMS = 3;
         int _currentSelection;
-        GamePadState _oldState;
-        bool _released = true;
-        Texture2D _title;
-        Vector2 _titlePosition;
-        Texture2D _selection;
         float _selectionOffset = 50f;
+        bool _released = true;
+
+        GamePadState _oldState;
+       
+        Texture2D _title;        
+        Texture2D _selection;
+        
         Vector2 _selectionPosition;
+        Vector2 _titlePosition;
+        
         Game1 _game;
   
         SpriteFont _font;

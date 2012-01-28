@@ -108,7 +108,19 @@
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="Controls.cs" />
+=======
+    <Compile Include="Background.cs" />
+    <Compile Include="GameMenu.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjectManager.cs" />
+>>>>>>> 293585a512a7b4909604b19c7959d5b4be02239e
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Game1.cs" />
+    <Compile Include="RenderManager.cs" />
+    <Compile Include="Sprite.cs" />
 =======
     <Compile Include="Background.cs" />
     <Compile Include="GameMenu.cs" />
@@ -126,6 +138,7 @@
     <Compile Include="RenderManager.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Controls.cs" />
+>>>>>>> 760285cc1de46471970353cbcbaa471fbaa526a1
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
