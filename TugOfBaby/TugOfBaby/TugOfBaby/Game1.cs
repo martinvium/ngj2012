@@ -208,23 +208,7 @@ namespace TugOfBaby
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
             
-            if(up == true)
-                theBackground.Update(bar++);
-            if(!up)
-                theBackground.Update(bar--);
-
-            if (bar >= 99)
-            {
-                up = false;
-            }
-            else if (bar <= -99)
-            {
-                up = true;
-            }
-            
-
-            
-            theBackground.Draw(spriteBatch);
+          
             spriteBatch.End();
             base.Draw(gameTime);
 
