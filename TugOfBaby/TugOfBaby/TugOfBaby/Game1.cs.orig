@@ -76,14 +76,10 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-<<<<<<< HEAD
-            
-=======
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
             _baby = _gameObjectManager.GetBaby();
-
->>>>>>> 5b16b784850d3bddbc2fda34afe029503f468dd1
+            
             base.Initialize();
         }
 
@@ -95,17 +91,11 @@ namespace TugOfBaby
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-<<<<<<< HEAD
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
-=======
-
             _renderManager.LoadContent(Content);
-
-            _state = GameState.Menu;
             
             _menu = new GameMenu(Content);
->>>>>>> 5b16b784850d3bddbc2fda34afe029503f468dd1
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -148,7 +138,7 @@ namespace TugOfBaby
 
             if (_state == GameState.Menu)
             {
-
+                _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
@@ -165,10 +155,15 @@ namespace TugOfBaby
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             if (_state == GameState.Menu)
+            {
                 _menu.Draw(spriteBatch);
-
+            }
+            else
+            {
+                _renderManager.Draw(spriteBatch);
+            }
            
-            _renderManager.Draw(spriteBatch);
+            
             spriteBatch.End();
 
             // TODO: Add your drawing code here

@@ -22,8 +22,7 @@ namespace TugOfBaby
         SpriteFont _font;
         public GameMenu(ContentManager content)
         {
-            _font = content.Load<SpriteFont>("Courier New");
-               
+            _font = content.Load<SpriteFont>("Courier New");               
         }
 
 

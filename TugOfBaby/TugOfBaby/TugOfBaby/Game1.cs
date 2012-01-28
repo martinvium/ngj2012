@@ -155,6 +155,18 @@ namespace TugOfBaby
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            if (up == true)
+                theBackground.Update(bar++);
+            if (!up)
+                theBackground.Update(bar--);
+
+            if (bar == 100)
+                up = false;
+            else if (bar == -100)
+                up = true;
+
+        
+            theBackground.Draw(spriteBatch);
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
@@ -165,7 +177,7 @@ namespace TugOfBaby
             }
            
             
-            spriteBatch.End();
+          
 
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
@@ -176,18 +188,7 @@ namespace TugOfBaby
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
-            if(up == true)
-                theBackground.Update(bar++);
-            if(!up)
-                theBackground.Update(bar--);
-
-            if (bar == 100)
-                up = false;
-            else if(bar == -100)
-                up = true;
-
-            spriteBatch.Begin();
-            theBackground.Draw(spriteBatch);
+            
             spriteBatch.End();
             base.Draw(gameTime);
             
