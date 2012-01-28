@@ -54,6 +54,25 @@ namespace TugOfBaby
             return gameObject;
         }
 
+        public GameObject GetItem(string name)
+        {
+            GameObject item = GetBase();
+            item.Sprite = new Sprite(name);
+            
+            if (name == "knife")
+            {
+                item.Pickupable = true;
+                //do knife stuff
+                item.Reward.Effect = 1;
+            }
+
+            item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
+            item.Body.BodyType = BodyType.Static;
+            item.Body.Mass = 0;
+            item.Body.OnCollision += OnItemCollision;
+            return item;
+        }
+
         public List<GameObject> GetAll()
         {
             return _gameObjects;
@@ -62,6 +81,22 @@ namespace TugOfBaby
         private bool OnCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
             return true;
+        }
+
+        private bool OnItemCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            if(fixtureB.Body.UserData is GameObject)
+                if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
+                {
+                    (fixtureB.Body.UserData as GameObject).Reward.enable();
+                    Destroy((fixtureB.Body.UserData as GameObject));
+                }
+            return true;
+        }
+
+        private void Destroy(GameObject _gameobject)
+        {
+            _gameObjects.Remove(_gameobject);
         }
     }
 }
