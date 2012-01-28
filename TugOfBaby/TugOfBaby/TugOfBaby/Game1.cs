@@ -37,7 +37,8 @@ namespace TugOfBaby
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
-        
+        GameObjectManager _gameObjectManager;
+        RenderManager _renderManager;
 
 
         public Game1()
@@ -57,6 +58,8 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _gameObjectManager = new GameObjectManager();
+            _renderManager = new RenderManager(_gameObjectManager);
 
             base.Initialize();
         }
@@ -122,6 +125,10 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            _renderManager.Draw(spriteBatch);
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
