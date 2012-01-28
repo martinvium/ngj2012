@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
 
 namespace TugOfBaby
 {
@@ -22,6 +23,11 @@ namespace TugOfBaby
         {
             get { return _sprite; }
             set { _sprite = value; }
+        }
+
+        public Vector2 Position
+        {
+            get { return _body.Position * Game1.METER_IN_PIXEL; }
         }
     }
 }
