@@ -23,28 +23,35 @@ namespace TugOfBaby
 
         public GameObject GetBaby()
         {
-            return GetPlayer("Child/child_face");
+            GameObject angel = GetBase();
+            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
+            angel.Body = getCircle(.5f);
+            return angel;
         }
 
         public GameObject GetDevil()
         {
-            return GetPlayer("devil");
+            GameObject angel = GetBase();
+            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
+            angel.Body = getCircle(.3f);
+            return angel;
         }
 
         public GameObject GetAngel()
         {
-            return GetPlayer("angel");
+            GameObject angel = GetBase();
+            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
+            angel.Body = getCircle(.3f);
+            return angel;
         }
 
-        private GameObject GetPlayer(string name)
+        private Body getCircle(float radius)
         {
-            GameObject player = GetBase();
-            player.Sprite = new Sprite(name);
-            player.Body = BodyFactory.CreateCircle(_world, .5f, 1f, new Vector2(5, 5), this);
-            player.Body.BodyType = BodyType.Dynamic;
-            player.Body.Mass = 5;
-            player.Body.OnCollision += OnCollision;
-            return player;
+            Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
+            body.BodyType = BodyType.Dynamic;
+            body.Mass = 5;
+            body.OnCollision += OnCollision;
+            return body;
         }
 
         private GameObject GetBase()
