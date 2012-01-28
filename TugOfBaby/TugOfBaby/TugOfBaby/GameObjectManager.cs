@@ -15,16 +15,18 @@ namespace TugOfBaby
     {
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
+        RenderManager _renderManager;
 
-        public GameObjectManager(World world)
+        public GameObjectManager(World world, RenderManager renderMan)
         {
             _world = world;
+            _renderManager = renderMan;
         }
 
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
             angel.Body = getCircle(.5f);
             return angel;
         }
@@ -32,7 +34,7 @@ namespace TugOfBaby
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
             angel.Body = getCircle(.3f);
             return angel;
         }
@@ -40,7 +42,7 @@ namespace TugOfBaby
         public GameObject GetAngel()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
             angel.Body = getCircle(.3f);
             return angel;
         }
