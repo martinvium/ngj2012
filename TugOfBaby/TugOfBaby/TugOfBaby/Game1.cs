@@ -56,6 +56,9 @@ namespace TugOfBaby
         RenderManager _renderManager;
         Controls _controls;
 
+        RopeJoint jLeftArm;
+        RopeJoint jRightArm;
+
 
         public Game1()
         {
@@ -82,7 +85,7 @@ namespace TugOfBaby
         /// </summary>
         protected override void Initialize()
         {
-            _renderManager = new RenderManager();
+            _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
             
             CreateBaby();
@@ -101,11 +104,11 @@ namespace TugOfBaby
           
             _angel = _gameObjectManager.GetAngel();
 
-            RopeJoint jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
+            jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
             _world.AddJoint(jLeftArm);
 
-            RopeJoint jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
+            jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
             jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
         }
@@ -227,12 +230,12 @@ namespace TugOfBaby
             }
             else
             {
+                _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
+                _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
             }
 
-            
-            
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
             Matrix projection = Matrix.CreateOrthographicOffCenter(0f, _graphics.GraphicsDevice.Viewport.Width / METER_IN_PIXEL,
@@ -240,12 +243,12 @@ namespace TugOfBaby
                                                              1f);
             Matrix view = Matrix.CreateTranslation(new Vector3((Vector2.Zero / METER_IN_PIXEL) - (_screenCenter / METER_IN_PIXEL), 0f)) * Matrix.CreateTranslation(new Vector3((_screenCenter / METER_IN_PIXEL), 0f));
 
+            
+
             spriteBatch.End();
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
-            
-          
             
             base.Draw(gameTime);
 
