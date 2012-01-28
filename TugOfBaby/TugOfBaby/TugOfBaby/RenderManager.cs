@@ -23,7 +23,7 @@ namespace TugOfBaby
             {
                 if(gameObject.Sprite != null) 
                 {
-                    content.Load<Texture2D>(gameObject.Sprite.Name);
+                    gameObject.Sprite.Texture = content.Load<Texture2D>(gameObject.Sprite.Name);
                 }
             }
         }
@@ -34,7 +34,7 @@ namespace TugOfBaby
             {
                 if (gameObject.Sprite != null)
                 {
-                    spriteBatch.Draw(gameObject.Sprite.Texture, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(gameObject.Sprite.Texture, gameObject.Position, Color.White);
                 }
             }
         }

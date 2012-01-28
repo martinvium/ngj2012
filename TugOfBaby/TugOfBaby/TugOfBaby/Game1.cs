@@ -26,6 +26,9 @@ namespace TugOfBaby
         public const int WIDTH = 1280;
         public const int HEIGHT = 720;
         public const float METER_IN_PIXEL = 64f;
+        Background theBackground;
+        bool up = true;
+        int bar = 0;
 
         GameState _state;
         GameMenu _menu;
@@ -36,6 +39,8 @@ namespace TugOfBaby
         Vector2 _screenCenter;
 
         World _world = new World(new Vector2(0, 20));
+
+        GameObject _baby;
 
         //Debug view
         bool _showDebug = false;
@@ -71,9 +76,10 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _gameObjectManager = new GameObjectManager();
+            _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
-
+            _baby = _gameObjectManager.GetBaby();
+            
             base.Initialize();
         }
 
@@ -85,8 +91,10 @@ namespace TugOfBaby
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            //_state = GameState.Menu;
+            theBackground = new Background();
+            theBackground.LoadContent(this.Content);
+            _renderManager.LoadContent(Content);
+            _state = GameState.Menu;
             
             _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
@@ -134,6 +142,8 @@ namespace TugOfBaby
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
+            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
             base.Update(gameTime);
         }
 
@@ -166,8 +176,21 @@ namespace TugOfBaby
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
+            if(up == true)
+                theBackground.Update(bar++);
+            if(!up)
+                theBackground.Update(bar--);
 
+            if (bar == 100)
+                up = false;
+            else if(bar == -100)
+                up = true;
+
+            spriteBatch.Begin();
+            theBackground.Draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
+            
         }
     }
     public enum GameState
