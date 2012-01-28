@@ -61,7 +61,7 @@ namespace TugOfBaby
         {
             heavenBG = _contentManager.Load<Texture2D>("heavenBG");
             hellBG = _contentManager.Load<Texture2D>("hellBG");
-            nothingBG = _contentManager.Load<Texture2D>("nothingBG");
+            nothingBG = _contentManager.Load<Texture2D>("background");
 
             //LOAD SOUND
             hellishSound = _contentManager.Load<SoundEffect>("cowbell");
@@ -77,9 +77,10 @@ namespace TugOfBaby
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(nothingBG, position, new Color(255, 255, 255, 255));
+            
             _spriteBatch.Draw(heavenBG, position, new Color(transHeaven, transHeaven, transHeaven, transHeaven));
-            _spriteBatch.Draw(hellBG, position, new Color(transHell, transHell, transHell, transHell));   
+            _spriteBatch.Draw(hellBG, position, new Color(transHell, transHell, transHell, transHell));
+            _spriteBatch.Draw(nothingBG, position, new Color(255, 255, 255, 255));
         }
     }
 }
