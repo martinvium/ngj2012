@@ -34,7 +34,7 @@ namespace TugOfBaby
             {
                 if (gameObject.Sprite != null)
                 {
-                    spriteBatch.Draw(gameObject.Sprite.Texture, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(gameObject.Sprite.Texture, gameObject.Body.Position, Color.White);
                 }
             }
         }

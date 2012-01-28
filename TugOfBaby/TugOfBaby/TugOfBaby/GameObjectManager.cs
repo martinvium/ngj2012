@@ -24,7 +24,7 @@ namespace TugOfBaby
         {
             GameObject baby = GetBase();
             baby.Sprite = new Sprite("baby");
-            baby.Body = BodyFactory.CreateCircle(_world, .5f, 1f);
+            baby.Body = BodyFactory.CreateCircle(_world, .5f, 1f, new Vector2(5,5), this);
             return baby;
         }
 

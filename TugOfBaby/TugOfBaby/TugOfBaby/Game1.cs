@@ -33,6 +33,8 @@ namespace TugOfBaby
 
         World _world = new World(new Vector2(0, 20));
 
+        GameObject _baby;
+
         //Debug view
         bool _showDebug = false;
         DebugViewXNA _debugView;
@@ -60,6 +62,7 @@ namespace TugOfBaby
             // TODO: Add your initialization logic here
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
+            _baby = _gameObjectManager.GetBaby();
 
             base.Initialize();
         }
