@@ -56,7 +56,9 @@ namespace TugOfBaby
             }
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
-            _sprites.Add(Texture.DEVIL, new Sprite(content.Load<Texture2D>("devil"), new Vector2(-18, -18)));
+            animation = new Animation(content.Load<Texture2D>("animations/demon"), new Rectangle(0, 0, 110, 126), 50, 1.0f, 10, 5);
+            _sprites.Add(Texture.DEVIL, new Sprite(animation, new Vector2(-18, -18)));
+
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
         }
 
