@@ -12,6 +12,8 @@ namespace TugOfBaby
     {
         const float VELOCITY = 3.0f;
 
+        //public Vector2 babyDir = new Vector2();
+
         GameObject gameObject;
         GameObject devilObject;
         GameObject angelObject;
@@ -86,6 +88,26 @@ namespace TugOfBaby
             if (padState.ThumbSticks.Right.Y < 0)
             {
                 devilObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
+            }
+
+            if(padState.Buttons.A == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 0, 1);
+            }
+
+            if (padState.Buttons.B == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 0, 0);
+            }
+
+            if (padState.Buttons.X == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 1, 0);
+            }
+
+            if (padState.Buttons.Y == ButtonState.Pressed)
+            {
+                GamePad.SetVibration(PlayerIndex.One, 1, 1);
             }
 
 

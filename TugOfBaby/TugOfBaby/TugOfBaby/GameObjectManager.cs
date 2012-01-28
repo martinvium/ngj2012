@@ -39,7 +39,7 @@ namespace TugOfBaby
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
 
             evil = angel;
@@ -52,15 +52,24 @@ namespace TugOfBaby
         {
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f, angel);
+            angel.Body = getCircle(.3f, angel);    
+            
+            good = angel;        
+            
 
-            good = angel;
             good.Statistics = new Stats();
-
             return angel;
         }
 
-        private Body getCircle(float radius, GameObject _gameobject)
+        public GameObject GetReaper()
+        {
+            GameObject angel = GetBase();
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
+            angel.Body = getCircle(.3f, angel);
+            return angel;
+        }
+
+ private Body getCircle(float radius, GameObject _gameobject)
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;

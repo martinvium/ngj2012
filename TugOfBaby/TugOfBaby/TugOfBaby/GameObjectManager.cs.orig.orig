@@ -13,6 +13,8 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
+        GameObject evil, good;
+
         enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
         
         List<GameObject> _gameObjects = new List<GameObject>();
@@ -28,47 +30,50 @@ namespace TugOfBaby
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
-=======
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
-            angel.Body = getCircle(.5f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
             return angel;
         }
 
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
-=======
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
-            angel.Body = getCircle(.3f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
+
+            evil = angel;
+            evil.Statistics = new Stats();
+
             return angel;
         }
 
         public GameObject GetAngel()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
-            angel.Body = getCircle(.3f, angel);
-            
-            
-
-=======
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
+<<<<<<< HEAD
+            angel.Body = getCircle(.3f, angel);
+
+            good = angel;
+            good.Statistics = new Stats();
+=======
+            angel.Body = getCircle(.3f, angel);            
+            
+>>>>>>> 7bf2a1bc04c15b4fc9a52d739c237a6f64619677
+
             return angel;
         }
 
-        private Body getCircle(float radius, GameObject _gameobject)
+        public GameObject GetReaper()
+        {
+            GameObject angel = GetBase();
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
+            angel.Body = getCircle(.3f, angel);
+            return angel;
+        }
+
+ private Body getCircle(float radius, GameObject _gameobject)
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;
@@ -113,15 +118,11 @@ namespace TugOfBaby
                     break;
             }
 
-            
-
             item.Pickupable = true;
 
             Random rand = new Random();
             float rX = rand.Next(20);
             float rY = rand.Next(10);
-            
-
 
             item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
             item.Body.Position = new Vector2(rX, rY);
@@ -150,27 +151,32 @@ namespace TugOfBaby
                 {
                     if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
                     {
-                        //subtract 50
+                        evil.Statistics.PointsCollected += 50;
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
                     {
-                        //spawn bunny
-                        GetItem("bunny");
+                        if ((player.Body.UserData as GameObject).HeldItem.Sprite.Name == "bunny")
+                        {
+                            Console.Write("KILLS RABBIT");
+                            evil.Statistics.PointsCollected += 50;
+                        }
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
                     {
-                        //add 50
+                        (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
+                        GetItem("knife");
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
                     {
-                        //add 50
+                        good.Statistics.PointsCollected += 50;
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
                     {
-                        //add 50
+                        good.Statistics.PointsCollected += 50;
                     }
 
                     (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
+                    Console.Write(evil.Statistics.PointsCollected);
                     
                     //Destroy((fixtureB.Body.UserData as GameObject));
                 }

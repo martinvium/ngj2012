@@ -172,12 +172,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="placeholder.png">
-      <Name>knife</Name>
-=======
     <Compile Include="badpic.png">
       <Name>badpic</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Reaper.png">
+      <Name>Reaper</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -195,19 +196,43 @@
     </Compile>
     <Compile Include="goodbar.png">
       <Name>goodbar</Name>
->>>>>>> 6765f1e109c579148ada48fee969ddfa9e7ab136
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="noBar.png">
+      <Name>noBar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+    <Compile Include="knife.png">
+=======
+    <Compile Include="placeholder.png">
+>>>>>>> 7bf2a1bc04c15b4fc9a52d739c237a6f64619677
+      <Name>knife</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="bunny.png">
       <Name>bunny</Name>
-=======
-    <Compile Include="noBar.png">
-      <Name>noBar</Name>
->>>>>>> 6765f1e109c579148ada48fee969ddfa9e7ab136
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animations\angel.png">
+      <Name>angel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Animations\angel0001.png">
+      <Name>angel0001</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
