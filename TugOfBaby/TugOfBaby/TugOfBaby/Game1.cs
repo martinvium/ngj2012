@@ -92,8 +92,6 @@ namespace TugOfBaby
         {
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
-            
-
 
             base.Initialize();
         }
@@ -106,6 +104,7 @@ namespace TugOfBaby
             _angel = _gameObjectManager.GetAngel();
             _reaper = _gameObjectManager.GetReaper();
             _femaleBunny = _gameObjectManager.GetFemaleBunny();
+            _gameObjectManager.GetItem(RenderManager.Texture.BUNNY);
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
@@ -138,9 +137,6 @@ namespace TugOfBaby
             _controls.Baby = _baby;
             _controls.Devil = _devil;
 
-            //_gameObjectManager.GetItem("knife");
-            //_gameObjectManager.GetItem("bunny");
-
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -171,6 +167,7 @@ namespace TugOfBaby
         {
             // Allows the game to exit
             _controls.Update();
+            _gameObjectManager.Update();
 
             if (_baby.HeldItem != null)
             {

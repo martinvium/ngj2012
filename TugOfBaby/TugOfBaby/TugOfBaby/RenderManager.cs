@@ -31,11 +31,6 @@ namespace TugOfBaby
             _blank = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             _blank.SetData(new[] { Color.Black });
 
-            //_sprites.Add(Texture.BIBLE, new Sprite("bible", new Vector2(-18, -18)));
-            //_sprites.Add(Texture.DRUGS, new Sprite("drugs", new Vector2(-18, -18)));
-            _sprites.Add(Texture.KNIFE, new Sprite("knife", new Vector2(-18, -18)));
-            _sprites.Add(Texture.BUNNY, new Sprite("bunny", new Vector2(-18, -18)));
-            //_sprites.Add(Texture.VEGETABLE, new Sprite("vegetable", new Vector2(-18, -18)));
         }
 
         public Sprite GetSprite(Texture name)
@@ -47,17 +42,6 @@ namespace TugOfBaby
 
         public void LoadContent(ContentManager content, List<GameObject> all)
         {
-            foreach(KeyValuePair<Texture, Sprite> kvp in _sprites) {
-                kvp.Value.Texture = content.Load<Texture2D>(kvp.Value.Name);
-            }
-
-            foreach(GameObject gameObject in all) 
-            {
-                if(gameObject.Sprite != null && gameObject.Sprite.Texture == null) 
-                {
-                    gameObject.Sprite.Texture = content.Load<Texture2D>(gameObject.Sprite.Name);
-                }
-            }
 
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
@@ -70,6 +54,8 @@ namespace TugOfBaby
 
             animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
             _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
+
+            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18)));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
         }

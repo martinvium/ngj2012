@@ -96,27 +96,27 @@ namespace TugOfBaby
             return gameObject;
         }
 
-        public GameObject GetItem(string name)
+        public GameObject GetItem(RenderManager.Texture _type)
         {
             GameObject item = GetBase();
-            item.Sprite = new Sprite(name);
+            item.Sprite = _renderManager.GetSprite(_type);
 
             item.Reward = new Reward();
 
-            switch(name){
-                case "drugs":
+            switch(_type){
+                case RenderManager.Texture.DRUGS:
                     item.Reward.Effect = (int)Items.DRUGS;
                     break;
-                case "knife":
+                case RenderManager.Texture.KNIFE:
                     item.Reward.Effect = (int)Items.KNIFE;
                     break;
-                case "bunny":
+                case RenderManager.Texture.BUNNY:
                     item.Reward.Effect = (int)Items.BUNNY;
                     break;
-                case "bible":
+                case RenderManager.Texture.BIBLE:
                     item.Reward.Effect = (int)Items.BIBLE;
                     break;
-                case "vegetables":
+                case RenderManager.Texture.VEGETABLE:
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     break;
             }
@@ -158,16 +158,21 @@ namespace TugOfBaby
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
                     {
-                        if ((player.Body.UserData as GameObject).HeldItem.Sprite.Name == "bunny")
+                        //har vi kaninen?
+                        if ((player.Body.UserData as GameObject).HeldItem.Target == (fixtureB.Body.UserData as GameObject))
                         {
-                            Console.Write("KILLS RABBIT");
+                            (player.Body.UserData as GameObject).HeldItem.Disposed = true;
+                            (fixtureB.Body.UserData as GameObject).Disposed = true;
                             evil.Statistics.PointsCollected += 50;
                         }
+                        
+
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
                     {
                         (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
-                        GetItem("knife");
+                        (player.Body.UserData as GameObject).HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
+                        Console.Write("KILLS RABBIT");
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
                     {
@@ -191,6 +196,21 @@ namespace TugOfBaby
             }
             
             return true;
+        }
+
+        public void Update()
+        {
+            List<GameObject> removeList = new List<GameObject>();
+            foreach (GameObject go in _gameObjects)
+            {
+                if (go.Disposed)
+                    removeList.Add(go);
+            }
+
+            foreach (GameObject go in removeList){
+                _gameObjects.Remove(go);
+            }
+            
         }
 
         private void Destroy(GameObject _gameobject)
