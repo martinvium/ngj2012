@@ -12,6 +12,20 @@ namespace TugOfBaby
     {
         Sprite _sprite;
         Body _body;
+        bool pickupable;
+        Reward reward;
+
+        internal Reward Reward
+        {
+            get { return reward; }
+            set { reward = value; }
+        }
+        
+        public bool Pickupable
+        {
+            get { return pickupable; }
+            set { pickupable = value; }
+        }
 
         public Body Body
         {

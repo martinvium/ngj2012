@@ -107,18 +107,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Background.cs" />
-=======
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectManager.cs" />
->>>>>>> 5b16b784850d3bddbc2fda34afe029503f468dd1
+<<<<<<< HEAD
+    <Compile Include="HeadsUpDisplay.cs" />
+=======
+    <Compile Include="Reward.cs" />
+>>>>>>> 69d5e27f327289ae686cbe97db34073a2bab9db7
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Ragdoll.cs" />
     <Compile Include="RenderManager.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="Controls.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
