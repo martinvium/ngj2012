@@ -25,6 +25,9 @@ namespace TugOfBaby
         public const int WIDTH = 1280;
         public const int HEIGHT = 720;
         public const float METER_IN_PIXEL = 64f;
+        Background theBackground;
+        bool up = true;
+        int bar = 0;
 
         SpriteBatch spriteBatch;
 
@@ -57,7 +60,7 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
             base.Initialize();
         }
 
@@ -69,7 +72,8 @@ namespace TugOfBaby
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            theBackground = new Background();
+            theBackground.LoadContent(this.Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -132,8 +136,21 @@ namespace TugOfBaby
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
+            if(up == true)
+                theBackground.Update(bar++);
+            if(!up)
+                theBackground.Update(bar--);
 
+            if (bar == 100)
+                up = false;
+            else if(bar == -100)
+                up = true;
+
+            spriteBatch.Begin();
+            theBackground.Draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
+            
         }
     }
 }
