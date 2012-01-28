@@ -45,6 +45,14 @@ namespace TugOfBaby
             return angel;
         }
 
+        public GameObject GetReaper()
+        {
+            GameObject angel = GetBase();
+            angel.Sprite = new Sprite("Reaper", new Vector2(-18, -18));
+            angel.Body = getCircle(.3f);
+            return angel;
+        }
+
         private Body getCircle(float radius)
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);

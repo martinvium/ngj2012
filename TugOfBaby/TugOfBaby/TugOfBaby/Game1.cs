@@ -31,6 +31,9 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        public const float REAPERVELOCITY = 2.0f;
+        public Vector2 babyDir = new Vector2();
+
         GameState _state;
 
 
@@ -47,6 +50,7 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
+        GameObject _reaper;
         Ragdoll _ragdoll;
 
         //Debug view
@@ -104,6 +108,7 @@ namespace TugOfBaby
             _devil = _gameObjectManager.GetDevil();
           
             _angel = _gameObjectManager.GetAngel();
+            _reaper = _gameObjectManager.GetReaper();
 
             DistanceJoint jLeftArm = new DistanceJoint(_devil.Body, _baby.Body,
                                                        new Vector2(0f, 0f),
@@ -174,8 +179,8 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
-            
-            
+
+            reaperMove();
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
@@ -266,6 +271,35 @@ namespace TugOfBaby
             base.Draw(gameTime);
 
         }
+
+        public void reaperMove()
+        {
+            babyDir = new Vector2();
+
+            babyDir = (_baby.Position - _reaper.Position);
+
+            _reaper.Body.ApplyLinearImpulse(babyDir * 0.005f);
+
+            //Console.WriteLine(Vector2.Distance(_baby.Position, _reaper.Position));
+            /*
+            if(Vector2.Distance(_baby.Position, _reaper.Position) < 300)
+                GamePad.SetVibration(PlayerIndex.One, 0.25f, 0.25f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 200)
+                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
+                GamePad.SetVibration(PlayerIndex.One, 1, 1);
+            */
+        }
+
+        /*public void statusQuo(GameTime pollTime)
+            {
+            TimeSpan
+
+
+            }
+        */
         #region Properties
         public GameState State
         {
@@ -274,6 +308,7 @@ namespace TugOfBaby
         }
         #endregion
     }
+
     public enum GameState
     {
         Menu,
