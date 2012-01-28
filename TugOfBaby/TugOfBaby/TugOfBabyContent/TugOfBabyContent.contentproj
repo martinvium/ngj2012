@@ -69,6 +69,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+     <Compile Include="angel.png">
+      <Name>angel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="devil.png">
+      <Name>devil</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="keyboardkitteh.mp3">
@@ -85,15 +95,22 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="angel.png">
-      <Name>angel</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+    <Compile Include="vomiting_1.wav">
+      <Name>vomiting_1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="devil.png">
-      <Name>devil</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cowbell.wav">
+      <Name>cowbell</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="synth_beep_2.wav">
+      <Name>synth_beep_2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>

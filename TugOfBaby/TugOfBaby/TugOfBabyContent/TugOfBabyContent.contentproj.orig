@@ -42,7 +42,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
+    <Compile Include="Courier New.spritefont">
+      <Name>Courier New</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="baby.png">
+      <Name>baby</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="heavenBG.png">
       <Name>heavenBG</Name>
       <Importer>TextureImporter</Importer>
@@ -71,19 +82,37 @@
       <Name>ak-47</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
-=======
-    <Compile Include="Courier New.spritefont">
-      <Name>Courier New</Name>
-      <Importer>FontDescriptionImporter</Importer>
-      <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="baby.png">
-      <Name>baby</Name>
+<<<<<<< HEAD
+    <Compile Include="vomiting_1.wav">
+      <Name>vomiting_1</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cowbell.wav">
+      <Name>cowbell</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="synth_beep_2.wav">
+      <Name>synth_beep_2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+=======
+    <Compile Include="angel.png">
+      <Name>angel</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
->>>>>>> 5b16b784850d3bddbc2fda34afe029503f468dd1
+    </Compile>
+    <Compile Include="devil.png">
+      <Name>devil</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+>>>>>>> bf6970068a27fe9b8fd007045777b119c9379847
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
