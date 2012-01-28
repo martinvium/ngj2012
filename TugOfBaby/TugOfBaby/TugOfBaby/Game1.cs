@@ -315,6 +315,7 @@ namespace TugOfBaby
     public enum GameState
     {
         Menu,
-        Playing
+        Playing,
+        ShowStats
     }
 }

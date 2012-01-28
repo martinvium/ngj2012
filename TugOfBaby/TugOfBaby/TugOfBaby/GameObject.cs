@@ -27,8 +27,7 @@ namespace TugOfBaby
         {
             get { return heldItem; }
             set { heldItem = value; }
-        }
-        
+        }        
 
         internal Reward Reward
         {
