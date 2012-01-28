@@ -13,9 +13,10 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
+        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
-        
 
         public GameObjectManager(World world)
         {
@@ -59,13 +60,26 @@ namespace TugOfBaby
         {
             GameObject item = GetBase();
             item.Sprite = new Sprite(name);
-            
-            if (name == "knife")
-            {
-                item.Pickupable = true;
-                //do knife stuff
-                item.Reward.Effect = 1;
+
+            switch(name){
+                case "drugs":
+                    item.Reward.Effect = (int)Items.DRUGS;
+                    break;
+                case "knife":
+                    item.Reward.Effect = (int)Items.KNIFE;
+                    break;
+                case "bunny":
+                    item.Reward.Effect = (int)Items.BUNNY;
+                    break;
+                case "bible":
+                    item.Reward.Effect = (int)Items.BIBLE;
+                    break;
+                case "vegetables":
+                    item.Reward.Effect = (int)Items.VEGETABLES;
+                    break;
             }
+
+            item.Pickupable = true;
 
             item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
             item.Body.BodyType = BodyType.Static;
@@ -90,6 +104,17 @@ namespace TugOfBaby
             {
                 if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
                 {
+                    if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
+                        GetItem("bunny");
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
+                        GetItem("bunny");
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
+                        GetItem("bunny");
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
+                        GetItem("bunny");
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
+                        GetItem("bunny");
+
                     (fixtureA.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
                     Destroy((fixtureB.Body.UserData as GameObject));
                 }
