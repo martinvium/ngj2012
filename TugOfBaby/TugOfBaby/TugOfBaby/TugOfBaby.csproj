@@ -120,7 +120,7 @@
     <Compile Include="RenderManager.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Controls.cs" />
-    <Compile Include="StatsManager.cs" />
+    <Compile Include="Stats.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

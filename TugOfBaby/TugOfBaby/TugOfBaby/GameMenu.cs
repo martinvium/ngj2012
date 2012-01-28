@@ -15,7 +15,7 @@ namespace TugOfBaby
         private const int MAX_MENU_ITEMS = 3;
         int _currentSelection;
         float _selectionOffset = 50f;
-        float _selectionWidthOffset = 125;
+        float _selectionWidthOffset = 115;
         bool _released = true;
 
         GamePadState _oldState;
@@ -59,7 +59,7 @@ namespace TugOfBaby
             
  
 
-            if (_released && padState.Buttons.A == ButtonState.Pressed)
+            if ((_released && padState.Buttons.A == ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 Console.WriteLine("Button pressed selection is ->" + _currentSelection);
                 ExecuteSelection();
@@ -79,8 +79,8 @@ namespace TugOfBaby
             batch.DrawString(_font, "Play", new Vector2(650, 250), Color.Green);
             batch.DrawString(_font, "Scores", new Vector2(650, 300), Color.Green);
             batch.DrawString(_font, "Exit", new Vector2(650, 350), Color.Green);
-            batch.Draw(_selectionBad,  _selectionPosition, Color.White);
-            batch.Draw(_selectionGod, new Vector2(_selectionPosition.X+_selectionWidthOffset, _selectionPosition.Y), Color.White);
+            batch.Draw(_selectionGod,  _selectionPosition, Color.White);
+            batch.Draw(_selectionBad, new Vector2(_selectionPosition.X + _selectionWidthOffset, _selectionPosition.Y), Color.White);
         }
 
         private void UpdateSelectionImage(bool up)
