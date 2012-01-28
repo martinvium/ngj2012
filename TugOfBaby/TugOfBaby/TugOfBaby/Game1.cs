@@ -51,6 +51,7 @@ namespace TugOfBaby
         GameObject _devil;
         GameObject _angel;
         GameObject _reaper;
+        GameObject _femaleBunny;
 
         //Debug view
         bool _showDebug = false;
@@ -104,6 +105,7 @@ namespace TugOfBaby
           
             _angel = _gameObjectManager.GetAngel();
             _reaper = _gameObjectManager.GetReaper();
+            _femaleBunny = _gameObjectManager.GetFemaleBunny();
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;

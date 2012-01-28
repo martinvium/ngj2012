@@ -58,13 +58,20 @@ namespace TugOfBaby
                     gameObject.Sprite.Texture = content.Load<Texture2D>(gameObject.Sprite.Name);
                 }
             }
+
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
+            
             animation = new Animation(content.Load<Texture2D>("animations/demon"), new Rectangle(0, 0, 110, 126), 50, 1.0f, 10, 5);
-            _sprites.Add(Texture.DEVIL, new Sprite(animation, new Vector2(-18, -18)));
+            _sprites.Add(Texture.DEVIL, new Sprite(animation, new Vector2(-18, -18)));            
+
+            animation = new Animation(content.Load<Texture2D>("animations/death"), new Rectangle(0, 0, 150, 180), 60, 1.0f, 10, 6);
+            _sprites.Add(Texture.REAPER, new Sprite(animation, new Vector2(-18, -18)));
+
+            animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
+            _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
-            _sprites.Add(Texture.REAPER, new Sprite(content.Load<Texture2D>("Reaper"), new Vector2(-18, -18)));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
@@ -81,7 +88,7 @@ namespace TugOfBaby
                     }
                     else
                     {
-                        gameObject.Sprite.Animation.Draw(spriteBatch, pos, 0f,false);
+                        gameObject.Sprite.Animation.Draw(spriteBatch, pos, 0f,gameObject.Sprite.Flipped);
                     }
                 }
             }
@@ -94,7 +101,7 @@ namespace TugOfBaby
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
                     if (gameObject.Sprite.Animation != null)                   
-                    {
+                    {                        
                         gameObject.Sprite.Animation.Update(gametime);
                     }
                 }
