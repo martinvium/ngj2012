@@ -47,7 +47,6 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
-        Ragdoll _ragdoll;
 
         //Debug view
         bool _showDebug = false;
@@ -83,9 +82,9 @@ namespace TugOfBaby
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            _gameObjectManager = new GameObjectManager(_world);
-            _renderManager = new RenderManager(_gameObjectManager);
+            _renderManager = new RenderManager();
+            _gameObjectManager = new GameObjectManager(_world, _renderManager);
+            
             CreateBaby();
             _controls = new Controls(this);
             _controls.Angel = _angel;
@@ -100,33 +99,18 @@ namespace TugOfBaby
 
         private void CreateBaby()
         {
-            const float dampingRatio = 1f;
-            const float frequency = 25f;
-
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
           
             _angel = _gameObjectManager.GetAngel();
 
-            DistanceJoint jLeftArm = new DistanceJoint(_devil.Body, _baby.Body,
-                                                       new Vector2(0f, 0f),
-                                                       new Vector2(0f, 0f));
-            jLeftArm.CollideConnected = true;
-            jLeftArm.DampingRatio = dampingRatio;
-            jLeftArm.Frequency = frequency;
-            jLeftArm.Length = 2f;
+            RopeJoint jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
+            jLeftArm.MaxLength = 2f;
             _world.AddJoint(jLeftArm);
 
-            DistanceJoint jRightArm = new DistanceJoint(_angel.Body, _baby.Body,
-                                                       new Vector2(0f, 0f),
-                                                       new Vector2(0f, 0f));
-            jRightArm.CollideConnected = true;
-            jRightArm.DampingRatio = dampingRatio;
-            jRightArm.Frequency = frequency;
-            jRightArm.Length = 2f;
+            RopeJoint jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
+            jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
-
-            //_ragdoll = new Ragdoll(_world, new Vector2(5, 5));
         }
 
         /// <summary>
@@ -139,7 +123,7 @@ namespace TugOfBaby
             spriteBatch = new SpriteBatch(GraphicsDevice);
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
-            _renderManager.LoadContent(Content);
+            _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
@@ -252,7 +236,7 @@ namespace TugOfBaby
             }
             else
             {
-                _renderManager.Draw(spriteBatch);
+                _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
             }
 
