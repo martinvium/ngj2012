@@ -86,7 +86,7 @@ namespace TugOfBaby
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _state = GameState.Menu;
+            //_state = GameState.Menu;
             
             _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
@@ -131,7 +131,7 @@ namespace TugOfBaby
 
             if (_state == GameState.Menu)
             {
-
+                _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
             base.Update(gameTime);
@@ -146,10 +146,15 @@ namespace TugOfBaby
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             if (_state == GameState.Menu)
+            {
                 _menu.Draw(spriteBatch);
-
+            }
+            else
+            {
+                _renderManager.Draw(spriteBatch);
+            }
            
-            _renderManager.Draw(spriteBatch);
+            
             spriteBatch.End();
 
             // TODO: Add your drawing code here
