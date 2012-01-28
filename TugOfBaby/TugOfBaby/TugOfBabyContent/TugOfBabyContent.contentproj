@@ -201,8 +201,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-	</ItemGroup>
-     <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="placeholder.png">
       <Name>knife</Name>
       <Importer>TextureImporter</Importer>
@@ -212,6 +212,18 @@
   <ItemGroup>
     <Compile Include="bunny.png">
       <Name>bunny</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Animations\angel.png">
+      <Name>angel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Animations\angel0001.png">
+      <Name>angel0001</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

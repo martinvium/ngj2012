@@ -9,16 +9,12 @@ namespace TugOfBaby
 {
     class Sprite
     {
-        string _name = "";
+        string _name = "";       
         Texture2D _texture;
         Vector2 _origin = new Vector2(0, 0);
         Animation _animation;
 
-        internal Animation Animation
-        {
-            get { return _animation; }
-            set { _animation = value; }
-        }
+   
 
         public Sprite(string name)
         {
@@ -30,7 +26,16 @@ namespace TugOfBaby
             _name = name;
             _origin = origin;
         }
-
+        public Sprite(Texture2D texture, Vector2 origin)
+        {
+            _texture = texture;
+            _origin = origin;         
+        }
+        public Sprite(Animation animation, Vector2 origin)
+        {
+            _animation = animation;
+            _origin = origin;
+        }
         public Vector2 Origin
         {
             get { return _origin; }
@@ -47,6 +52,12 @@ namespace TugOfBaby
         {
             get { return _texture; }
             set { _texture = value; }
+        }
+
+        internal Animation Animation
+        {
+            get { return _animation; }
+            set { _animation = value; }
         }
     }
 }

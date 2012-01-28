@@ -37,7 +37,7 @@ namespace TugOfBaby
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
             return angel;
         }
@@ -46,8 +46,7 @@ namespace TugOfBaby
         {
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f, angel);
-            
+            angel.Body = getCircle(.3f, angel);            
             
 
             return angel;
