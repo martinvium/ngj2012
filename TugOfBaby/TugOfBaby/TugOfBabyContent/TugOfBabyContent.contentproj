@@ -208,7 +208,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="placeholder.png">
+    <Compile Include="knife.png">
       <Name>knife</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

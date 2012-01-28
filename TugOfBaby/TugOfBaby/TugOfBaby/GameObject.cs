@@ -16,6 +16,33 @@ namespace TugOfBaby
         Reward reward;
         GameObject heldItem;
         Animation _animation;
+        GameObject target;
+        bool disposed = false;
+
+        public bool Disposed
+        {
+            get { return disposed; }
+            set { 
+               disposed = value;
+               if(disposed)
+                   _body.Dispose();
+            }
+        }
+
+        internal GameObject Target
+        {
+            get { return target; }
+            set { target = value; }
+        }
+        
+        Stats statistics;
+        
+        internal Stats Statistics
+        {
+            get { return statistics; }
+            set { statistics = value; }
+        }
+
 
         internal Animation Animation
         {

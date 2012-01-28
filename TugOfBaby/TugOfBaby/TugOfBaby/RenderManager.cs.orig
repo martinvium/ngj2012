@@ -28,9 +28,25 @@ namespace TugOfBaby
 
         public RenderManager(GraphicsDevice graphicsDevice)
         {
+<<<<<<< HEAD
+            _sprites.Add(Texture.ANGEL, new Sprite("angel", new Vector2(-18, -18)));
+            _sprites.Add(Texture.DEVIL, new Sprite("devil", new Vector2(-18, -18)));
+            _sprites.Add(Texture.BABY, new Sprite("Child/child_face", new Vector2(-55, -55)));
+            //_sprites.Add(Texture.BIBLE, new Sprite("bible", new Vector2(-18, -18)));
+            //_sprites.Add(Texture.DRUGS, new Sprite("drugs", new Vector2(-18, -18)));
+            _sprites.Add(Texture.KNIFE, new Sprite("knife", new Vector2(-18, -18)));
+            _sprites.Add(Texture.BUNNY, new Sprite("bunny", new Vector2(-18, -18)));
+            //_sprites.Add(Texture.VEGETABLE, new Sprite("vegetable", new Vector2(-18, -18)));
+=======
             _blank = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             _blank.SetData(new[] { Color.Black });
 
+            /*_textures.Add(Texture.BUNNY, content.Load<Texture2D>("bunny"));
+            _textures.Add(Texture.KNIFE, content.Load<Texture2D>("knife"));
+            _textures.Add(Texture.DRUGS, content.Load<Texture2D>("drugs"));
+            _textures.Add(Texture.VEGETABLE, content.Load<Texture2D>("vegetable"));
+            _textures.Add(Texture.BIBLE, content.Load<Texture2D>("bible"));*/
+>>>>>>> 7bf2a1bc04c15b4fc9a52d739c237a6f64619677
         }
 
         public Sprite GetSprite(Texture name)
@@ -42,22 +58,22 @@ namespace TugOfBaby
 
         public void LoadContent(ContentManager content, List<GameObject> all)
         {
+            foreach(KeyValuePair<Texture, Sprite> kvp in _sprites) {
+                kvp.Value.Texture = content.Load<Texture2D>(kvp.Value.Name);
+            }
 
+            foreach(GameObject gameObject in all) 
+            {
+                if(gameObject.Sprite != null && gameObject.Sprite.Texture == null) 
+                {
+                    gameObject.Sprite.Texture = content.Load<Texture2D>(gameObject.Sprite.Name);
+                }
+            }
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
-            
-            animation = new Animation(content.Load<Texture2D>("animations/demon"), new Rectangle(0, 0, 110, 126), 50, 1.0f, 10, 5);
-            _sprites.Add(Texture.DEVIL, new Sprite(animation, new Vector2(-18, -18)));            
-
-            animation = new Animation(content.Load<Texture2D>("animations/death"), new Rectangle(0, 0, 150, 180), 60, 1.0f, 10, 6);
-            _sprites.Add(Texture.REAPER, new Sprite(animation, new Vector2(-18, -18)));
-
-            animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
-            _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
-
-            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18)));
-
+            _sprites.Add(Texture.DEVIL, new Sprite(content.Load<Texture2D>("devil"), new Vector2(-18, -18)));
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
+            _sprites.Add(Texture.REAPER, new Sprite(content.Load<Texture2D>("Reaper"), new Vector2(-18, -18)));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
@@ -74,7 +90,7 @@ namespace TugOfBaby
                     }
                     else
                     {
-                        gameObject.Sprite.Animation.Draw(spriteBatch, pos, 0f,gameObject.Sprite.Flipped);
+                        gameObject.Sprite.Animation.Draw(spriteBatch, pos, 0f,false);
                     }
                 }
             }
@@ -87,7 +103,7 @@ namespace TugOfBaby
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
                     if (gameObject.Sprite.Animation != null)                   
-                    {                        
+                    {
                         gameObject.Sprite.Animation.Update(gametime);
                     }
                 }

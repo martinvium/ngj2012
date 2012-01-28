@@ -40,11 +40,14 @@ namespace TugOfBaby
         {                   
             batch.Draw(_evilOMeter, new Vector2(window.ClientBounds.Width / 2, 20), Color.White);
             batch.Draw(_goodOMeter, new Vector2(window.ClientBounds.Width / 2, 20), new Rectangle(0, 0, 93 + _howEvil, _evilOMeter.Height), Color.White);
-          
 
             if (_heldObject != null)
             {
-                batch.Draw(_heldObject.Sprite.Texture, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height -50), Color.White);
+                if (_heldObject.Disposed)
+                    _heldObject = null;
+                else
+                    _heldObject.Sprite.Animation.Draw(batch, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height - 50), 0f, false);
+                //batch.Draw(_heldObject.Sprite.Texture, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height -50), Color.White);
             }
 
         }

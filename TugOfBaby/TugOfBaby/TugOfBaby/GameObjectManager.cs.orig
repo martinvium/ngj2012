@@ -28,43 +28,47 @@ namespace TugOfBaby
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
+<<<<<<< HEAD
+            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
+=======
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
+            angel.Body = getCircle(.5f);
+>>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
             return angel;
         }
 
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
+<<<<<<< HEAD
+            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
             angel.Body = getCircle(.3f, angel);
+=======
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
+            angel.Body = getCircle(.3f);
+>>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
             return angel;
         }
 
         public GameObject GetAngel()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f, angel);            
+<<<<<<< HEAD
+            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
+            angel.Body = getCircle(.3f, angel);
+            
             
 
-            return angel;
-        }
-
-<<<<<<< HEAD
-        public GameObject GetReaper()
-        {
-            GameObject angel = GetBase();
-            angel.Sprite = new Sprite("Reaper", new Vector2(-18, -18));
-            angel.Body = getCircle(.3f);
-            return angel;
-        }
-
-        private Body getCircle(float radius)
 =======
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
+            angel.Body = getCircle(.3f);
+>>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
+            return angel;
+        }
+
         private Body getCircle(float radius, GameObject _gameobject)
->>>>>>> 44580e3b1d57a201912d2d5575d2f427a3d41ea9
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;

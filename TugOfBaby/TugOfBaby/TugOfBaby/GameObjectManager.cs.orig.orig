@@ -52,12 +52,16 @@ namespace TugOfBaby
         {
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f, angel);    
-            
-            good = angel;        
-            
+<<<<<<< HEAD
+            angel.Body = getCircle(.3f, angel);
 
+            good = angel;
             good.Statistics = new Stats();
+=======
+            angel.Body = getCircle(.3f, angel);            
+            
+>>>>>>> 7bf2a1bc04c15b4fc9a52d739c237a6f64619677
+
             return angel;
         }
 
@@ -67,13 +71,6 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
             angel.Body = getCircle(.3f, angel);
             return angel;
-        }
-        public GameObject GetFemaleBunny()
-        {
-            GameObject bunny = GetBase();
-            bunny.Sprite = _renderManager.GetSprite(RenderManager.Texture.BUNNY);
-            bunny.Body = getCircle(.3f, bunny);
-            return bunny;
         }
 
  private Body getCircle(float radius, GameObject _gameobject)
@@ -96,27 +93,27 @@ namespace TugOfBaby
             return gameObject;
         }
 
-        public GameObject GetItem(RenderManager.Texture _type)
+        public GameObject GetItem(string name)
         {
             GameObject item = GetBase();
-            item.Sprite = _renderManager.GetSprite(_type);
+            item.Sprite = new Sprite(name);
 
             item.Reward = new Reward();
 
-            switch(_type){
-                case RenderManager.Texture.DRUGS:
+            switch(name){
+                case "drugs":
                     item.Reward.Effect = (int)Items.DRUGS;
                     break;
-                case RenderManager.Texture.KNIFE:
+                case "knife":
                     item.Reward.Effect = (int)Items.KNIFE;
                     break;
-                case RenderManager.Texture.BUNNY:
+                case "bunny":
                     item.Reward.Effect = (int)Items.BUNNY;
                     break;
-                case RenderManager.Texture.BIBLE:
+                case "bible":
                     item.Reward.Effect = (int)Items.BIBLE;
                     break;
-                case RenderManager.Texture.VEGETABLE:
+                case "vegetables":
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     break;
             }
@@ -158,21 +155,16 @@ namespace TugOfBaby
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
                     {
-                        //har vi kaninen?
-                        if ((player.Body.UserData as GameObject).HeldItem.Target == (fixtureB.Body.UserData as GameObject))
+                        if ((player.Body.UserData as GameObject).HeldItem.Sprite.Name == "bunny")
                         {
-                            (player.Body.UserData as GameObject).HeldItem.Disposed = true;
-                            (fixtureB.Body.UserData as GameObject).Disposed = true;
+                            Console.Write("KILLS RABBIT");
                             evil.Statistics.PointsCollected += 50;
                         }
-                        
-
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
                     {
                         (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
-                        (player.Body.UserData as GameObject).HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
-                        Console.Write("KILLS RABBIT");
+                        GetItem("knife");
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
                     {
@@ -196,21 +188,6 @@ namespace TugOfBaby
             }
             
             return true;
-        }
-
-        public void Update()
-        {
-            List<GameObject> removeList = new List<GameObject>();
-            foreach (GameObject go in _gameObjects)
-            {
-                if (go.Disposed)
-                    removeList.Add(go);
-            }
-
-            foreach (GameObject go in removeList){
-                _gameObjects.Remove(go);
-            }
-            
         }
 
         private void Destroy(GameObject _gameobject)

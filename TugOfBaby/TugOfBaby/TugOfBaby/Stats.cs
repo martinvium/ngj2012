@@ -19,17 +19,17 @@ namespace TugOfBaby
         }
 
         #region Properties
-        public static int DeedsDone
+        public int DeedsDone
         {
             get { return Stats._deedsDone; }
             set { Stats._deedsDone = value; }
         }
-        public static int ItemsCollected
+        public int ItemsCollected
         {
             get { return Stats._itemsCollected; }
             set { Stats._itemsCollected = value; }
         }
-        public static int PointsCollected
+        public int PointsCollected
         {
             get { return Stats._pointsCollected; }
             set { Stats._pointsCollected = value; }
