@@ -116,6 +116,8 @@
     <Compile Include="Game1.cs" />
     <Compile Include="RenderManager.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="Controls.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
