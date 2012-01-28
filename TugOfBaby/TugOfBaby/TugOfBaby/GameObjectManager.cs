@@ -13,46 +13,54 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
+        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
+        RenderManager _renderManager;
 
-        public GameObjectManager(World world)
+        public GameObjectManager(World world, RenderManager renderMan)
         {
             _world = world;
+            _renderManager = renderMan;
         }
 
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
-            angel.Body = getCircle(.5f);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
+            angel.Body = getCircle(.5f, angel);
+            angel.Body.OnCollision += OnItemCollision;
             return angel;
         }
 
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
-            angel.Body = getCircle(.3f);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
+            angel.Body = getCircle(.3f, angel);
             return angel;
         }
 
         public GameObject GetAngel()
         {
             GameObject angel = GetBase();
-            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
-            angel.Body = getCircle(.3f);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
+            angel.Body = getCircle(.3f, angel);
+            
+            
+
             return angel;
         }
 
-        private Body getCircle(float radius)
+        private Body getCircle(float radius, GameObject _gameobject)
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;
             body.Mass = 5;
             body.OnCollision += OnCollision;
             body.BodyType = BodyType.Dynamic;
-            body.Mass = 5;
+            body.UserData = _gameobject;
             body.LinearDamping = 3.5f;
             body.OnCollision += OnCollision;
             return body;
@@ -69,18 +77,43 @@ namespace TugOfBaby
         {
             GameObject item = GetBase();
             item.Sprite = new Sprite(name);
-            
-            if (name == "knife")
-            {
-                item.Pickupable = true;
-                //do knife stuff
-                item.Reward.Effect = 1;
+
+            item.Reward = new Reward();
+
+            switch(name){
+                case "drugs":
+                    item.Reward.Effect = (int)Items.DRUGS;
+                    break;
+                case "knife":
+                    item.Reward.Effect = (int)Items.KNIFE;
+                    break;
+                case "bunny":
+                    item.Reward.Effect = (int)Items.BUNNY;
+                    break;
+                case "bible":
+                    item.Reward.Effect = (int)Items.BIBLE;
+                    break;
+                case "vegetables":
+                    item.Reward.Effect = (int)Items.VEGETABLES;
+                    break;
             }
 
+            
+
+            item.Pickupable = true;
+
+            Random rand = new Random();
+            float rX = rand.Next(20);
+            float rY = rand.Next(10);
+            
+
+
             item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
+            item.Body.Position = new Vector2(rX, rY);
+            item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
-            item.Body.Mass = 0;
-            item.Body.OnCollision += OnItemCollision;
+            item.Body.Mass = 1.0f;
+            
             return item;
         }
 
@@ -94,20 +127,51 @@ namespace TugOfBaby
             return true;
         }
 
-        private bool OnItemCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
-            if(fixtureB.Body.UserData is GameObject)
+            if (fixtureB.Body.UserData is GameObject)
+            {
                 if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
                 {
-                    (fixtureB.Body.UserData as GameObject).Reward.enable();
-                    Destroy((fixtureB.Body.UserData as GameObject));
+                    if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
+                    {
+                        //subtract 50
+                    }
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
+                    {
+                        //spawn bunny
+                        GetItem("bunny");
+                    }
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
+                    {
+                        //add 50
+                    }
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
+                    {
+                        //add 50
+                    }
+                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
+                    {
+                        //add 50
+                    }
+
+                    (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
+                    
+                    //Destroy((fixtureB.Body.UserData as GameObject));
                 }
+                else if ((fixtureB.Body.UserData as GameObject).Reward != null)
+                {
+                    (fixtureB.Body.UserData as GameObject).Reward.enable();
+                    //Destroy((fixtureB.Body.UserData as GameObject));
+                }
+            }
+            
             return true;
         }
 
         private void Destroy(GameObject _gameobject)
         {
-            _gameObjects.Remove(_gameobject);
+            //_gameObjects.Remove(_gameobject);
         }
     }
 }
