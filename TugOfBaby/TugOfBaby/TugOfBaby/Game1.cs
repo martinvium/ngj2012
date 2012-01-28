@@ -91,7 +91,6 @@ namespace TugOfBaby
             _controls.Baby = _baby;
             _controls.Devil = _devil;
 
-            _gameObjectManager.GetItem("knife");
             _gameObjectManager.GetItem("bunny");
 
             base.Initialize();

@@ -15,6 +15,13 @@ namespace TugOfBaby
         bool pickupable;
         Reward reward;
         GameObject heldItem;
+        Stats statistics;
+
+        internal Stats Statistics
+        {
+            get { return statistics; }
+            set { statistics = value; }
+        }
 
         internal GameObject HeldItem
         {

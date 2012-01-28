@@ -29,11 +29,11 @@ namespace TugOfBaby
             _sprites.Add(Texture.ANGEL, new Sprite("angel", new Vector2(-18, -18)));
             _sprites.Add(Texture.DEVIL, new Sprite("devil", new Vector2(-18, -18)));
             _sprites.Add(Texture.BABY, new Sprite("Child/child_face", new Vector2(-55, -55)));
-            /*_textures.Add(Texture.BUNNY, content.Load<Texture2D>("bunny"));
-            _textures.Add(Texture.KNIFE, content.Load<Texture2D>("knife"));
-            _textures.Add(Texture.DRUGS, content.Load<Texture2D>("drugs"));
-            _textures.Add(Texture.VEGETABLE, content.Load<Texture2D>("vegetable"));
-            _textures.Add(Texture.BIBLE, content.Load<Texture2D>("bible"));*/
+            //_sprites.Add(Texture.BIBLE, new Sprite("bible", new Vector2(-18, -18)));
+            //_sprites.Add(Texture.DRUGS, new Sprite("drugs", new Vector2(-18, -18)));
+            _sprites.Add(Texture.KNIFE, new Sprite("knife", new Vector2(-18, -18)));
+            _sprites.Add(Texture.BUNNY, new Sprite("bunny", new Vector2(-18, -18)));
+            //_sprites.Add(Texture.VEGETABLE, new Sprite("vegetable", new Vector2(-18, -18)));
         }
 
         public Sprite GetSprite(Texture name)

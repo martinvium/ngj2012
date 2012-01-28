@@ -201,9 +201,9 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-	</ItemGroup>
-     <ItemGroup>
-    <Compile Include="placeholder.png">
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="knife.png">
       <Name>knife</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
