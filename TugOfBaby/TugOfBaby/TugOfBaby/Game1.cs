@@ -31,6 +31,9 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        public const float REAPERVELOCITY = 2.0f;
+        public Vector2 babyDir = new Vector2();
+
         GameState _state;
 
 
@@ -47,6 +50,7 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
+        GameObject _reaper;
 
         //Debug view
         bool _showDebug = false;
@@ -55,6 +59,9 @@ namespace TugOfBaby
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
         Controls _controls;
+
+        RopeJoint jLeftArm;
+        RopeJoint jRightArm;
 
 
         public Game1()
@@ -82,7 +89,7 @@ namespace TugOfBaby
         /// </summary>
         protected override void Initialize()
         {
-            _renderManager = new RenderManager();
+            _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
             
 
@@ -96,12 +103,13 @@ namespace TugOfBaby
             _devil = _gameObjectManager.GetDevil();
           
             _angel = _gameObjectManager.GetAngel();
+            _reaper = _gameObjectManager.GetReaper();
 
-            RopeJoint jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
+            jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
             _world.AddJoint(jLeftArm);
 
-            RopeJoint jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
+            jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
             jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
         }
@@ -170,8 +178,8 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
-            
-            
+
+            reaperMove();
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
@@ -240,12 +248,12 @@ namespace TugOfBaby
             }
             else
             {
+                _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
+                _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
             }
 
-            
-            
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
             Matrix projection = Matrix.CreateOrthographicOffCenter(0f, _graphics.GraphicsDevice.Viewport.Width / METER_IN_PIXEL,
@@ -253,16 +261,45 @@ namespace TugOfBaby
                                                              1f);
             Matrix view = Matrix.CreateTranslation(new Vector3((Vector2.Zero / METER_IN_PIXEL) - (_screenCenter / METER_IN_PIXEL), 0f)) * Matrix.CreateTranslation(new Vector3((_screenCenter / METER_IN_PIXEL), 0f));
 
+            
+
             spriteBatch.End();
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
             
-          
-            
             base.Draw(gameTime);
 
         }
+
+        public void reaperMove()
+        {
+            babyDir = new Vector2();
+
+            babyDir = (_baby.Position - _reaper.Position);
+
+            _reaper.Body.ApplyLinearImpulse(babyDir * 0.005f);
+
+            //Console.WriteLine(Vector2.Distance(_baby.Position, _reaper.Position));
+            /*
+            if(Vector2.Distance(_baby.Position, _reaper.Position) < 300)
+                GamePad.SetVibration(PlayerIndex.One, 0.25f, 0.25f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 200)
+                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
+
+            if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
+                GamePad.SetVibration(PlayerIndex.One, 1, 1);
+            */
+        }
+
+        /*public void statusQuo(GameTime pollTime)
+            {
+            TimeSpan
+
+
+            }
+        */
         #region Properties
         public GameState State
         {
@@ -271,6 +308,7 @@ namespace TugOfBaby
         }
         #endregion
     }
+
     public enum GameState
     {
         Menu,

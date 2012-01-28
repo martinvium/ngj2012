@@ -52,15 +52,19 @@ namespace TugOfBaby
             return angel;
         }
 
+<<<<<<< HEAD
         public GameObject GetReaper()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
-            angel.Body = getCircle(.3f, angel);
+            angel.Sprite = new Sprite("Reaper", new Vector2(-18, -18));
+            angel.Body = getCircle(.3f);
             return angel;
         }
 
- private Body getCircle(float radius, GameObject _gameobject)
+        private Body getCircle(float radius)
+=======
+        private Body getCircle(float radius, GameObject _gameobject)
+>>>>>>> 44580e3b1d57a201912d2d5575d2f427a3d41ea9
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;
