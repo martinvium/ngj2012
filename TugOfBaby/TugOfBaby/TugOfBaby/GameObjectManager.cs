@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
 
 namespace TugOfBaby
 {
@@ -25,6 +26,9 @@ namespace TugOfBaby
             GameObject baby = GetBase();
             baby.Sprite = new Sprite("baby");
             baby.Body = BodyFactory.CreateCircle(_world, .5f, 1f, new Vector2(5,5), this);
+            baby.Body.BodyType = BodyType.Dynamic;
+            baby.Body.Mass = 5;
+            baby.Body.OnCollision += OnCollision;
             return baby;
         }
 
@@ -38,6 +42,11 @@ namespace TugOfBaby
         public List<GameObject> GetAll()
         {
             return _gameObjects;
+        }
+
+        private bool OnCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
+        {
+            return true;
         }
     }
 }

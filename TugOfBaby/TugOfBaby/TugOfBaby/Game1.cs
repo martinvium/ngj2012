@@ -139,6 +139,8 @@ namespace TugOfBaby
 
             }
 
+            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
             base.Update(gameTime);
         }
 
