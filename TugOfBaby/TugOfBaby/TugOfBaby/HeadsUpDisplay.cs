@@ -10,15 +10,19 @@ namespace TugOfBaby
 {
     class HeadsUpDisplay
     {
-        List<GameObject> list = new List<GameObject>();
-        Texture2D evilOMeter;
+        Texture2D _evilOMeter;
+        Texture2D _god;
+        Texture2D _evil;
+
         int _howEvil;
         GameObject _heldObject;
 
 
         public HeadsUpDisplay(ContentManager content)
         {
-            evilOMeter = content.Load<Texture2D>("EvilOMeter");
+            _evilOMeter = content.Load<Texture2D>("EvilOMeter");
+            _god = content.Load<Texture2D>("godpic");
+            _evil = content.Load<Texture2D>("badpic");
             _howEvil = 50;
         }
 
@@ -29,14 +33,18 @@ namespace TugOfBaby
 
         public void Draw(SpriteBatch batch, GameWindow window)
         {
+            //Draw images near evilOMeter
+            batch.Draw(_evil, new Vector2(window.ClientBounds.Width / 2 - _evilOMeter.Width / 2 - 35,0), Color.White);
+            batch.Draw(_god, new Vector2(window.ClientBounds.Width / 2 + _evilOMeter.Width / 2 , 5), Color.White);   
+
             //Draw the negative space for the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Blue);
+            batch.Draw(_evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - _evilOMeter.Width / 2, 0, _evilOMeter.Width, 44), new Rectangle(0, 45, _evilOMeter.Width, 44), Color.Blue);
 
             //Draw the current health level based on the current Health
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, (int)(evilOMeter.Width * ((double)_howEvil / 100)), 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Red);
+            batch.Draw(_evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - _evilOMeter.Width / 2, 0, (int)(_evilOMeter.Width * ((double)_howEvil / 100)), 44), new Rectangle(0, 45, _evilOMeter.Width, 44), Color.Red);
 
             //Draw the box around the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 0, evilOMeter.Width, 44), Color.White);
+            batch.Draw(_evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - _evilOMeter.Width / 2, 0, _evilOMeter.Width, 44), new Rectangle(0, 0, _evilOMeter.Width, 44), Color.White);
 
             if (_heldObject != null)
             {
