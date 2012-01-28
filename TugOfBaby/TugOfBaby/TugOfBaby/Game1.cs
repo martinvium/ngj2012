@@ -88,11 +88,7 @@ namespace TugOfBaby
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
             
-            CreateBaby();
-            _controls = new Controls(this);
-            _controls.Angel = _angel;
-            _controls.Baby = _baby;
-            _controls.Devil = _devil;
+
 
             base.Initialize();
         }
@@ -128,6 +124,16 @@ namespace TugOfBaby
             _hud = new HeadsUpDisplay(Content);
             
             _menu = new GameMenu(Content, this);
+
+            CreateBaby();
+            _controls = new Controls(this);
+            _controls.Angel = _angel;
+            _controls.Baby = _baby;
+            _controls.Devil = _devil;
+
+            //_gameObjectManager.GetItem("knife");
+            //_gameObjectManager.GetItem("bunny");
+
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -158,6 +164,12 @@ namespace TugOfBaby
         {
             // Allows the game to exit
             _controls.Update();
+
+            if (_baby.HeldItem != null)
+            {
+                
+                _hud.PushItem(_baby.HeldItem);
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
@@ -199,6 +211,7 @@ namespace TugOfBaby
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
+            _renderManager.Update(gameTime, _gameObjectManager.GetAll());
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
             base.Update(gameTime);

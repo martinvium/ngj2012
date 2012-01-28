@@ -32,7 +32,11 @@ namespace TugOfBaby
 
         public void Update(GameObject _devil, GameObject _angel)
         {
+<<<<<<< HEAD
             //todo->devil.points + angel.points /2 -- 309 * taht
+=======
+            
+>>>>>>> 3d9222b6a25b2ad94cd18a23a6c0a1b1617a434f
         }
 
         public void Draw(SpriteBatch batch, GameWindow window)

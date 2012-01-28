@@ -30,7 +30,6 @@ namespace TugOfBaby
                 hellChannel = (_status/100);
                 heavenChannel = 0;
                 hellChannel *= -1;
-                Console.WriteLine("hellChannel = " + hellChannel);
             } else if(_status > 0){
                 heavenChannel = (_status/100);
                 hellChannel = 1-heavenChannel;
