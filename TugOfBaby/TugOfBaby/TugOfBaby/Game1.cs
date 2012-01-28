@@ -41,6 +41,8 @@ namespace TugOfBaby
         World _world = new World(new Vector2(0, 20));
 
         GameObject _baby;
+        GameObject _devil;
+        GameObject _angel;
 
         //Debug view
         bool _showDebug = false;
@@ -79,6 +81,8 @@ namespace TugOfBaby
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
             _baby = _gameObjectManager.GetBaby();
+            _devil = _gameObjectManager.GetDevil();
+            _angel = _gameObjectManager.GetAngel();
             
             base.Initialize();
         }
