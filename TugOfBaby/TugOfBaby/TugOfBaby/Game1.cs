@@ -86,6 +86,7 @@ namespace TugOfBaby
             _renderManager = new RenderManager(_gameObjectManager);
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
+          
             _angel = _gameObjectManager.GetAngel();
             _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
             
