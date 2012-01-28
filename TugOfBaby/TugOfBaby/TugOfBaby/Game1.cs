@@ -58,7 +58,7 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            _gameObjectManager = new GameObjectManager();
+            _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
 
             base.Initialize();
