@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameMenu.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

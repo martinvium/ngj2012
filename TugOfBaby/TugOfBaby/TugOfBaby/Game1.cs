@@ -26,6 +26,9 @@ namespace TugOfBaby
         public const int HEIGHT = 720;
         public const float METER_IN_PIXEL = 64f;
 
+        GameState _state;
+        GameMenu _menu;
+
         SpriteBatch spriteBatch;
 
         GraphicsDeviceManager _graphics;
@@ -73,6 +76,9 @@ namespace TugOfBaby
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            _state = GameState.Menu;
+            
+            _menu = new GameMenu();
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -125,6 +131,8 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            if(_state == GameState.Menu)
+
 
             spriteBatch.Begin();
             _renderManager.Draw(spriteBatch);
@@ -142,5 +150,10 @@ namespace TugOfBaby
 
             base.Draw(gameTime);
         }
+    }
+    public enum GameState
+    {
+        Menu,
+        Playing
     }
 }
