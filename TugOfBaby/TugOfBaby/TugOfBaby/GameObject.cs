@@ -14,6 +14,13 @@ namespace TugOfBaby
         Body _body;
         bool pickupable;
         Reward reward;
+        GameObject heldItem;
+
+        internal GameObject HeldItem
+        {
+            get { return heldItem; }
+            set { heldItem = value; }
+        }
 
         internal Reward Reward
         {

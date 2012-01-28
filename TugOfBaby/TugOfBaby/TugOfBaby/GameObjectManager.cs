@@ -15,6 +15,7 @@ namespace TugOfBaby
     {
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
+        
 
         public GameObjectManager(World world)
         {
@@ -85,12 +86,20 @@ namespace TugOfBaby
 
         private bool OnItemCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
-            if(fixtureB.Body.UserData is GameObject)
+            if (fixtureB.Body.UserData is GameObject)
+            {
                 if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
+                {
+                    (fixtureA.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
+                    Destroy((fixtureB.Body.UserData as GameObject));
+                }
+                else
                 {
                     (fixtureB.Body.UserData as GameObject).Reward.enable();
                     Destroy((fixtureB.Body.UserData as GameObject));
                 }
+            }
+            
             return true;
         }
 
