@@ -43,6 +43,7 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
+        Ragdoll _ragdoll;
 
         //Debug view
         bool _showDebug = false;
@@ -83,6 +84,7 @@ namespace TugOfBaby
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
             _angel = _gameObjectManager.GetAngel();
+            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
             
             base.Initialize();
         }
@@ -103,6 +105,8 @@ namespace TugOfBaby
             _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
+
+            _ragdoll.LoadContent(Content);
 
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
@@ -185,6 +189,7 @@ namespace TugOfBaby
             else
             {
                 _renderManager.Draw(spriteBatch);
+                _ragdoll.Draw(spriteBatch);
             }
            
             
