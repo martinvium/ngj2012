@@ -100,6 +100,10 @@ namespace TugOfBaby
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            if(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+            {
+               
+            } 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
             {
                 _showDebug = true;
