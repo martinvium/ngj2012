@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.DebugViews;
 using FarseerPhysics;
+using FarseerPhysics.Factories;
  
 
 namespace TugOfBaby
@@ -49,6 +50,15 @@ namespace TugOfBaby
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WIDTH;
             _graphics.PreferredBackBufferHeight = HEIGHT;
+
+            BodyFactory.CreateEdge(_world, new Vector2(0, 0) / METER_IN_PIXEL, new Vector2(0, WIDTH) / METER_IN_PIXEL);
+            //left
+            BodyFactory.CreateEdge(_world, new Vector2(0, 0) / METER_IN_PIXEL, new Vector2(WIDTH, 0) / METER_IN_PIXEL);
+            //right
+            BodyFactory.CreateEdge(_world, new Vector2(WIDTH, 0) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
+            //bottom
+            BodyFactory.CreateEdge(_world, new Vector2(0, HEIGHT) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
+
             Content.RootDirectory = "Content";
         }
 
@@ -78,7 +88,7 @@ namespace TugOfBaby
 
             _state = GameState.Menu;
             
-            _menu = new GameMenu();
+            _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -131,10 +141,11 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            if(_state == GameState.Menu)
-
-
             spriteBatch.Begin();
+            if (_state == GameState.Menu)
+                _menu.Draw(spriteBatch);
+
+           
             _renderManager.Draw(spriteBatch);
             spriteBatch.End();
 
