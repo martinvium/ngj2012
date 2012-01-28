@@ -173,6 +173,7 @@ namespace TugOfBaby
             else if (bar == -100)
                 up = true;
 
+            _renderManager.Draw(spriteBatch);
         
             theBackground.Draw(spriteBatch);
             if (_state == GameState.Menu)
