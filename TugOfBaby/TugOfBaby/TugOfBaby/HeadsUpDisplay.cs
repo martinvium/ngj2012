@@ -30,13 +30,13 @@ namespace TugOfBaby
         public void Draw(SpriteBatch batch, GameWindow window)
         {
             //Draw the negative space for the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 30, evilOMeter.Width, 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Blue);
+            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Blue);
 
             //Draw the current health level based on the current Health
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 30, (int)(evilOMeter.Width * ((double)_howEvil / 100)), 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Red);
+            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, (int)(evilOMeter.Width * ((double)_howEvil / 100)), 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Red);
 
             //Draw the box around the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 30, evilOMeter.Width, 44), new Rectangle(0, 0, evilOMeter.Width, 44), Color.White);
+            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 0, evilOMeter.Width, 44), Color.White);
 
             if (_heldObject != null)
             {

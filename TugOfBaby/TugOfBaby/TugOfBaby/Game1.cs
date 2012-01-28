@@ -102,6 +102,7 @@ namespace TugOfBaby
 
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
+          
             _angel = _gameObjectManager.GetAngel();
 
             DistanceJoint jLeftArm = new DistanceJoint(_devil.Body, _baby.Body,
