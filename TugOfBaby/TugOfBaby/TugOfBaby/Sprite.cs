@@ -11,11 +11,17 @@ namespace TugOfBaby
     {
         string _name = "";
         Texture2D _texture;
-        Vector2 _origin;
+        Vector2 _origin = new Vector2(0, 0);
 
         public Sprite(string name)
         {
             _name = name;
+        }
+
+        public Sprite(string name, Vector2 origin)
+        {
+            _name = name;
+            _origin = origin;
         }
 
         public Vector2 Origin
