@@ -173,7 +173,6 @@ namespace TugOfBaby
             else if (bar == -100)
                 up = true;
 
-            _renderManager.Draw(spriteBatch);
         
             theBackground.Draw(spriteBatch);
             if (_state == GameState.Menu)
@@ -186,8 +185,6 @@ namespace TugOfBaby
             }
            
             
-          
-
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
             Matrix projection = Matrix.CreateOrthographicOffCenter(0f, _graphics.GraphicsDevice.Viewport.Width / METER_IN_PIXEL,
