@@ -174,7 +174,7 @@
   <ItemGroup>
     <Compile Include="badpic.png">
       <Name>badpic</Name>
-	  <Importer>TextureImporter</Importer>
+      <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
     <Compile Include="Reaper.png">
@@ -261,6 +261,13 @@
     </Compile>
     <Compile Include="Animations\demon0001.png">
       <Name>demon0001</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Background2.png">
+      <Name>Background2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

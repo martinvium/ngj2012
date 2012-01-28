@@ -155,6 +155,7 @@ namespace TugOfBaby
                     if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
                     {
                         evil.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL -= 50;
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
                     {
@@ -164,6 +165,7 @@ namespace TugOfBaby
                             (player.Body.UserData as GameObject).HeldItem.Disposed = true;
                             (fixtureB.Body.UserData as GameObject).Disposed = true;
                             evil.Statistics.PointsCollected += 50;
+                            HeadsUpDisplay.HOW_EVIL -= 50;
                         }
                         
 
@@ -177,10 +179,12 @@ namespace TugOfBaby
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
                     {
                         good.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL += 50;
                     }
                     else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
                     {
                         good.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL += 50;
                     }
 
                     (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);

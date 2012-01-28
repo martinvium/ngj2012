@@ -39,6 +39,7 @@ namespace TugOfBaby
 
         GameMenu _menu;
         HeadsUpDisplay _hud;
+        StatScreen _statScreen;
 
         SpriteBatch spriteBatch;
 
@@ -196,11 +197,11 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
             {
-                _hud.UpdateEvilOMeter(1);
+                HeadsUpDisplay.HOW_EVIL += 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                _hud.UpdateEvilOMeter(-1);
+                HeadsUpDisplay.HOW_EVIL -= 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.L))
             {
@@ -208,7 +209,8 @@ namespace TugOfBaby
             }
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
-                _hud.PopItem();
+                _state = GameState.ShowStats;
+                
             }
             if (_state == GameState.Menu)
             {
@@ -246,12 +248,20 @@ namespace TugOfBaby
             {
                 _menu.Draw(spriteBatch);
             }
-            else
+            else if(_state == GameState.Playing)
             {
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
+            }
+            else if (_state == GameState.ShowStats)
+            {
+                if (_statScreen == null)
+                {
+                    _statScreen = new StatScreen(GraphicsDevice);
+                }
+                _statScreen.Draw(_devil, _angel, spriteBatch);
             }
 
             // TODO: Add your drawing code here

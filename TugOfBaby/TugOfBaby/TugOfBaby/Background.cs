@@ -60,7 +60,7 @@ namespace TugOfBaby
         {
             heavenBG = _contentManager.Load<Texture2D>("heavenBG");
             hellBG = _contentManager.Load<Texture2D>("hellBG");
-            nothingBG = _contentManager.Load<Texture2D>("background");
+            nothingBG = _contentManager.Load<Texture2D>("background2");
 
             //LOAD SOUND
             hellishSound = _contentManager.Load<SoundEffect>("cowbell");

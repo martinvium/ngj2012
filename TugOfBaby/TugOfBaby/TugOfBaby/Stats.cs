@@ -10,10 +10,10 @@ namespace TugOfBaby
         private static int _pointsCollected;
         private static int _itemsCollected;
         private static int _deedsDone;
-    
+        
         public Stats()         
         {
-            _pointsCollected = 0;
+            _pointsCollected = 1;
             _itemsCollected = 0;
             _deedsDone = 0;
         }

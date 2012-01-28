@@ -10,8 +10,8 @@ namespace TugOfBaby
     class StatScreen
     {
         GraphicsDevice _graphics;
-        Vector2 _devilPos = new Vector2(320, 200);
-        Vector2 _angelPos = new Vector2(640, 200);
+        Vector2 _angelPos = new Vector2(480, 200);
+        Vector2 _devilPos = new Vector2(800, 200);
 
         public StatScreen(GraphicsDevice graphics)
         {
