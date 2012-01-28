@@ -23,7 +23,7 @@ namespace TugOfBaby
 
         public GameObject GetBaby()
         {
-            return GetPlayer("baby");
+            return GetPlayer("Child/child_face");
         }
 
         public GameObject GetDevil()
@@ -43,6 +43,7 @@ namespace TugOfBaby
             player.Body = BodyFactory.CreateCircle(_world, .5f, 1f, new Vector2(5, 5), this);
             player.Body.BodyType = BodyType.Dynamic;
             player.Body.Mass = 5;
+            player.Body.LinearDamping = 3.5f;
             player.Body.OnCollision += OnCollision;
             return player;
         }

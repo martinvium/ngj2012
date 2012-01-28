@@ -48,42 +48,42 @@ namespace TugOfBaby
         private void CreateBody(World world, Vector2 position)
         {
             //Head
-            _head = BodyFactory.CreateCircle(world, 0.9f, 10f);
+            _head = BodyFactory.CreateCircle(world, 0.5f, 10f);
             _head.BodyType = BodyType.Dynamic;
             _head.AngularDamping = LimbAngularDamping;
             _head.Mass = 2f;
             _head.Position = position;
 
             //Body
-            _body = BodyFactory.CreateRoundedRectangle(world, 2f, 4f, 0.5f, 0.7f, 2, 10f);
+            _body = BodyFactory.CreateRoundedRectangle(world, .5f, .5f, 0.1f, 0.1f, 2, 10f);
             _body.BodyType = BodyType.Dynamic;
             _body.Mass = 2f;
-            _body.Position = position + new Vector2(0f, 3f);
+            _body.Position = position + new Vector2(0f, .8f);
 
             //Left Arm
-            _lowerLeftArm = BodyFactory.CreateCapsule(world, 1f, 0.45f, ArmDensity);
+            _lowerLeftArm = BodyFactory.CreateCapsule(world, .5f, 0.1f, ArmDensity);
             _lowerLeftArm.BodyType = BodyType.Dynamic;
             _lowerLeftArm.AngularDamping = LimbAngularDamping;
             _lowerLeftArm.Mass = 2f;
             _lowerLeftArm.Rotation = 1.4f;
-            _lowerLeftArm.Position = position + new Vector2(-4f, 2.2f);
+            _lowerLeftArm.Position = position + new Vector2(-1f, .5f);
 
-            _upperLeftArm = BodyFactory.CreateCapsule(world, 1f, 0.45f, ArmDensity);
+            _upperLeftArm = BodyFactory.CreateCapsule(world, .5f, 0.1f, ArmDensity);
             _upperLeftArm.BodyType = BodyType.Dynamic;
             _upperLeftArm.AngularDamping = LimbAngularDamping;
             _upperLeftArm.Mass = 2f;
             _upperLeftArm.Rotation = 1.4f;
-            _upperLeftArm.Position = position + new Vector2(-2f, 1.8f);
+            _upperLeftArm.Position = position + new Vector2(-1f, 0.9f);
 
             //Right Arm
-            _lowerRightArm = BodyFactory.CreateCapsule(world, 1f, 0.45f, ArmDensity);
+            _lowerRightArm = BodyFactory.CreateCapsule(world, .5f, 0.1f, ArmDensity);
             _lowerRightArm.BodyType = BodyType.Dynamic;
             _lowerRightArm.AngularDamping = LimbAngularDamping;
             _lowerRightArm.Mass = 2f;
             _lowerRightArm.Rotation = -1.4f;
-            _lowerRightArm.Position = position + new Vector2(4f, 2.2f);
+            _lowerRightArm.Position = position + new Vector2(1f, .5f);
 
-            _upperRightArm = BodyFactory.CreateCapsule(world, 1f, 0.45f, ArmDensity);
+            _upperRightArm = BodyFactory.CreateCapsule(world, .5f, 0.1f, ArmDensity);
             _upperRightArm.BodyType = BodyType.Dynamic;
             _upperRightArm.AngularDamping = LimbAngularDamping;
             _upperRightArm.Mass = 2f;
@@ -91,30 +91,30 @@ namespace TugOfBaby
             _upperRightArm.Position = position + new Vector2(2f, 1.8f);
 
             //Left Leg
-            _lowerLeftLeg = BodyFactory.CreateCapsule(world, 1f, 0.5f, LegDensity);
+            _lowerLeftLeg = BodyFactory.CreateCapsule(world, .5f, 0.1f, LegDensity);
             _lowerLeftLeg.BodyType = BodyType.Dynamic;
             _lowerLeftLeg.AngularDamping = LimbAngularDamping;
             _lowerLeftLeg.Mass = 2f;
-            _lowerLeftLeg.Position = position + new Vector2(-0.6f, 8f);
+            _lowerLeftLeg.Position = position + new Vector2(-0.3f, 4f);
 
-            _upperLeftLeg = BodyFactory.CreateCapsule(world, 1f, 0.5f, LegDensity);
+            _upperLeftLeg = BodyFactory.CreateCapsule(world, .5f, 0.1f, LegDensity);
             _upperLeftLeg.BodyType = BodyType.Dynamic;
             _upperLeftLeg.AngularDamping = LimbAngularDamping;
             _upperLeftLeg.Mass = 2f;
-            _upperLeftLeg.Position = position + new Vector2(-0.6f, 6f);
+            _upperLeftLeg.Position = position + new Vector2(-0.3f, 3f);
 
             //Right Leg
-            _lowerRightLeg = BodyFactory.CreateCapsule(world, 1f, 0.5f, LegDensity);
+            _lowerRightLeg = BodyFactory.CreateCapsule(world, .5f, 0.1f, LegDensity);
             _lowerRightLeg.BodyType = BodyType.Dynamic;
             _lowerRightLeg.AngularDamping = LimbAngularDamping;
             _lowerRightLeg.Mass = 2f;
-            _lowerRightLeg.Position = position + new Vector2(0.6f, 8f);
+            _lowerRightLeg.Position = position + new Vector2(0.3f, 4f);
 
-            _upperRightLeg = BodyFactory.CreateCapsule(world, 1f, 0.5f, LegDensity);
+            _upperRightLeg = BodyFactory.CreateCapsule(world, .5f, 0.1f, LegDensity);
             _upperRightLeg.BodyType = BodyType.Dynamic;
             _upperRightLeg.AngularDamping = LimbAngularDamping;
             _upperRightLeg.Mass = 2f;
-            _upperRightLeg.Position = position + new Vector2(0.6f, 6f);
+            _upperRightLeg.Position = position + new Vector2(0.3f, 3f);
         }
 
         private void CreateJoints(World world)
@@ -124,8 +124,8 @@ namespace TugOfBaby
 
             //head -> body
             DistanceJoint jHeadBody = new DistanceJoint(_head, _body,
-                                                        new Vector2(0f, 1f),
-                                                        new Vector2(0f, -2f));
+                                                        new Vector2(0f, .5f),
+                                                        new Vector2(0f, -.2f));
             jHeadBody.CollideConnected = true;
             jHeadBody.DampingRatio = dampingRatio;
             jHeadBody.Frequency = frequency;
@@ -164,8 +164,8 @@ namespace TugOfBaby
 
             //upperRightArm -> body
             DistanceJoint jRightArmBody = new DistanceJoint(_upperRightArm, _body,
-                                                            new Vector2(0f, -1f),
-                                                            new Vector2(1f, -1.5f));
+                                                            new Vector2(.2f, -.2f),
+                                                            new Vector2(.2f, -.2f));
 
             jRightArmBody.CollideConnected = true;
             jRightArmBody.DampingRatio = dampingRatio;
@@ -185,8 +185,8 @@ namespace TugOfBaby
 
             //upperLeftLeg -> body
             DistanceJoint jLeftLegBody = new DistanceJoint(_upperLeftLeg, _body,
-                                                           new Vector2(0f, -1.1f),
-                                                           new Vector2(-0.8f, 1.9f));
+                                                           new Vector2(-.2f, -.2f),
+                                                           new Vector2(-.2f, .2f));
             jLeftLegBody.CollideConnected = true;
             jLeftLegBody.DampingRatio = dampingRatio;
             jLeftLegBody.Frequency = frequency;
@@ -216,15 +216,19 @@ namespace TugOfBaby
 
         public void LoadContent(ContentManager content)
         {
-            Sprite sprite = new Sprite("baby");
-            _face = sprite;
-            _torso = sprite;
-            _upperArm = sprite;
-            _lowerArm = sprite;
-            _upperLeg = sprite;
-            _lowerLeg = sprite;
+            _face = new Sprite("Child/child_face");
+            _torso = new Sprite("Child/child_body");
+            _upperArm = new Sprite("Child/child_leftarm");
+            _lowerArm = new Sprite("Child/child_lefthand");
+            _upperLeg = new Sprite("Child/child_feet");
+            _lowerLeg = new Sprite("Child/child_feet");
 
-            sprite.Texture = content.Load<Texture2D>(sprite.Name);
+            _face.Texture = content.Load<Texture2D>(_face.Name);
+            _torso.Texture = content.Load<Texture2D>(_torso.Name);
+            _upperArm.Texture = content.Load<Texture2D>(_upperArm.Name);
+            _lowerArm.Texture = content.Load<Texture2D>(_lowerArm.Name);
+            _upperLeg.Texture = content.Load<Texture2D>(_upperLeg.Name);
+            _lowerLeg.Texture = content.Load<Texture2D>(_lowerLeg.Name);
 
             /*AssetCreator creator = _screen.ScreenManager.Assets;
             _face = new Sprite(creator.CircleTexture(0.9f, MaterialType.Squares, Color.Gray, 1f));

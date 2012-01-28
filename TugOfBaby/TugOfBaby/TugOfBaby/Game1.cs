@@ -12,6 +12,7 @@ using FarseerPhysics.Dynamics;
 using FarseerPhysics.DebugViews;
 using FarseerPhysics;
 using FarseerPhysics.Factories;
+using FarseerPhysics.Dynamics.Joints;
  
 
 namespace TugOfBaby
@@ -41,7 +42,7 @@ namespace TugOfBaby
         GraphicsDeviceManager _graphics;
         Vector2 _screenCenter;
 
-        World _world = new World(new Vector2(0, 20));
+        World _world = new World(new Vector2(0, 0));
 
         GameObject _baby;
         GameObject _devil;
@@ -54,6 +55,7 @@ namespace TugOfBaby
 
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
+        Controls _controls;
 
 
         public Game1()
@@ -84,13 +86,44 @@ namespace TugOfBaby
             // TODO: Add your initialization logic here
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
+            CreateBaby();
+            _controls = new Controls(this);
+            //_controls.Angel = _angel;
+            _controls.Baby = _baby;
+            //_controls.Devil = _devil;
+
+            base.Initialize();
+        }
+
+        private void CreateBaby()
+        {
+            const float dampingRatio = 1f;
+            const float frequency = 25f;
+
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
           
             _angel = _gameObjectManager.GetAngel();
-            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
-            
-            base.Initialize();
+
+            DistanceJoint jLeftArm = new DistanceJoint(_devil.Body, _baby.Body,
+                                                       new Vector2(0f, 0f),
+                                                       new Vector2(0f, 0f));
+            jLeftArm.CollideConnected = true;
+            jLeftArm.DampingRatio = dampingRatio;
+            jLeftArm.Frequency = frequency;
+            jLeftArm.Length = 2f;
+            _world.AddJoint(jLeftArm);
+
+            DistanceJoint jRightArm = new DistanceJoint(_angel.Body, _baby.Body,
+                                                       new Vector2(0f, 0f),
+                                                       new Vector2(0f, 0f));
+            jRightArm.CollideConnected = true;
+            jRightArm.DampingRatio = dampingRatio;
+            jRightArm.Frequency = frequency;
+            jRightArm.Length = 2f;
+            _world.AddJoint(jRightArm);
+
+            //_ragdoll = new Ragdoll(_world, new Vector2(5, 5));
         }
 
         /// <summary>
@@ -111,7 +144,7 @@ namespace TugOfBaby
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
-            _ragdoll.LoadContent(Content);
+            //_ragdoll.LoadContent(Content);
 
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
@@ -137,11 +170,12 @@ namespace TugOfBaby
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Exit();
+            _controls.Update();
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
+            
+            
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
@@ -210,7 +244,6 @@ namespace TugOfBaby
             else
             {
                 _renderManager.Draw(spriteBatch);
-                _ragdoll.Draw(spriteBatch);
                 _hud.Draw(spriteBatch, this.Window);
             }
 
@@ -223,11 +256,13 @@ namespace TugOfBaby
                                                              1f);
             Matrix view = Matrix.CreateTranslation(new Vector3((Vector2.Zero / METER_IN_PIXEL) - (_screenCenter / METER_IN_PIXEL), 0f)) * Matrix.CreateTranslation(new Vector3((_screenCenter / METER_IN_PIXEL), 0f));
 
+            spriteBatch.End();
+
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
             
           
-            spriteBatch.End();
+            
             base.Draw(gameTime);
 
         }
