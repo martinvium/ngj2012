@@ -10,16 +10,24 @@ namespace TugOfBaby
 {
     class HeadsUpDisplay
     {
-        List<GameObject> list = new List<GameObject>();
-        Texture2D evilOMeter;
+        Texture2D _evilOMeter;
+        Texture2D _goodOMeter;
+        Texture2D _noOMeter;
+        Texture2D _god;
+        Texture2D _evil;
+
         int _howEvil;
         GameObject _heldObject;
 
 
         public HeadsUpDisplay(ContentManager content)
         {
-            evilOMeter = content.Load<Texture2D>("EvilOMeter");
-            _howEvil = 50;
+            _noOMeter = content.Load<Texture2D>("nobar");
+            _evilOMeter = content.Load<Texture2D>("badbar");
+            _goodOMeter = content.Load<Texture2D>("goodbar");
+            _god = content.Load<Texture2D>("godpic");
+            _evil = content.Load<Texture2D>("badpic");
+            _howEvil = 309/2;
         }
 
         public void Update()
@@ -28,15 +36,10 @@ namespace TugOfBaby
         }
 
         public void Draw(SpriteBatch batch, GameWindow window)
-        {
-            //Draw the negative space for the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Blue);
-
-            //Draw the current health level based on the current Health
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, (int)(evilOMeter.Width * ((double)_howEvil / 100)), 44), new Rectangle(0, 45, evilOMeter.Width, 44), Color.Red);
-
-            //Draw the box around the health bar
-            batch.Draw(evilOMeter, new Rectangle(window.ClientBounds.Width / 2 - evilOMeter.Width / 2, 0, evilOMeter.Width, 44), new Rectangle(0, 0, evilOMeter.Width, 44), Color.White);
+        {                   
+            batch.Draw(_evilOMeter, new Vector2(window.ClientBounds.Width / 2, 20), Color.White);
+            batch.Draw(_goodOMeter, new Vector2(window.ClientBounds.Width / 2, 20), new Rectangle(0, 0, 93 + _howEvil, _evilOMeter.Height), Color.White);
+          
 
             if (_heldObject != null)
             {
@@ -47,7 +50,7 @@ namespace TugOfBaby
         public void UpdateEvilOMeter(int value) 
         {
             _howEvil += value;
-            _howEvil = (int)MathHelper.Clamp(_howEvil, 0, 100);
+            _howEvil = (int)MathHelper.Clamp(_howEvil, 0, 309);
         }
         public void PopItem() 
         {
