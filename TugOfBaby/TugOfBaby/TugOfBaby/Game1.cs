@@ -41,6 +41,9 @@ namespace TugOfBaby
         World _world = new World(new Vector2(0, 20));
 
         GameObject _baby;
+        GameObject _devil;
+        GameObject _angel;
+        Ragdoll _ragdoll;
 
         //Debug view
         bool _showDebug = false;
@@ -79,6 +82,9 @@ namespace TugOfBaby
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
             _baby = _gameObjectManager.GetBaby();
+            _devil = _gameObjectManager.GetDevil();
+            _angel = _gameObjectManager.GetAngel();
+            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
             
             base.Initialize();
         }
@@ -99,6 +105,8 @@ namespace TugOfBaby
             _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
+
+            _ragdoll.LoadContent(Content);
 
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
@@ -127,6 +135,13 @@ namespace TugOfBaby
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                _state = GameState.Playing;
+
+            if(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+            {
+               
+            } 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
             {
                 _showDebug = true;
@@ -139,7 +154,7 @@ namespace TugOfBaby
 
             if (_state == GameState.Menu)
             {
-
+                _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
 
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
@@ -155,13 +170,29 @@ namespace TugOfBaby
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            if (up == true)
+                theBackground.Update(bar++);
+            if (!up)
+                theBackground.Update(bar--);
+
+            if (bar == 100)
+                up = false;
+            else if (bar == -100)
+                up = true;
+
+        
+            theBackground.Draw(spriteBatch);
             if (_state == GameState.Menu)
+            {
                 _menu.Draw(spriteBatch);
-
+            }
+            else
+            {
+                _renderManager.Draw(spriteBatch);
+                _ragdoll.Draw(spriteBatch);
+            }
            
-            _renderManager.Draw(spriteBatch);
-            spriteBatch.End();
-
+            
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
             Matrix projection = Matrix.CreateOrthographicOffCenter(0f, _graphics.GraphicsDevice.Viewport.Width / METER_IN_PIXEL,
@@ -185,6 +216,7 @@ namespace TugOfBaby
             {
                 up = true;
             }
+            
 
             spriteBatch.Begin();
             theBackground.Draw(spriteBatch);
