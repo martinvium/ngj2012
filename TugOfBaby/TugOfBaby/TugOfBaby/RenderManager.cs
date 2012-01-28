@@ -23,7 +23,7 @@ namespace TugOfBaby
             {
                 if(gameObject.Sprite != null) 
                 {
-                    content.Load<Texture2D>(gameObject.Sprite.Name);
+                    gameObject.Sprite.Texture = content.Load<Texture2D>(gameObject.Sprite.Name);
                 }
             }
         }

@@ -30,7 +30,9 @@ namespace TugOfBaby
 
         private GameObject GetBase()
         {
-            return new GameObject();
+            GameObject gameObject = new GameObject();
+            _gameObjects.Add(gameObject);
+            return gameObject;
         }
 
         public List<GameObject> GetAll()

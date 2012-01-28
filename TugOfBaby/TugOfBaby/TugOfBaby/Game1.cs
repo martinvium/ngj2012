@@ -89,6 +89,8 @@ namespace TugOfBaby
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            _renderManager.LoadContent(Content);
+
             _state = GameState.Menu;
             
             _menu = new GameMenu(Content);
