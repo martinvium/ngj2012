@@ -13,6 +13,8 @@ namespace TugOfBaby
         const float VELOCITY = 3.0f;
 
         GameObject gameObject;
+        GameObject devilObject;
+        GameObject angelObject;
         Game1 game;
 
         
@@ -24,8 +26,8 @@ namespace TugOfBaby
 
         public GameObject Angel
         {
-            get { return gameObject; }
-            set { gameObject = value; }
+            get { return angelObject; }
+            set { angelObject = value; }
         }
 
         public GameObject Baby
@@ -37,7 +39,7 @@ namespace TugOfBaby
         public GameObject Devil
         {
             get { return gameObject; }
-            set { gameObject = value; }
+            set { devilObject = value; }
         }
 
         public void Update()
@@ -48,65 +50,44 @@ namespace TugOfBaby
 
             if(padState.ThumbSticks.Left.X > 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
+                angelObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
             }
 
             if (padState.ThumbSticks.Left.X < 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
+                angelObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
             }
 
             if (padState.ThumbSticks.Left.Y > 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
+                angelObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
             }
 
             if (padState.ThumbSticks.Left.Y < 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY)); ;
+                angelObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY)); ;
             }
 
             if (padState.ThumbSticks.Right.X > 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
+                devilObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
             }
 
             if (padState.ThumbSticks.Right.X < 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
+                devilObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
             }
 
             if (padState.ThumbSticks.Right.Y > 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
+                devilObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
             }
 
             if (padState.ThumbSticks.Right.Y < 0)
             {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
+                devilObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
             }
 
-            /*
-            if (padState.ThumbSticks.Left.X == 0)
-            {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
-            }
-
-            if (padState.ThumbSticks.Left.Y == 0)
-            {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
-            }
-
-            if (padState.ThumbSticks.Right.X == 0)
-            {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
-            }
-
-            if (padState.ThumbSticks.Right.Y == 0)
-            {
-                gameObject.Body.ApplyLinearImpulse(new Vector2(0, 0));
-            }
-             */
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 game.Exit();
