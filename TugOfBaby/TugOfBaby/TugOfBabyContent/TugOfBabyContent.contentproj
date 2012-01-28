@@ -42,6 +42,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Courier New.spritefont">
+      <Name>Courier New</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="baby.png">
+      <Name>baby</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="heavenBG.png">
       <Name>heavenBG</Name>
       <Importer>TextureImporter</Importer>
@@ -55,6 +67,10 @@
     <Compile Include="nothing.png">
       <Name>nothingBG</Name>
       <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+
+  </ItemGroup>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>

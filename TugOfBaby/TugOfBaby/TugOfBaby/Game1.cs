@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.DebugViews;
 using FarseerPhysics;
+using FarseerPhysics.Factories;
  
 
 namespace TugOfBaby
@@ -29,6 +30,9 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        GameState _state;
+        GameMenu _menu;
+
         SpriteBatch spriteBatch;
 
         GraphicsDeviceManager _graphics;
@@ -36,11 +40,14 @@ namespace TugOfBaby
 
         World _world = new World(new Vector2(0, 20));
 
+        GameObject _baby;
+
         //Debug view
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
-        
+        GameObjectManager _gameObjectManager;
+        RenderManager _renderManager;
 
 
         public Game1()
@@ -48,6 +55,15 @@ namespace TugOfBaby
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = WIDTH;
             _graphics.PreferredBackBufferHeight = HEIGHT;
+
+            BodyFactory.CreateEdge(_world, new Vector2(0, 0) / METER_IN_PIXEL, new Vector2(0, WIDTH) / METER_IN_PIXEL);
+            //left
+            BodyFactory.CreateEdge(_world, new Vector2(0, 0) / METER_IN_PIXEL, new Vector2(WIDTH, 0) / METER_IN_PIXEL);
+            //right
+            BodyFactory.CreateEdge(_world, new Vector2(WIDTH, 0) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
+            //bottom
+            BodyFactory.CreateEdge(_world, new Vector2(0, HEIGHT) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
+
             Content.RootDirectory = "Content";
         }
 
@@ -60,6 +76,9 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            _gameObjectManager = new GameObjectManager(_world);
+            _renderManager = new RenderManager(_gameObjectManager);
+            _baby = _gameObjectManager.GetBaby();
             
             base.Initialize();
         }
@@ -74,6 +93,10 @@ namespace TugOfBaby
             spriteBatch = new SpriteBatch(GraphicsDevice);
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
+            _renderManager.LoadContent(Content);
+            _state = GameState.Menu;
+            
+            _menu = new GameMenu(Content);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -112,9 +135,14 @@ namespace TugOfBaby
             {
                 _showDebug = false;
             }
-             
 
-            // TODO: Add your update logic here
+
+            if (_state == GameState.Menu)
+            {
+
+            }
+
+            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
             base.Update(gameTime);
         }
@@ -126,6 +154,13 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            if (_state == GameState.Menu)
+                _menu.Draw(spriteBatch);
+
+           
+            _renderManager.Draw(spriteBatch);
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
@@ -152,5 +187,10 @@ namespace TugOfBaby
             base.Draw(gameTime);
             
         }
+    }
+    public enum GameState
+    {
+        Menu,
+        Playing
     }
 }
