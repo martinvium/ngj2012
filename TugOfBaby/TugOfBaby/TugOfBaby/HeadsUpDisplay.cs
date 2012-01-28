@@ -24,7 +24,7 @@ namespace TugOfBaby
 
         public void Update()
         {
-
+            
         }
 
         public void Draw(SpriteBatch batch, GameWindow window)

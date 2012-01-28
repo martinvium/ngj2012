@@ -92,6 +92,9 @@ namespace TugOfBaby
             _controls.Baby = _baby;
             _controls.Devil = _devil;
 
+            _gameObjectManager.GetItem("knife");
+            _gameObjectManager.GetItem("bunny");
+
             base.Initialize();
         }
 
@@ -171,6 +174,12 @@ namespace TugOfBaby
         {
             // Allows the game to exit
             _controls.Update();
+
+            if (_baby.HeldItem != null)
+            {
+                
+                _hud.PushItem(_baby.HeldItem);
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
