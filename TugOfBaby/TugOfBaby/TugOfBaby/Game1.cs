@@ -219,6 +219,7 @@ namespace TugOfBaby
             }
 
             _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+            _hud.Update(_devil, _angel);
             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
             base.Update(gameTime);
