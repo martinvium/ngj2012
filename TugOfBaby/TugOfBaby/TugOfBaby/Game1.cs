@@ -34,6 +34,7 @@ namespace TugOfBaby
 
 
         GameMenu _menu;
+        HeadsUpDisplay _hud;
 
         SpriteBatch spriteBatch;
 
@@ -103,6 +104,7 @@ namespace TugOfBaby
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content);
             _state = GameState.Menu;
+            _hud = new HeadsUpDisplay(Content);
             
             _menu = new GameMenu(Content, this);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
@@ -139,8 +141,6 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
-
-            
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
@@ -156,7 +156,22 @@ namespace TugOfBaby
                 _showDebug = false;
             }
 
-
+            if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
+            {
+                _hud.UpdateEvilOMeter(1);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                _hud.UpdateEvilOMeter(-1);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                _hud.PushItem(_devil);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            {
+                _hud.PopItem();
+            }
             if (_state == GameState.Menu)
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
@@ -195,8 +210,10 @@ namespace TugOfBaby
             {
                 _renderManager.Draw(spriteBatch);
                 _ragdoll.Draw(spriteBatch);
+                _hud.Draw(spriteBatch, this.Window);
             }
-           
+
+            
             
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
