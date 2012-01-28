@@ -13,6 +13,8 @@ namespace TugOfBaby
         Texture2D _texture;
         Vector2 _origin = new Vector2(0, 0);
         Animation _animation;
+        bool flipped = false;
+
 
    
 
@@ -58,6 +60,11 @@ namespace TugOfBaby
         {
             get { return _animation; }
             set { _animation = value; }
+        }
+        public bool Flipped
+        {
+            get { return flipped; }
+            set { flipped = value; }
         }
     }
 }

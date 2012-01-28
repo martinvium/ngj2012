@@ -68,6 +68,13 @@ namespace TugOfBaby
             angel.Body = getCircle(.3f, angel);
             return angel;
         }
+        public GameObject GetFemaleBunny()
+        {
+            GameObject bunny = GetBase();
+            bunny.Sprite = _renderManager.GetSprite(RenderManager.Texture.BUNNY);
+            bunny.Body = getCircle(.3f, bunny);
+            return bunny;
+        }
 
  private Body getCircle(float radius, GameObject _gameobject)
         {
