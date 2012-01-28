@@ -12,6 +12,13 @@ namespace TugOfBaby
         string _name = "";
         Texture2D _texture;
         Vector2 _origin = new Vector2(0, 0);
+        Animation _animation;
+
+        internal Animation Animation
+        {
+            get { return _animation; }
+            set { _animation = value; }
+        }
 
         public Sprite(string name)
         {

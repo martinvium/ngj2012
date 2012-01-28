@@ -14,6 +14,7 @@ namespace TugOfBaby
         Body _body;
         bool pickupable;
         Reward reward;
+        
 
         internal Reward Reward
         {
