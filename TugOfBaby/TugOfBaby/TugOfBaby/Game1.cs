@@ -42,7 +42,7 @@ namespace TugOfBaby
         GraphicsDeviceManager _graphics;
         Vector2 _screenCenter;
 
-        World _world = new World(new Vector2(0, 20));
+        World _world = new World(new Vector2(0, 0));
 
         GameObject _baby;
         GameObject _devil;
@@ -55,6 +55,7 @@ namespace TugOfBaby
 
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
+        Controls _controls;
 
 
         public Game1()
@@ -86,7 +87,11 @@ namespace TugOfBaby
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
             CreateBaby();
-            
+            _controls = new Controls(this);
+            //_controls.Angel = _angel;
+            _controls.Baby = _baby;
+            //_controls.Devil = _devil;
+
             base.Initialize();
         }
 
@@ -164,11 +169,12 @@ namespace TugOfBaby
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Exit();
+            _controls.Update();
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
+            
+            
             
             
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)

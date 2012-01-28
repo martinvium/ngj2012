@@ -51,6 +51,10 @@ namespace TugOfBaby
             body.BodyType = BodyType.Dynamic;
             body.Mass = 5;
             body.OnCollision += OnCollision;
+            body.BodyType = BodyType.Dynamic;
+            body.Mass = 5;
+            body.LinearDamping = 3.5f;
+            body.OnCollision += OnCollision;
             return body;
         }
 
