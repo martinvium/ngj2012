@@ -218,7 +218,7 @@ namespace TugOfBaby
             }
             
 
-            spriteBatch.Begin();
+            
             theBackground.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
