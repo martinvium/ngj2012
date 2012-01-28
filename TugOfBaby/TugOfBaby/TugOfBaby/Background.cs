@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using System;
 
 namespace TugOfBaby
 {
@@ -15,25 +16,34 @@ namespace TugOfBaby
         int transHeaven = 0, transHell = 0;
         Vector2 position = Vector2.Zero;
 
-        void changeTransparencies(int _input)
-        {
-            
-        }
-
         public void Update(float _status)
         {
-            if (_status < 0)
-            {
+            if (hellishSoundInstance.State == SoundState.Stopped)
+                hellishSoundInstance.Play();
+            if (heavenlySoundInstance.State == SoundState.Stopped)
+                heavenlySoundInstance.Play();
 
+            float hellChannel = 0;
+            float heavenChannel = 0;
+
+            if(_status <= 0){
+                hellChannel = (_status/100);
+                heavenChannel = 0;
+                hellChannel *= -1;
+                Console.WriteLine("hellChannel = " + hellChannel);
+            } else if(_status > 0){
+                heavenChannel = (_status/100);
+                hellChannel = 1-heavenChannel;
+                hellChannel = 0;
             }
 
-            hellishSoundInstance.Play();
+            heavenlySoundInstance.Volume = heavenChannel;
+            hellishSoundInstance.Volume = hellChannel;
             
-            //heavenlySoundInstance.Volume = _status / 100.0f;
+//            if(hellChannel >= -0.5 && hellChannel >= -0.4)
+//                Console.WriteLine("HEAVEN IS: " + heavenChannel + " HELL IS: " + hellChannel);
 
             _status *= 2.55f;
-
-
 
             if (_status < 0)
             {
@@ -54,10 +64,15 @@ namespace TugOfBaby
             nothingBG = _contentManager.Load<Texture2D>("nothingBG");
 
             //LOAD SOUND
-            hellishSound = _contentManager.Load<SoundEffect>("ak-47");
-            //heavenlySound = _contentManager.Load<SoundEffect>("sound...");
+            hellishSound = _contentManager.Load<SoundEffect>("cowbell");
+            heavenlySound = _contentManager.Load<SoundEffect>("synth_beep_2");
             hellishSoundInstance = hellishSound.CreateInstance();
-            //heavenlySoundInstance = hellishSound.CreateInstance();
+            heavenlySoundInstance = heavenlySound.CreateInstance();
+            heavenlySoundInstance.Pan = -1.0f;
+            hellishSoundInstance.Pan = 1.0f;
+
+            heavenlySoundInstance.IsLooped = true;
+            hellishSoundInstance.IsLooped = true;
         }
 
         public void Draw(SpriteBatch _spriteBatch)
