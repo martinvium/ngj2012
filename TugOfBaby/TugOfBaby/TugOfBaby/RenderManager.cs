@@ -19,6 +19,7 @@ namespace TugOfBaby
             KNIFE,
             DRUGS,
             VEGETABLE,
+            REAPER,
             BIBLE
         }
 
@@ -61,6 +62,7 @@ namespace TugOfBaby
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
             _sprites.Add(Texture.DEVIL, new Sprite(content.Load<Texture2D>("devil"), new Vector2(-18, -18)));
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
+            _sprites.Add(Texture.REAPER, new Sprite(content.Load<Texture2D>("Reaper"), new Vector2(-18, -18)));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
