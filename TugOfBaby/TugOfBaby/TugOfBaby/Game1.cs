@@ -88,9 +88,9 @@ namespace TugOfBaby
             _renderManager = new RenderManager(_gameObjectManager);
             CreateBaby();
             _controls = new Controls(this);
-            //_controls.Angel = _angel;
+            _controls.Angel = _angel;
             _controls.Baby = _baby;
-            //_controls.Devil = _devil;
+            _controls.Devil = _devil;
 
             base.Initialize();
         }
