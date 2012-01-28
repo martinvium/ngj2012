@@ -31,6 +31,8 @@ namespace TugOfBaby
         int bar = 0;
 
         GameState _state;
+
+
         GameMenu _menu;
 
         SpriteBatch spriteBatch;
@@ -38,9 +40,12 @@ namespace TugOfBaby
         GraphicsDeviceManager _graphics;
         Vector2 _screenCenter;
 
-        World _world = new World(new Vector2(0, 20));
+        World _world = new World(new Vector2(0, 0));
 
         GameObject _baby;
+        GameObject _devil;
+        GameObject _angel;
+        Ragdoll _ragdoll;
 
         //Debug view
         bool _showDebug = false;
@@ -48,6 +53,7 @@ namespace TugOfBaby
 
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
+        Controls _controls;
 
 
         public Game1()
@@ -79,6 +85,18 @@ namespace TugOfBaby
             _gameObjectManager = new GameObjectManager(_world);
             _renderManager = new RenderManager(_gameObjectManager);
             _baby = _gameObjectManager.GetBaby();
+            _devil = _gameObjectManager.GetDevil();
+            _angel = _gameObjectManager.GetAngel();
+<<<<<<< HEAD
+
+            _controls = new Controls(this);
+            //_controls.Angel = _angel;
+            _controls.Baby = _baby;
+            //_controls.Devil = _devil;
+            
+=======
+            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
+>>>>>>> 63df86d5c2e443da24df502315b9bb65b3cf96a4
             
             base.Initialize();
         }
@@ -94,10 +112,13 @@ namespace TugOfBaby
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content);
+            _state = GameState.Menu;
             
-            _menu = new GameMenu(Content);
+            _menu = new GameMenu(Content, this);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
+
+            _ragdoll.LoadContent(Content);
 
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
@@ -123,9 +144,22 @@ namespace TugOfBaby
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Exit();
+            _controls.Update();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
+                _state = GameState.Playing;
+
+<<<<<<< HEAD
+
+=======
+            
+            
+            
+            if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
+            {
+                _state = GameState.Menu;
+            } 
+>>>>>>> 63df86d5c2e443da24df502315b9bb65b3cf96a4
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
             {
                 _showDebug = true;
@@ -154,6 +188,18 @@ namespace TugOfBaby
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            if (up == true)
+                theBackground.Update(bar++);
+            if (!up)
+                theBackground.Update(bar--);
+
+            if (bar == 100)
+                up = false;
+            else if (bar == -100)
+                up = true;
+
+        
+            theBackground.Draw(spriteBatch);
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
@@ -161,11 +207,10 @@ namespace TugOfBaby
             else
             {
                 _renderManager.Draw(spriteBatch);
+                _ragdoll.Draw(spriteBatch);
             }
            
             
-            spriteBatch.End();
-
             // TODO: Add your drawing code here
             // calculate the projection and view adjustments for the debug view
             Matrix projection = Matrix.CreateOrthographicOffCenter(0f, _graphics.GraphicsDevice.Viewport.Width / METER_IN_PIXEL,
@@ -175,22 +220,19 @@ namespace TugOfBaby
 
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
-            if(up == true)
-                theBackground.Update(bar++);
-            if(!up)
-                theBackground.Update(bar--);
-
-            if (bar == 100)
-                up = false;
-            else if(bar == -100)
-                up = true;
-
-            spriteBatch.Begin();
-            theBackground.Draw(spriteBatch);
+            
+          
             spriteBatch.End();
             base.Draw(gameTime);
-            
+
         }
+        #region Properties
+        public GameState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
+        #endregion
     }
     public enum GameState
     {

@@ -14,45 +14,93 @@ namespace TugOfBaby
     {
         private const int MAX_MENU_ITEMS = 3;
         int _currentSelection;
-        Timer _selectionTimer;
-        bool _canChangeSelection = true;
         GamePadState _oldState;
         bool _released = true;
+        Texture2D _title;
+        Vector2 _titlePosition;
+        Texture2D _selection;
+        float _selectionOffset = 50f;
+        Vector2 _selectionPosition;
+        Game1 _game;
   
         SpriteFont _font;
-        public GameMenu(ContentManager content)
+        public GameMenu(ContentManager content, Game1 game)
         {
-            _font = content.Load<SpriteFont>("Courier New");               
+            _font = content.Load<SpriteFont>("Courier New");
+            _title = content.Load<Texture2D>("title");
+            _titlePosition = new Vector2(300, 100);
+            _selectionPosition = new Vector2(650-_selectionOffset, 250);
+            _game = game;
         }
 
 
         public void Update(GamePadState padState)
         {
-
-            if (_released && padState.ThumbSticks.Left.Y > 0.5f && _currentSelection < MAX_MENU_ITEMS)
+            if (_released && padState.ThumbSticks.Left.Y < -0.5f && _currentSelection < MAX_MENU_ITEMS)
             {
                 _currentSelection++;
+                UpdateSelectionImage(false);
                 _released = false;                
             }
-            if (_released && padState.ThumbSticks.Left.Y < -0.5f && _currentSelection > 0)
+            if (_released && padState.ThumbSticks.Left.Y > 0.5f && _currentSelection > 0)
             {
                 _currentSelection--;
+                UpdateSelectionImage(true);
                 _released = false;
             }
             
-            if (padState.ThumbSticks.Left.Length() < 0.2f)
+ 
+
+            if (_released && padState.Buttons.A == ButtonState.Pressed)
+            {
+                Console.WriteLine("Button pressed selection is ->" + _currentSelection);
+                ExecuteSelection();
+                _released = false;
+            }
+            if (padState.ThumbSticks.Left.Length() < 0.2f && padState.Buttons.A == ButtonState.Released)
             {
                 _released = true;
             }
+
             _oldState = padState;
         }
         public void Draw(SpriteBatch batch) 
         {
-            batch.DrawString(_font, "Play", new Vector2(400, 200), Color.Green);
-            batch.DrawString(_font, "Scores", new Vector2(400, 250), Color.Green);
-            batch.DrawString(_font, ""+ _currentSelection, new Vector2(400, 300), Color.Green);
+
+            batch.Draw(_title, _titlePosition, Color.White);
+            batch.DrawString(_font, "Play", new Vector2(650, 250), Color.Green);
+            batch.DrawString(_font, "Scores", new Vector2(650, 300), Color.Green);
+            batch.DrawString(_font, "Exit", new Vector2(650, 350), Color.Green);
+            batch.DrawString(_font, "-->", _selectionPosition, Color.Tomato);
         }
 
+        private void UpdateSelectionImage(bool up)
+        {
+            if (up)
+            {
+                _selectionPosition.Y = _selectionPosition.Y - 50f;
+            }
+            else
+            {
+                _selectionPosition.Y = _selectionPosition.Y + 50f;
+            }
+        }
+        private void ExecuteSelection()
+        {
+            switch (_currentSelection)
+            {  
+                case 0:
+                    _game.State = GameState.Playing;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    _game.Exit();
+                    break;
+                default:
+                    break;
+            }
+        }
 
     }
 }

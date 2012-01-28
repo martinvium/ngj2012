@@ -31,6 +31,8 @@ namespace TugOfBaby
         int bar = 0;
 
         GameState _state;
+
+
         GameMenu _menu;
 
         SpriteBatch spriteBatch;
@@ -43,6 +45,7 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
+        Ragdoll _ragdoll;
 
         //Debug view
         bool _showDebug = false;
@@ -84,6 +87,7 @@ namespace TugOfBaby
             _baby = _gameObjectManager.GetBaby();
             _devil = _gameObjectManager.GetDevil();
             _angel = _gameObjectManager.GetAngel();
+            _ragdoll = new Ragdoll(_world, new Vector2(5, 5));
 
             _controls = new Controls(this);
             //_controls.Angel = _angel;
@@ -107,9 +111,11 @@ namespace TugOfBaby
             _renderManager.LoadContent(Content);
             _state = GameState.Menu;
             
-            _menu = new GameMenu(Content);
+            _menu = new GameMenu(Content, this);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
+
+            _ragdoll.LoadContent(Content);
 
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
@@ -140,7 +146,13 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
-
+            
+            
+            
+            if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
+            {
+                _state = GameState.Menu;
+            } 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
             {
                 _showDebug = true;
@@ -188,6 +200,7 @@ namespace TugOfBaby
             else
             {
                 _renderManager.Draw(spriteBatch);
+                _ragdoll.Draw(spriteBatch);
             }
            
             
@@ -201,10 +214,18 @@ namespace TugOfBaby
             if (_showDebug)
                 _debugView.RenderDebugData(ref projection, ref view);
             
+          
             spriteBatch.End();
             base.Draw(gameTime);
-            
+
         }
+        #region Properties
+        public GameState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
+        #endregion
     }
     public enum GameState
     {
