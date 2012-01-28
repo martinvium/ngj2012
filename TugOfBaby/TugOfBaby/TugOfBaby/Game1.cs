@@ -31,6 +31,8 @@ namespace TugOfBaby
         int bar = 0;
 
         GameState _state;
+
+
         GameMenu _menu;
 
         SpriteBatch spriteBatch;
@@ -100,7 +102,7 @@ namespace TugOfBaby
             _renderManager.LoadContent(Content);
             _state = GameState.Menu;
             
-            _menu = new GameMenu(Content);
+            _menu = new GameMenu(Content, this);
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
 
@@ -134,9 +136,12 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
-            if(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left.X > 0)
+            
+            
+            
+            if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
-               
+                _state = GameState.Menu;
             } 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
             {
@@ -200,8 +205,15 @@ namespace TugOfBaby
             
             spriteBatch.End();
             base.Draw(gameTime);
-            
+
         }
+        #region Properties
+        public GameState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
+        #endregion
     }
     public enum GameState
     {
