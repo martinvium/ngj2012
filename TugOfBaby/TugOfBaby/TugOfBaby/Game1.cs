@@ -127,9 +127,12 @@ namespace TugOfBaby
             {
                 _showDebug = false;
             }
-             
 
-            // TODO: Add your update logic here
+
+            if (_state == GameState.Menu)
+            {
+
+            }
 
             base.Update(gameTime);
         }
