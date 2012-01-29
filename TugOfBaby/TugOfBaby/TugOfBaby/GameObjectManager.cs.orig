@@ -13,7 +13,13 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
-        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        GameObject evil, good;
+
+<<<<<<< HEAD
+        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES, BUNNY_GIRL };
+=======
+        enum Items { DRUGS, KNIFE, BUNNY, MANBUNNY, BIBLE, VEGETABLES };
+>>>>>>> 5a977c33ee9d38cc15fd972735529d488b2beaf1
         
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -28,47 +34,54 @@ namespace TugOfBaby
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("Child/child_face", new Vector2(-55, -55));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
-=======
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
-            angel.Body = getCircle(.5f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
             return angel;
         }
 
         public GameObject GetDevil()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("devil", new Vector2(-18, -18));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
-=======
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);
-            angel.Body = getCircle(.3f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
+            angel.LabelColor = Color.Red;
+
+            evil = angel;
+            evil.Statistics = new Stats();
+
             return angel;
         }
 
         public GameObject GetAngel()
         {
             GameObject angel = GetBase();
-<<<<<<< HEAD
-            angel.Sprite = new Sprite("angel", new Vector2(-18, -18));
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
             angel.Body = getCircle(.3f, angel);
-            
+            angel.LabelColor = Color.SkyBlue;
+            good = angel;        
             
 
-=======
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f);
->>>>>>> fb23a51b9680aeb2bc73cea1ff24c1a5ac92a8d4
+            good.Statistics = new Stats();
             return angel;
         }
 
-        private Body getCircle(float radius, GameObject _gameobject)
+        public GameObject GetReaper()
+        {
+            GameObject angel = GetBase();
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
+            angel.Body = getCircle(.3f, angel);
+            return angel;
+        }
+        public GameObject GetFemaleBunny()
+        {
+            GameObject bunny = GetBase();
+            bunny.Sprite = _renderManager.GetSprite(RenderManager.Texture.BUNNY);
+            bunny.Body = getCircle(.3f, bunny);
+            return bunny;
+        }
+
+ private Body getCircle(float radius, GameObject _gameobject)
         {
             Body body = BodyFactory.CreateCircle(_world, radius, 1f, new Vector2(5, 5), this);
             body.BodyType = BodyType.Dynamic;
@@ -88,47 +101,57 @@ namespace TugOfBaby
             return gameObject;
         }
 
-        public GameObject GetItem(string name)
+        public GameObject GetItem(RenderManager.Texture _type)
         {
             GameObject item = GetBase();
-            item.Sprite = new Sprite(name);
+            item.Sprite = _renderManager.GetSprite(_type);
 
             item.Reward = new Reward();
 
-            switch(name){
-                case "drugs":
+            switch(_type){
+                case RenderManager.Texture.DRUGS:
                     item.Reward.Effect = (int)Items.DRUGS;
+                    item.Reward.EvilPoints = 20;
                     break;
-                case "knife":
+                case RenderManager.Texture.KNIFE:
                     item.Reward.Effect = (int)Items.KNIFE;
+                    item.Reward.EvilPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
-                case "bunny":
+                case RenderManager.Texture.BUNNY_GIRL:
+                    item.Reward.Effect = (int)Items.BUNNY_GIRL;
+                    item.Reward.EvilPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
+                    break;
+                case RenderManager.Texture.BUNNY:
                     item.Reward.Effect = (int)Items.BUNNY;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
-                case "bible":
+                case RenderManager.Texture.BIBLE:
                     item.Reward.Effect = (int)Items.BIBLE;
+                    item.Reward.GoodPoints = 20;
                     break;
-                case "vegetables":
+                case RenderManager.Texture.VEGETABLE:
                     item.Reward.Effect = (int)Items.VEGETABLES;
+                    item.Reward.GoodPoints = 10;
+                    break;
+                case RenderManager.Texture.MANBUNNY:
+                    item.Reward.Effect = (int)Items.MANBUNNY;
                     break;
             }
-
-            
 
             item.Pickupable = true;
 
             Random rand = new Random();
             float rX = rand.Next(20);
             float rY = rand.Next(10);
-            
-
 
             item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
             item.Body.Position = new Vector2(rX, rY);
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
-            
+            item.Type = _type;
             return item;
         }
 
@@ -144,46 +167,139 @@ namespace TugOfBaby
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
-            if (fixtureB.Body.UserData is GameObject)
+            if (fixtureB.Body.UserData is GameObject == false)
             {
-                if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
-                {
-                    if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
-                    {
-                        //subtract 50
-                    }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
-                    {
-                        //spawn bunny
-                        GetItem("bunny");
-                    }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
-                    {
-                        //add 50
-                    }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
-                    {
-                        //add 50
-                    }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
-                    {
-                        //add 50
-                    }
+                return true;
+            }
 
-                    (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
-                    
-                    //Destroy((fixtureB.Body.UserData as GameObject));
-                }
-                else if ((fixtureB.Body.UserData as GameObject).Reward != null)
+            GameObject goCollider = (fixtureB.Body.UserData as GameObject);
+            GameObject goPlayer = (player.Body.UserData as GameObject);
+
+<<<<<<< HEAD
+            if (goCollider.Reward == null)
+            {
+                return true;
+            }
+
+            if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
+            {
+                if (goCollider.Reward.GoodPoints > 0)
                 {
-                    (fixtureB.Body.UserData as GameObject).Reward.enable();
-                    //Destroy((fixtureB.Body.UserData as GameObject));
+                    good.Statistics.CollectItem(good, goCollider.Reward.GetAgnosticPoints());
+                    HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GoodPoints;
+                }
+                else
+                {
+                    evil.Statistics.CollectItem(evil, goCollider.Reward.GetAgnosticPoints());
+                    HeadsUpDisplay.HOW_EVIL += goCollider.Reward.EvilPoints;
+                }
+            }
+            else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
+            {
+                // already have an item, and collided is a valid destination
+                if (goPlayer.HeldItem != null)
+                {
+                    if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
+=======
+                    }
+                    else if (goCollider.Reward.Effect == (int)Items.BUNNY)
+                    {
+                        goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
+                        goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
+                        GetItem(RenderManager.Texture.MANBUNNY);
+                        Console.Write("KILLS RABBIT");
+                    }
+                    else if (goCollider.Reward.Effect == (int)Items.BIBLE)
+                    {
+                        good.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL += 50;
+                    }
+                    else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
+>>>>>>> 5a977c33ee9d38cc15fd972735529d488b2beaf1
+                    {
+                        goPlayer.HeldItem.Disposed = true;
+                        goCollider.Disposed = true;
+                        evil.Statistics.CompleteDeed(evil, goCollider.Reward.GetAgnosticPoints());
+                        HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GetAgnosticPoints();
+                    }
+                }
+                else // we dont have an item
+                {
+                    goPlayer.HeldItem = goCollider;
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.KNIFE));
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.BUNNY_GIRL));
+                    goCollider.Enabled = false;
                 }
             }
             
             return true;
         }
 
+        public void Update()
+        {
+            List<GameObject> removeList = new List<GameObject>();
+            foreach (GameObject go in _gameObjects)
+            {
+                if (go.Disposed)
+                    removeList.Add(go);
+            }
+
+            foreach (GameObject go in removeList){
+                _gameObjects.Remove(go);
+            }            
+        }
+        public void SpawnItem()
+        {
+            //evil!
+            GetItem(RenderManager.Texture.DRUGS).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.GAME).Body.Position = new Vector2();
+
+            //good
+            GetItem(RenderManager.Texture.VEGETABLE).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.BIBLE).Body.Position = new Vector2();
+        }
+        
+
+        public void DespawnItems()
+        {
+            foreach (GameObject item in _gameObjects)
+            {
+                switch (item.Type)
+                {
+                    case RenderManager.Texture.DRUGS:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.VEGETABLE:
+                        item.Disposed = true;
+                        break;            
+                    case RenderManager.Texture.BIBLE:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.GAME:
+                        item.Disposed = true;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }
+        public void DespawnItems(List<RenderManager.Texture> list)
+        {
+            //List<RenderManager.Texture> lists = new List<RenderManager.Texture>();
+            //lists.Add(RenderManager.Texture.KNIFE);
+            //DespawnItems(lists);
+            foreach (GameObject item in _gameObjects)
+            {
+                foreach (RenderManager.Texture type in list)
+                {
+                    if (item.Type == type) 
+                    {
+                        item.Disposed = true;
+                    }
+                }
+            }
+        }
         private void Destroy(GameObject _gameobject)
         {
             //_gameObjects.Remove(_gameobject);

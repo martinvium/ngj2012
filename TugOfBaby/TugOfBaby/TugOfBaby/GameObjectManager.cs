@@ -131,6 +131,9 @@ namespace TugOfBaby
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     item.Reward.GoodPoints = 10;
                     break;
+                case RenderManager.Texture.MANBUNNY:
+                    item.Reward.Effect = (int)Items.MANBUNNY;
+                    break;
             }
 
             item.Pickupable = true;
@@ -144,7 +147,7 @@ namespace TugOfBaby
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
-            
+            item.Type = _type;
             return item;
         }
 
@@ -184,6 +187,7 @@ namespace TugOfBaby
                 {
                     evil.Statistics.CollectItem(evil, goCollider.Reward.GetAgnosticPoints());
                     HeadsUpDisplay.HOW_EVIL += goCollider.Reward.EvilPoints;
+                        GetItem(RenderManager.Texture.MANBUNNY);
                 }
             }
             else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
@@ -222,10 +226,60 @@ namespace TugOfBaby
 
             foreach (GameObject go in removeList){
                 _gameObjects.Remove(go);
-            }
-            
+            }            
         }
+        public void SpawnItem()
+        {
+            //evil!
+            GetItem(RenderManager.Texture.DRUGS).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.GAME).Body.Position = new Vector2();
 
+            //good
+            GetItem(RenderManager.Texture.VEGETABLE).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.BIBLE).Body.Position = new Vector2();
+        }
+        
+
+        public void DespawnItems()
+        {
+            foreach (GameObject item in _gameObjects)
+            {
+                switch (item.Type)
+                {
+                    case RenderManager.Texture.DRUGS:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.VEGETABLE:
+                        item.Disposed = true;
+                        break;            
+                    case RenderManager.Texture.BIBLE:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.GAME:
+                        item.Disposed = true;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }
+        public void DespawnItems(List<RenderManager.Texture> list)
+        {
+            //List<RenderManager.Texture> lists = new List<RenderManager.Texture>();
+            //lists.Add(RenderManager.Texture.KNIFE);
+            //DespawnItems(lists);
+            foreach (GameObject item in _gameObjects)
+            {
+                foreach (RenderManager.Texture type in list)
+                {
+                    if (item.Type == type) 
+                    {
+                        item.Disposed = true;
+                    }
+                }
+            }
+        }
         private void Destroy(GameObject _gameobject)
         {
             //_gameObjects.Remove(_gameobject);

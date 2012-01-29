@@ -70,6 +70,9 @@ namespace TugOfBaby
             animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
             _sprites.Add(Texture.BUNNY_GIRL, new Sprite(animation, new Vector2(-18, -18)));
 
+            animation = new Animation(content.Load<Texture2D>("animations/bunny2"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
+            _sprites.Add(Texture.MANBUNNY, new Sprite(animation, new Vector2(-18, -18)));
+
             _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18), redGlow));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
@@ -92,7 +95,7 @@ namespace TugOfBaby
         {
             foreach (GameObject gameObject in all)
             {
-                if (gameObject.Sprite != null)
+                if (gameObject.Sprite != null && gameObject.Enabled)
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
                     if (gameObject.Sprite.BackgroundAnimation != null)
