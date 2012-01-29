@@ -337,6 +337,7 @@ namespace TugOfBaby
             }
             else if (_state == GameState.ShowStats)
             {
+                GamePad.SetVibration(PlayerIndex.One, 0, 0);
                 theBackground.Draw(spriteBatch);
                 if(!_baby.Enabled)
                 {
@@ -363,10 +364,7 @@ namespace TugOfBaby
                     _statScreen.Draw(_angel, spriteBatch, false);
                 } 
 
-                 * else if()
-                    {
-                     }
-                 */
+                 
             }
 
             // TODO: Add your drawing code here
