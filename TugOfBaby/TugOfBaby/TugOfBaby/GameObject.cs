@@ -119,6 +119,7 @@ namespace TugOfBaby
         public Vector2 Position
         {
             get { return _body.Position * Game1.METER_IN_PIXEL; }
+            set { _body.Position = value * Game1.METER_IN_PIXEL; }
         }
     }
 }
