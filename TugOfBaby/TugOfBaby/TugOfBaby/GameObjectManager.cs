@@ -189,6 +189,14 @@ namespace TugOfBaby
             if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
             {
                 goCollider.Reward.Apply(goCollider, good, evil);
+                if (goCollider.Reward.GoodPoints > 0)
+                {
+                    _effectManager.AddAngelEffect(goCollider.Body.Position * Game1.METER_IN_PIXEL);
+                }
+                else
+                {
+                    _effectManager.AddDemonEffect(goCollider.Body.Position * Game1.METER_IN_PIXEL);
+                }
                 DespawnItems();
                 SpawnItems();
             }
@@ -255,7 +263,6 @@ namespace TugOfBaby
         private Vector2 RandomPlace() 
         {
 
-            Random ran = new Random();
             Vector2 randomPlace = new Vector2((float)GetRandom(128,1158) / Game1.METER_IN_PIXEL, (float)GetRandom(128,592)/Game1.METER_IN_PIXEL);
             return randomPlace;
         }

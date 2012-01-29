@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
 
 namespace TugOfBaby
 {
@@ -12,7 +13,7 @@ namespace TugOfBaby
     {
         GraphicsDevice _graphics;
         Vector2 _angelPos = new Vector2(485, 490);
-        
+        bool _released = true;
         int devilPoints = 0;
         int angelPoints = 0;
         SpriteFont _font;
@@ -29,6 +30,24 @@ namespace TugOfBaby
             this.winningScreen = winningScreen;
         }
 
+        public void Update(Game1 game)
+        {
+            if (_released && GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) // play again
+            {
+                _released = false;
+                game.State = GameState.Playing;
+            }
+            if (_released && GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed) //return to menu
+            {
+                _released = false;
+                game.State = GameState.Menu;
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Released && GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Released)
+            {
+                _released = true;
+            }
+        }
 
         public void Draw(GameObject winner, SpriteBatch batch, bool lose)
         {
@@ -37,7 +56,7 @@ namespace TugOfBaby
             if (!lose)
             {
            
-            batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
+            //batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
 
             if(devilPoints < winner.Statistics.PointsCollected)
                 devilPoints++;
