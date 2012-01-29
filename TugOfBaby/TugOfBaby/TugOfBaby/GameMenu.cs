@@ -31,10 +31,10 @@ namespace TugOfBaby
         Vector2 _selectionPosition;
         Vector2 _titlePosition;
         
-        Game1 _game;
+        GameInstance _gameInstance;
   
         SpriteFont _font;
-        public GameMenu(ContentManager content, Game1 game, GameObject devil, GameObject angel)
+        public GameMenu(ContentManager content, GameInstance gameInstance, GameObject devil, GameObject angel)
         {
             _font = content.Load<SpriteFont>("Courier New");
             _title = content.Load<Texture2D>("title");
@@ -47,7 +47,7 @@ namespace TugOfBaby
             
             _titlePosition = new Vector2(300, 100);
             _selectionPosition = new Vector2(565-_selectionOffset, 250);
-            _game = game;
+            _gameInstance = gameInstance;
         }
 
 
@@ -115,12 +115,12 @@ namespace TugOfBaby
             switch (_currentSelection)
             {  
                 case 0:
-                    _game.State = GameState.Playing;
+                    _gameInstance.State = GameState.Playing;
                     break;
                 case 1:
                     break;
                 case 2:
-                    _game.Exit();
+                    _gameInstance.Game.Exit();
                     break;
                 default:
                     break;

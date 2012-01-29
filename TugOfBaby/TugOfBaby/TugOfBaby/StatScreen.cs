@@ -30,7 +30,7 @@ namespace TugOfBaby
             this.winningScreen = winningScreen;
         }
 
-        public void Update(Game1 game)
+        public void Update(GameInstance game)
         {
             if (_released && GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) // play again
             {
