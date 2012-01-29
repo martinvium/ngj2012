@@ -31,14 +31,22 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        bool grimReaper = false;
+        
         public const float REAPERVELOCITY = 2.0f;
         public Vector2 babyDir = new Vector2();
+
+        public float threeSecondTimer;
+        public float tenSecondTimer;
+
+        bool almostDeadlock = false;
 
         GameState _state;
 
 
         GameMenu _menu;
         HeadsUpDisplay _hud;
+        StatScreen _statScreen;
 
         SpriteBatch spriteBatch;
 
@@ -47,6 +55,7 @@ namespace TugOfBaby
 
         World _world = new World(new Vector2(0, 0));
 
+        //TimeStep 
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
@@ -57,6 +66,7 @@ namespace TugOfBaby
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
+        BloodManager _bloodManager;
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
         Controls _controls;
@@ -95,6 +105,8 @@ namespace TugOfBaby
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
 
+
+
             base.Initialize();
         }
 
@@ -132,6 +144,7 @@ namespace TugOfBaby
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
+            _bloodManager = new BloodManager(Content);
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
@@ -187,6 +200,20 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
+            //reaperUpdate(gameTime);
+
+            //Console.WriteLine(Vector2.Zero);
+            //Console.WriteLine(babyTempPos1);
+            
+            /*Console.WriteLine("Math: ");
+            Console.WriteLine(_baby.Position.X - babyTempPos1.X);
+            Console.WriteLine("Pos: ");
+            Console.WriteLine(_baby.Position.X);
+            Console.WriteLine("Prev pos: ");
+            Console.WriteLine(babyTempPos1.X);
+            */
+            //Console.WriteLine((DateTime.Now.Second % 3)+1);
+            
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
                 _state = GameState.Menu;
@@ -202,11 +229,14 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
             {
-                _hud.UpdateEvilOMeter(1);
+                HeadsUpDisplay.HOW_EVIL += 1;
+                _angel.Statistics.PointsCollected++;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                _hud.UpdateEvilOMeter(-1);
+                HeadsUpDisplay.HOW_EVIL -= 1;
+                _devil.Statistics.PointsCollected++;
+                _bloodManager.addBlood(_devil.Body.Position * METER_IN_PIXEL, _angel.Body.Position * METER_IN_PIXEL);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.L))
             {
@@ -214,7 +244,8 @@ namespace TugOfBaby
             }
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
-                _hud.PopItem();
+                _state = GameState.ShowStats;
+                
             }
             if (Keyboard.GetState().IsKeyDown(Keys.G))
             {
@@ -228,13 +259,22 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-            else
+                else
             {
-                reaperMove();
+                reaperUpdate(gameTime);
+            }
+            if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
+            {
+                _state = GameState.ShowStats;
+            }
+            
+
                 _renderManager.Update(gameTime, _gameObjectManager.GetAll());
                 _floatingScoreManager.Update(gameTime);
-                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            }
+             _hud.Update(_devil, _angel);
+             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            
+
 
             base.Update(gameTime);
         }
@@ -258,18 +298,42 @@ namespace TugOfBaby
                 up = true;
 
         
-            theBackground.Draw(spriteBatch);
+            
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
+
             }
-            else
+            else if(_state == GameState.Playing)
             {
+                theBackground.Draw(spriteBatch);
+                _bloodManager.Draw(spriteBatch);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
                 _floatingScoreManager.Draw(spriteBatch);
+            }
+            else if (_state == GameState.ShowStats)
+            {
+                theBackground.Draw(spriteBatch);
+                if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("devilwin"), Content);
+                    }
+                    _statScreen.Draw(_devil, spriteBatch);
+                }
+                else if (_devil.Statistics.PointsCollected < _angel.Statistics.PointsCollected)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("angelwin"), Content);
+                    }
+                    _statScreen.Draw(_angel, spriteBatch);
+                }
+            
             }
 
             // TODO: Add your drawing code here
@@ -290,6 +354,26 @@ namespace TugOfBaby
 
         }
 
+        public void reaperUpdate(GameTime _gameTime)
+            {
+                if (grimReaper)
+                {
+                    reaperMove();
+                    tenSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
+                }
+
+                threeSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
+
+
+                if (tenSecondTimer > 10)
+                {
+                    grimReaper = false;
+                    tenSecondTimer = 0;
+                }
+
+                if (threeSecondTimer > 3 && !grimReaper)
+                    deadLock();
+            }
         public void reaperMove()
         {
             babyDir = new Vector2();
@@ -310,14 +394,39 @@ namespace TugOfBaby
                 GamePad.SetVibration(PlayerIndex.One, 1, 1);
             */
         }
-
-        /*public void statusQuo(GameTime pollTime)
+        
+        public void deadLock()
             {
-            TimeSpan
 
+                
+           
+                
+                if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
+                    {
+                        if (_baby.Body.LinearVelocity.X < 1.0f && _baby.Body.LinearVelocity.Y < 1.0f)
+                            if (almostDeadlock)
+                            {
+                                Console.WriteLine("O HAI REAPER");
+                                almostDeadlock = false;
+                                grimReaper = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Doorbell");
+                                almostDeadlock = true;
+                            }
+                        else
+                            almostDeadlock = false;
+                    }
+                else
+                    {
+                    almostDeadlock = false;
+                    }
+
+                threeSecondTimer = 0;
 
             }
-        */
+        
         #region Properties
         public GameState State
         {
@@ -330,6 +439,7 @@ namespace TugOfBaby
     public enum GameState
     {
         Menu,
-        Playing
+        Playing,
+        ShowStats
     }
 }

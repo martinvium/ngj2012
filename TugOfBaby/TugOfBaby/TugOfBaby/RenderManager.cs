@@ -25,7 +25,8 @@ namespace TugOfBaby
             DRUGS,
             VEGETABLE,
             REAPER,
-            BIBLE
+            BIBLE,
+            GAME
         }
 
         private Dictionary<Texture, Sprite> _sprites = new Dictionary<Texture, Sprite>();
@@ -47,6 +48,11 @@ namespace TugOfBaby
 
         public void LoadContent(ContentManager content, List<GameObject> all)
         {
+            Animation redGlow = new Animation(content.Load<Texture2D>("animations/redglow"), new Rectangle(0, 0, 275, 275), 30, 0.5f, 10, 3);
+            redGlow.FrameTime = 1 / 8f;
+
+            Animation blueGlow = new Animation(content.Load<Texture2D>("animations/blueglow"), new Rectangle(0, 0, 275, 275), 30, 0.5f, 10, 3);
+            redGlow.FrameTime = 1 / 8f;
 
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
@@ -58,15 +64,25 @@ namespace TugOfBaby
             _sprites.Add(Texture.REAPER, new Sprite(animation, new Vector2(-18, -18)));
 
             animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
+    
             _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
 
-            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18)));
+            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18), redGlow));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
             _sprites.Add(Texture.CHILD_LEFTARM, new Sprite(content.Load<Texture2D>("Child/child_leftarm"), new Vector2(0,0)));
             _sprites.Add(Texture.CHILD_LEFTHAND, new Sprite(content.Load<Texture2D>("Child/child_lefthand"), new Vector2(0, 0)));
             _sprites.Add(Texture.CHILD_RIGHTARM, new Sprite(content.Load<Texture2D>("Child/child_rightarm"), new Vector2(0, 0)));
             _sprites.Add(Texture.CHILD_RIGHTHAND, new Sprite(content.Load<Texture2D>("Child/child_righthand"), new Vector2(0, 0)));
+             animation = new Animation(content.Load<Texture2D>("animations/bible"), new Rectangle(0, 0, 100, 108), 20, 1.0f, 2, 10);
+            _sprites.Add(Texture.BIBLE, new Sprite(animation, new Vector2(-18, -18),blueGlow));
+
+
+            _sprites.Add(Texture.VEGETABLE, new Sprite(content.Load<Texture2D>("vegi"), new Vector2(-18,-18),blueGlow));
+
+            _sprites.Add(Texture.DRUGS, new Sprite(content.Load<Texture2D>("drugs"), new Vector2(-18, -18),redGlow));
+
+            _sprites.Add(Texture.GAME, new Sprite(content.Load<Texture2D>("games"), new Vector2(-18, -18),redGlow));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
@@ -76,6 +92,10 @@ namespace TugOfBaby
                 if (gameObject.Sprite != null)
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
+                    if (gameObject.Sprite.BackgroundAnimation != null)
+                    {
+                        gameObject.Sprite.BackgroundAnimation.Draw(spriteBatch, new Vector2(pos.X , pos.Y), 0f, false);
+                    }
                     if (gameObject.Sprite.Animation == null)
                     {
 
@@ -95,8 +115,13 @@ namespace TugOfBaby
                 if (gameObject.Sprite != null)
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
+                    if (gameObject.Sprite.BackgroundAnimation != null)
+                    {
+                        gameObject.Sprite.BackgroundAnimation.Update(gametime);
+                    }
                     if (gameObject.Sprite.Animation != null)                   
-                    {                        
+                    {       
+                        
                         gameObject.Sprite.Animation.Update(gametime);
                     }
                 }

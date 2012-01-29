@@ -20,6 +20,7 @@ namespace TugOfBaby
         bool disposed = false;
         FloatingScoreLabel _label;
         Color _labelColor = Color.Black;
+        bool enabled = true;
 
         public Color LabelColor
         {
@@ -33,6 +34,12 @@ namespace TugOfBaby
             set { _label = value; }
         }
 
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
+
         public bool Disposed
         {
             get { return disposed; }
@@ -42,6 +49,8 @@ namespace TugOfBaby
                    _body.Dispose();
             }
         }
+
+
 
         internal GameObject Target
         {
@@ -68,8 +77,7 @@ namespace TugOfBaby
         {
             get { return heldItem; }
             set { heldItem = value; }
-        }
-        
+        }        
 
         internal Reward Reward
         {

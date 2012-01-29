@@ -13,54 +13,60 @@ namespace TugOfBaby
         SoundEffect heavenlySound, hellishSound;
 
         Texture2D heavenBG, hellBG, nothingBG;
+
+        public Texture2D NothingBG
+        {
+            get { return nothingBG; }
+            set { nothingBG = value; }
+        }
         int transHeaven = 0, transHell = 0;
         Vector2 position = Vector2.Zero;
 
         public void Update(float _status)
         {
-            if (hellishSoundInstance.State == SoundState.Stopped)
-                hellishSoundInstance.Play();
-            if (heavenlySoundInstance.State == SoundState.Stopped)
-                heavenlySoundInstance.Play();
+            //if (hellishSoundInstance.State == SoundState.Stopped)
+            //    hellishSoundInstance.Play();
+            //if (heavenlySoundInstance.State == SoundState.Stopped)
+            //    heavenlySoundInstance.Play();
 
-            float hellChannel = 0;
-            float heavenChannel = 0;
+            //float hellChannel = 0;
+            //float heavenChannel = 0;
 
-            if(_status <= 0){
-                hellChannel = (_status/100);
-                heavenChannel = 0;
-                hellChannel *= -1;
-            } else if(_status > 0){
-                heavenChannel = (_status/100);
-                hellChannel = 1-heavenChannel;
-                hellChannel = 0;
-            }
+            //if(_status <= 0){
+            //    hellChannel = (_status/100);
+            //    heavenChannel = 0;
+            //    hellChannel *= -1;
+            //} else if(_status > 0){
+            //    heavenChannel = (_status/100);
+            //    hellChannel = 1-heavenChannel;
+            //    hellChannel = 0;
+            //}
 
-            heavenlySoundInstance.Volume = heavenChannel;
-            hellishSoundInstance.Volume = hellChannel;
+            //heavenlySoundInstance.Volume = heavenChannel;
+            //hellishSoundInstance.Volume = hellChannel;
             
 //            if(hellChannel >= -0.5 && hellChannel >= -0.4)
 //                Console.WriteLine("HEAVEN IS: " + heavenChannel + " HELL IS: " + hellChannel);
 
             _status *= 2.55f;
 
-            if (_status < 0)
-            {
-                transHeaven = 0;
-                transHell = (int)_status * -1;
-            }
-            else
-            {
-                transHell = 0;
-                transHeaven = (int)_status;
-            }
+            //if (_status < 0)
+            //{
+            //    transHeaven = 0;
+            //    transHell = (int)_status * -1;
+            //}
+            //else
+            //{
+            //    transHell = 0;
+            //    transHeaven = (int)_status;
+            //}
         }
 
         public void LoadContent(ContentManager _contentManager)
         {
             heavenBG = _contentManager.Load<Texture2D>("heavenBG");
             hellBG = _contentManager.Load<Texture2D>("hellBG");
-            nothingBG = _contentManager.Load<Texture2D>("background");
+            nothingBG = _contentManager.Load<Texture2D>("background2");
 
             //LOAD SOUND
             hellishSound = _contentManager.Load<SoundEffect>("cowbell");

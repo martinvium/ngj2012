@@ -151,40 +151,47 @@ namespace TugOfBaby
         {
             if (fixtureB.Body.UserData is GameObject)
             {
-                if ((fixtureB.Body.UserData as GameObject).Pickupable == true)
+                GameObject goCollider = (fixtureB.Body.UserData as GameObject);
+                GameObject goPlayer = (player.Body.UserData as GameObject);
+
+                if (goCollider.Pickupable == true)
                 {
-                    if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.DRUGS)
+                    if (goCollider.Reward.Effect == (int)Items.DRUGS)
                     {
                         evil.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL -= 50;
                     }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.KNIFE)
+                    else if (goCollider.Reward.Effect == (int)Items.KNIFE)
                     {
                         //har vi kaninen?
-                        if ((player.Body.UserData as GameObject).HeldItem.Target == (fixtureB.Body.UserData as GameObject))
+                        if (goPlayer.HeldItem.Target == goCollider)
                         {
-                            (player.Body.UserData as GameObject).HeldItem.Disposed = true;
-                            (fixtureB.Body.UserData as GameObject).Disposed = true;
+                            goPlayer.HeldItem.Disposed = true;
+                            goCollider.Disposed = true;
                             evil.Statistics.PointsCollected += 50;
+                            HeadsUpDisplay.HOW_EVIL -= 50;
                         }
                         
 
                     }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BUNNY)
+                    else if (goCollider.Reward.Effect == (int)Items.BUNNY)
                     {
-                        (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
-                        (player.Body.UserData as GameObject).HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
+                        goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
+                        goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
                         Console.Write("KILLS RABBIT");
                     }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.BIBLE)
+                    else if (goCollider.Reward.Effect == (int)Items.BIBLE)
                     {
                         good.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL += 50;
                     }
-                    else if ((fixtureB.Body.UserData as GameObject).Reward.Effect == (int)Items.VEGETABLES)
+                    else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
                     {
                         good.Statistics.PointsCollected += 50;
+                        HeadsUpDisplay.HOW_EVIL += 50;
                     }
 
-                    (player.Body.UserData as GameObject).HeldItem = (fixtureB.Body.UserData as GameObject);
+                    goPlayer.HeldItem = goCollider;
                     Console.Write(evil.Statistics.PointsCollected);
                     
                     //Destroy((fixtureB.Body.UserData as GameObject));
