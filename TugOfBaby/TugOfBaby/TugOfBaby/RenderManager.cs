@@ -21,6 +21,7 @@ namespace TugOfBaby
             CHILD_RIGHTARM,
             CHILD_RIGHTHAND,
             BUNNY,
+            MANBUNNY,
             KNIFE,
             DRUGS,
             VEGETABLE,
@@ -64,8 +65,10 @@ namespace TugOfBaby
             _sprites.Add(Texture.REAPER, new Sprite(animation, new Vector2(-18, -18)));
 
             animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
-    
             _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
+
+            animation = new Animation(content.Load<Texture2D>("animations/bunny2"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
+            _sprites.Add(Texture.MANBUNNY, new Sprite(animation, new Vector2(-18, -18)));
 
             _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18), redGlow));
 
