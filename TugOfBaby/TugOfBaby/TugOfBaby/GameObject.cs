@@ -45,7 +45,12 @@ namespace TugOfBaby
         public bool Enabled
         {
             get { return enabled; }
-            set { enabled = value; }
+            set 
+            { 
+                enabled = value;
+                _body.Enabled = enabled;
+            
+            }   
         }
 
         public bool Disposed
@@ -114,6 +119,7 @@ namespace TugOfBaby
         public Vector2 Position
         {
             get { return _body.Position * Game1.METER_IN_PIXEL; }
+            set { _body.Position = value * Game1.METER_IN_PIXEL; }
         }
     }
 }

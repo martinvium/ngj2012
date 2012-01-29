@@ -92,7 +92,7 @@ namespace TugOfBaby
         {
             foreach (GameObject gameObject in all)
             {
-                if (gameObject.Sprite != null)
+                if (gameObject.Sprite != null && gameObject.Enabled)
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
                     if (gameObject.Sprite.BackgroundAnimation != null)
