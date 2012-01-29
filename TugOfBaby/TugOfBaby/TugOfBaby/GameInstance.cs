@@ -101,7 +101,8 @@ namespace TugOfBaby
             BodyFactory.CreateEdge(_world, new Vector2(WIDTH, 0) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
             //bottom
             BodyFactory.CreateEdge(_world, new Vector2(0, HEIGHT) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
-            _graphics.IsFullScreen = true;
+           // _graphics.IsFullScreen = true;
+            HeadsUpDisplay.HOW_EVIL = 309/2;
         }
 
         /// <summary>
@@ -280,7 +281,7 @@ namespace TugOfBaby
                 }
             }
 
-            if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
+            if (_state == GameState.Playing && (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309))
             {
                 _state = GameState.ShowStats;
             }
@@ -292,7 +293,7 @@ namespace TugOfBaby
                  _released = true;
              }
 
-            if (_state == GameState.ShowCredit && _statScreen != null)
+            if ((_state == GameState.ShowCredit && _statScreen != null) || (_state == GameState.ShowStats && _statScreen != null))
             {
                 _statScreen.Update(this);
             }
