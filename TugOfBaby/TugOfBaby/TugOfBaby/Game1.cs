@@ -100,7 +100,6 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             _gameInstance.Draw(gameTime);
-                
             base.Draw(gameTime);
 
         }
