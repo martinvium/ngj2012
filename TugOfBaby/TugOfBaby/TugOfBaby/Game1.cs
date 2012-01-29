@@ -222,7 +222,7 @@ namespace TugOfBaby
                 else
             {
                 reaperMove();
-}
+            }
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
                 _state = GameState.ShowStats;
@@ -232,7 +232,7 @@ namespace TugOfBaby
                 _renderManager.Update(gameTime, _gameObjectManager.GetAll());
             _hud.Update(_devil, _angel);
                 _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            }
+            
 
             base.Update(gameTime);
         }
