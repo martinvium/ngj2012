@@ -16,8 +16,6 @@ namespace TugOfBaby
     {
         GameObject evil, good;
 
-        enum Items { DRUGS, KNIFE, BUNNY, MANBUNNY, BIBLE, VEGETABLES };
-        
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
         RenderManager _renderManager;
@@ -109,38 +107,44 @@ namespace TugOfBaby
 
             switch(_type){
                 case RenderManager.Texture.DRUGS:
-                    item.Reward.Effect = (int)Items.DRUGS;
+                    item.Reward.EvilPoints = 20;
                     break;
                 case RenderManager.Texture.KNIFE:
-                    item.Reward.Effect = (int)Items.KNIFE;
+                    item.Reward.EvilPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
+                    break;
+                case RenderManager.Texture.BUNNY_GIRL:
+                    item.Reward.GoodPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY:
-                    item.Reward.Effect = (int)Items.BUNNY;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BIBLE:
-                    item.Reward.Effect = (int)Items.BIBLE;
+                    item.Reward.GoodPoints = 20;
                     break;
                 case RenderManager.Texture.VEGETABLE:
-                    item.Reward.Effect = (int)Items.VEGETABLES;
+                    item.Reward.GoodPoints = 10;
                     break;
-                case RenderManager.Texture.MANBUNNY:
-                    item.Reward.Effect = (int)Items.MANBUNNY;
+                case RenderManager.Texture.GAME:
+                    item.Reward.EvilPoints = 10;
                     break;
             }
 
             item.Pickupable = true;
 
-            Random rand = new Random();
-            float rX = rand.Next(20);
-            float rY = rand.Next(10);
-
-            item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
-            item.Body.Position = new Vector2(rX, rY);
+            item.Body = BodyFactory.CreateRectangle(_world, 1f, 1f, 1.0f);
+            item.Body.Position = GetRandomVector2();
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
             item.Type = _type;
             return item;
+        }
+
+        private Vector2 GetRandomVector2()
+        {
+            return new Vector2(GetRandom(0, Game1.WIDTH) / Game1.METER_IN_PIXEL, GetRandom(0, Game1.HEIGHT) / Game1.METER_IN_PIXEL);
         }
 
         public List<GameObject> GetAll()
@@ -155,60 +159,42 @@ namespace TugOfBaby
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
-            if (fixtureB.Body.UserData is GameObject)
+            if (fixtureB.Body.UserData is GameObject == false)
             {
-                GameObject goCollider = (fixtureB.Body.UserData as GameObject);
-                GameObject goPlayer = (player.Body.UserData as GameObject);
+                return true;
+            }
 
-                if (goCollider.Pickupable == true)
+            GameObject goCollider = (fixtureB.Body.UserData as GameObject);
+            GameObject goPlayer = (player.Body.UserData as GameObject);
+
+            if (goCollider.Reward == null)
+            {
+                return true;
+            }
+
+            if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
+            {
+                goCollider.Reward.Apply(goCollider, good, evil);
+            }
+            else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
+            {
+                // already have an item, and collided is a valid destination
+                if (goPlayer.HeldItem != null)
+                        DespawnItems();
                 {
-                    if (goCollider.Reward.Effect == (int)Items.DRUGS)
+                    if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
                     {
-                        evil.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL -= 50;                        
+                        DespawnItems(goPlayer.HeldItem.InteractionTargetOptions);
+                        goPlayer.HeldItem.Disposed = true;
+                        goCollider.Reward.Apply(goCollider, good, evil);
                     }
-                    else if (goCollider.Reward.Effect == (int)Items.KNIFE)
-                    {
-                        //har vi kaninen?
-                        if (goPlayer.HeldItem.Target == goCollider)
-                        {
-                            goPlayer.HeldItem.Disposed = true;
-                            goCollider.Disposed = true;
-                            evil.Statistics.PointsCollected += 50;
-                            HeadsUpDisplay.HOW_EVIL -= 50;
-                        }
-                        
-
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.BUNNY)
-                    {
-                        goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
-                        goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
-                        GetItem(RenderManager.Texture.MANBUNNY);
-                        Console.Write("KILLS RABBIT");
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.BIBLE)
-                    {
-                        good.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL += 50;
-                        DespawnItems();
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
-                    {
-                        good.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL += 50;
-                        DespawnItems();
-                    }
-
-                    goPlayer.HeldItem = goCollider;
-                    Console.Write(evil.Statistics.PointsCollected);
-                    
-                    //Destroy((fixtureB.Body.UserData as GameObject));
                 }
-                else if ((fixtureB.Body.UserData as GameObject).Reward != null)
+                else // we dont have an item
                 {
-                    (fixtureB.Body.UserData as GameObject).Reward.enable();
-                    //Destroy((fixtureB.Body.UserData as GameObject));
+                    goPlayer.HeldItem = goCollider;
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.KNIFE));
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.BUNNY_GIRL));
+                    goCollider.Enabled = false;
                 }
             }
             
@@ -293,25 +279,12 @@ namespace TugOfBaby
 
             }
         }
-        public void DespawnItems(List<RenderManager.Texture> list)
+
+        public void DespawnItems(List<GameObject> gameObjects)
         {
-            //List<RenderManager.Texture> lists = new List<RenderManager.Texture>();
-            //lists.Add(RenderManager.Texture.KNIFE);
-            //DespawnItems(lists);
-            foreach (GameObject item in _gameObjects)
-            {
-                foreach (RenderManager.Texture type in list)
-                {
-                    if (item.Type == type) 
-                    {
-                        item.Disposed = true;
-                    }
-                }
+            foreach(GameObject gameObject in gameObjects) {
+                gameObject.Disposed = true;
             }
-        }
-        private void Destroy(GameObject _gameobject)
-        {
-            //_gameObjects.Remove(_gameobject);
         }
     }
 }

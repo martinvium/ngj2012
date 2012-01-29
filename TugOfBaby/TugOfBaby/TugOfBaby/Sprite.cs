@@ -18,24 +18,24 @@ namespace TugOfBaby
         Animation _animation;
         bool flipped = false;
 
-
-   
-
-        public Sprite(string name)
+        public Sprite(Texture2D texture)
         {
-            _name = name;
+            _texture = texture;
+            _origin = GetOriginFromTexture(texture);
         }
 
-        public Sprite(string name, Vector2 origin)
-        {
-            _name = name;
-            _origin = origin;
-        }
         public Sprite(Texture2D texture, Vector2 origin)
         {
             _texture = texture;
             _origin = origin;         
         }
+
+        public Sprite(Animation animation)
+        {
+            _animation = animation;
+            _origin = GetOriginFromAnimation(animation);
+        }
+
         public Sprite(Animation animation, Vector2 origin)
         {
             _animation = animation;
@@ -53,6 +53,31 @@ namespace TugOfBaby
             _texture = texture;
             _origin = origin;
         }
+
+        public Sprite(Animation animation, Animation glow)
+        {
+            _animation = animation;
+            _backgroundAnimation = glow;
+            _origin = GetOriginFromAnimation(animation);
+        }
+
+        public Sprite(Texture2D texture, Animation glow)
+        {
+            _backgroundAnimation = glow;
+            _texture = texture;
+            _origin = GetOriginFromTexture(texture);
+        }
+
+        private Vector2 GetOriginFromTexture(Texture2D texture)
+        {
+            return new Vector2(-(texture.Width / 2), -(texture.Height / 2));
+        }
+
+        private Vector2 GetOriginFromAnimation(Animation animation)
+        {
+            return Vector2.Zero;
+        }
+
         public Vector2 Origin
         {
             get { return _origin; }
