@@ -47,10 +47,17 @@ namespace TugOfBaby
             if (_heldObject != null)
             {
                 if (_heldObject.Disposed)
+                {
                     _heldObject = null;
-                else
+                }
+                else if (_heldObject.Sprite.Animation != null)
+                {
                     _heldObject.Sprite.Animation.Draw(batch, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height - 50), 0f, false);
-                //batch.Draw(_heldObject.Sprite.Texture, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height -50), Color.White);
+                }
+                else
+                {
+                    batch.Draw(_heldObject.Sprite.Texture, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height - 50), Color.White);
+                }
             }
 
         }

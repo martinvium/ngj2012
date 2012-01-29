@@ -107,18 +107,22 @@ namespace TugOfBaby
             switch(_type){
                 case RenderManager.Texture.DRUGS:
                     item.Reward.Effect = (int)Items.DRUGS;
+                    item.Reward.EvilPoints = 20;
                     break;
                 case RenderManager.Texture.KNIFE:
                     item.Reward.Effect = (int)Items.KNIFE;
+                    item.Reward.EvilPoints = 50;
                     break;
                 case RenderManager.Texture.BUNNY:
                     item.Reward.Effect = (int)Items.BUNNY;
                     break;
                 case RenderManager.Texture.BIBLE:
                     item.Reward.Effect = (int)Items.BIBLE;
+                    item.Reward.GoodPoints = 20;
                     break;
                 case RenderManager.Texture.VEGETABLE:
                     item.Reward.Effect = (int)Items.VEGETABLES;
+                    item.Reward.GoodPoints = 10;
                     break;
             }
 
@@ -158,6 +162,7 @@ namespace TugOfBaby
                 {
                     if (goCollider.Reward.Effect == (int)Items.DRUGS)
                     {
+
                         evil.Statistics.PointsCollected += 50;
                         HeadsUpDisplay.HOW_EVIL -= 50;
                     }
@@ -168,11 +173,9 @@ namespace TugOfBaby
                         {
                             goPlayer.HeldItem.Disposed = true;
                             goCollider.Disposed = true;
-                            evil.Statistics.PointsCollected += 50;
-                            HeadsUpDisplay.HOW_EVIL -= 50;
+                            evil.Statistics.CompleteDeed(evil, goCollider.Reward.GetAgnosticPoints());
+                            HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GetAgnosticPoints();
                         }
-                        
-
                     }
                     else if (goCollider.Reward.Effect == (int)Items.BUNNY)
                     {
@@ -182,8 +185,8 @@ namespace TugOfBaby
                     }
                     else if (goCollider.Reward.Effect == (int)Items.BIBLE)
                     {
-                        good.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL += 50;
+                        good.Statistics.CollectItem(good, goCollider.Reward.GetAgnosticPoints());
+                        HeadsUpDisplay.HOW_EVIL += goCollider.Reward.GetAgnosticPoints();
                     }
                     else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
                     {
