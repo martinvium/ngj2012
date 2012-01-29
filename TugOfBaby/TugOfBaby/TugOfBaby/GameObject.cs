@@ -18,6 +18,13 @@ namespace TugOfBaby
         Animation _animation;
         GameObject target;
         bool disposed = false;
+        bool enabled = true;
+
+        public bool Enabled
+        {
+            get { return enabled; }
+            set { enabled = value; }
+        }
 
         public bool Disposed
         {
@@ -28,6 +35,8 @@ namespace TugOfBaby
                    _body.Dispose();
             }
         }
+
+
 
         internal GameObject Target
         {

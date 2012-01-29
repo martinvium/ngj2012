@@ -31,8 +31,15 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        bool grimReaper = false;
+        
         public const float REAPERVELOCITY = 2.0f;
         public Vector2 babyDir = new Vector2();
+
+        public float threeSecondTimer;
+        public float tenSecondTimer;
+
+        bool almostDeadlock = false;
 
         GameState _state;
 
@@ -48,6 +55,7 @@ namespace TugOfBaby
 
         World _world = new World(new Vector2(0, 0));
 
+        //TimeStep 
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
@@ -94,6 +102,8 @@ namespace TugOfBaby
         {
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
+
+
 
             base.Initialize();
         }
@@ -182,6 +192,20 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
+            //reaperUpdate(gameTime);
+
+            //Console.WriteLine(Vector2.Zero);
+            //Console.WriteLine(babyTempPos1);
+            
+            /*Console.WriteLine("Math: ");
+            Console.WriteLine(_baby.Position.X - babyTempPos1.X);
+            Console.WriteLine("Pos: ");
+            Console.WriteLine(_baby.Position.X);
+            Console.WriteLine("Prev pos: ");
+            Console.WriteLine(babyTempPos1.X);
+            */
+            //Console.WriteLine((DateTime.Now.Second % 3)+1);
+            
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
                 _state = GameState.Menu;
@@ -221,7 +245,7 @@ namespace TugOfBaby
             }
                 else
             {
-                reaperMove();
+                reaperUpdate(gameTime);
             }
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
@@ -233,6 +257,7 @@ namespace TugOfBaby
              _hud.Update(_devil, _angel);
                 _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
             
+
 
             base.Update(gameTime);
         }
@@ -311,6 +336,26 @@ namespace TugOfBaby
 
         }
 
+        public void reaperUpdate(GameTime _gameTime)
+            {
+                if (grimReaper)
+                {
+                    reaperMove();
+                    tenSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
+                }
+
+                threeSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
+
+
+                if (tenSecondTimer > 10)
+                {
+                    grimReaper = false;
+                    tenSecondTimer = 0;
+                }
+
+                if (threeSecondTimer > 3 && !grimReaper)
+                    deadLock();
+            }
         public void reaperMove()
         {
             babyDir = new Vector2();
@@ -331,14 +376,39 @@ namespace TugOfBaby
                 GamePad.SetVibration(PlayerIndex.One, 1, 1);
             */
         }
-
-        /*public void statusQuo(GameTime pollTime)
+        
+        public void deadLock()
             {
-            TimeSpan
 
+                
+           
+                
+                if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
+                    {
+                        if (_baby.Body.LinearVelocity.X < 1.0f && _baby.Body.LinearVelocity.Y < 1.0f)
+                            if (almostDeadlock)
+                            {
+                                Console.WriteLine("O HAI REAPER");
+                                almostDeadlock = false;
+                                grimReaper = true;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Doorbell");
+                                almostDeadlock = true;
+                            }
+                        else
+                            almostDeadlock = false;
+                    }
+                else
+                    {
+                    almostDeadlock = false;
+                    }
+
+                threeSecondTimer = 0;
 
             }
-        */
+        
         #region Properties
         public GameState State
         {
