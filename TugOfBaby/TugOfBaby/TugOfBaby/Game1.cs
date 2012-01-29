@@ -33,15 +33,7 @@ namespace TugOfBaby
 
         bool _released = true;
 
-        bool grimReaper = false;
         
-        public const float REAPERVELOCITY = 2.0f;
-        public Vector2 babyDir = new Vector2();
-
-        public float threeSecondTimer;
-        public float tenSecondTimer;
-
-        bool almostDeadlock = false;
 
         GameState _state;
 
@@ -61,8 +53,7 @@ namespace TugOfBaby
         GameObject _baby;
         GameObject _devil;
         GameObject _angel;
-        GameObject _reaper;
-        GameObject _femaleBunny;
+
 
         //Debug view
         bool _showDebug = false;
@@ -79,6 +70,7 @@ namespace TugOfBaby
         RopeJoint jRightArm;
         Ragdoll _ragdoll;
         SpriteFont _font;
+        Reaper _reaper;
 
         public Game1()
         {
@@ -118,9 +110,9 @@ namespace TugOfBaby
             _devil = _gameObjectManager.GetDevil();
           
             _angel = _gameObjectManager.GetAngel();
-            _reaper = _gameObjectManager.GetReaper();
+            
           
-            _reaper.Body.Position = new Vector2(100, 100);
+            
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
@@ -163,6 +155,8 @@ namespace TugOfBaby
             _floatingScoreManager.Add(_devil);
             _floatingScoreManager.Add(_angel);
             _gameObjectManager.SpawnItems();
+
+            _reaper = new Reaper(_gameObjectManager.GetReaper(), _effectManager, _baby);
 
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
@@ -278,7 +272,7 @@ namespace TugOfBaby
                 _floatingScoreManager.Update(gameTime);
                 _hud.Update(_devil, _angel);
                 _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-                reaperUpdate(gameTime);
+                _reaper.reaperUpdate(gameTime);
                 if (HeadsUpDisplay.HOW_EVIL > 250 || HeadsUpDisplay.HOW_EVIL < 60)
                 {
                     _gameObjectManager.StartBunnyBoss();
@@ -385,97 +379,7 @@ namespace TugOfBaby
 
         }
 
-        public void reaperUpdate(GameTime _gameTime)
-            {
-                if (almostDeadlock)
-                    GamePad.SetVibration(PlayerIndex.One, 0.15f, 0.15f);
-                else if(!grimReaper)
-                    GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
-
-                Console.WriteLine(_reaper.Position);
-                if (!grimReaper){
-                    _reaper.Enabled = false;
-                _reaper.Position = new Vector2(0.15f, 0.09f);
-                }
-
-                if (grimReaper)
-                {
-
-                    if(!_reaper.Enabled)
-                        _effectManager.AddDeathSpawnEffect(_reaper.Body.Position * Game1.METER_IN_PIXEL);
-                    _reaper.Enabled = true;
-                    
-                    reaperMove();
-                    tenSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
-                }
-
-                threeSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
-
-
-                if (tenSecondTimer > 10)
-                {
-                    if (grimReaper)
-                        _effectManager.AddDeathDespawnEffect(_reaper.Body.Position * Game1.METER_IN_PIXEL);
-                    grimReaper = false;
-                    tenSecondTimer = 0;
-                }
-
-                if (threeSecondTimer > 3 && !grimReaper)
-                    deadLock();
-            }
-
-        public void reaperMove()
-        {
-            babyDir = new Vector2();
-
-            babyDir = (_baby.Position - _reaper.Position);
-
-            _reaper.Body.ApplyLinearImpulse(babyDir * 0.005f);
-
-            //Console.WriteLine(Vector2.Distance(_baby.Position, _reaper.Position));
-            
-            if(Vector2.Distance(_baby.Position, _reaper.Position) < 300)
-                GamePad.SetVibration(PlayerIndex.One, 0.25f, 0.25f);
-
-            if (Vector2.Distance(_baby.Position, _reaper.Position) < 200)
-                GamePad.SetVibration(PlayerIndex.One, 0.5f, 0.5f);
-
-            if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
-                GamePad.SetVibration(PlayerIndex.One, 1, 1);
-            
-        }
-        
-        public void deadLock()
-            {
-
-                
-          
-                
-            if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
-                    {
-                        if (_baby.Body.LinearVelocity.X < 1.0f && _baby.Body.LinearVelocity.Y < 1.0f)
-                            if (almostDeadlock)
-                            {
-                                Console.WriteLine("O HAI REAPER");
-                                almostDeadlock = false;
-                                grimReaper = true;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Doorbell");
-                                almostDeadlock = true;
-                            }
-                        else
-                            almostDeadlock = false;
-                    }
-                else
-                    {
-                    almostDeadlock = false;
-                    }
-
-                threeSecondTimer = 0;
-
-            }
+       
         
         #region Properties
         public GameState State
