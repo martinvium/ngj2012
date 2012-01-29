@@ -259,23 +259,20 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-                else
+            else
             {
+                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+                _floatingScoreManager.Update(gameTime);
+                _hud.Update(_devil, _angel);
+                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
                 reaperUpdate(gameTime);
             }
+
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
                 _state = GameState.ShowStats;
             }
             
-
-                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
-                _floatingScoreManager.Update(gameTime);
-             _hud.Update(_devil, _angel);
-             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            
-
-
             base.Update(gameTime);
         }
 
