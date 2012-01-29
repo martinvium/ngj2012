@@ -192,7 +192,7 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
-            reaperUpdate(gameTime);
+            //reaperUpdate(gameTime);
 
             //Console.WriteLine(Vector2.Zero);
             //Console.WriteLine(babyTempPos1);
@@ -245,7 +245,7 @@ namespace TugOfBaby
             }
                 else
             {
-                reaperMove();
+                reaperUpdate(gameTime);
             }
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
