@@ -165,7 +165,7 @@ namespace TugOfBaby
                     if (goCollider.Reward.Effect == (int)Items.DRUGS)
                     {
                         evil.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL -= 50;
+                        HeadsUpDisplay.HOW_EVIL -= 50;                        
                     }
                     else if (goCollider.Reward.Effect == (int)Items.KNIFE)
                     {
@@ -191,11 +191,13 @@ namespace TugOfBaby
                     {
                         good.Statistics.PointsCollected += 50;
                         HeadsUpDisplay.HOW_EVIL += 50;
+                        DespawnItems();
                     }
                     else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
                     {
                         good.Statistics.PointsCollected += 50;
                         HeadsUpDisplay.HOW_EVIL += 50;
+                        DespawnItems();
                     }
 
                     goPlayer.HeldItem = goCollider;

@@ -53,7 +53,7 @@ namespace TugOfBaby
             redGlow.FrameTime = 1 / 8f;
 
             Animation blueGlow = new Animation(content.Load<Texture2D>("animations/blueglow"), new Rectangle(0, 0, 275, 275), 30, 0.5f, 10, 3);
-            redGlow.FrameTime = 1 / 8f;
+            blueGlow.FrameTime = 1 / 8f;
 
             Animation animation = new Animation(content.Load<Texture2D>("Animations/angel"), new Rectangle(0,0,110,126), 50, 1.0f, 10,5);
             _sprites.Add(Texture.ANGEL, new Sprite(animation, new Vector2(-18, -18)));
@@ -77,7 +77,7 @@ namespace TugOfBaby
             _sprites.Add(Texture.CHILD_LEFTHAND, new Sprite(content.Load<Texture2D>("Child/child_lefthand"), new Vector2(0, 0)));
             _sprites.Add(Texture.CHILD_RIGHTARM, new Sprite(content.Load<Texture2D>("Child/child_rightarm"), new Vector2(0, 0)));
             _sprites.Add(Texture.CHILD_RIGHTHAND, new Sprite(content.Load<Texture2D>("Child/child_righthand"), new Vector2(0, 0)));
-             animation = new Animation(content.Load<Texture2D>("animations/bible"), new Rectangle(0, 0, 100, 108), 20, 1.0f, 2, 10);
+             animation = new Animation(content.Load<Texture2D>("animations/bible"), new Rectangle(0, 0, 100, 108), 20, 1.0f, 10,2);
             _sprites.Add(Texture.BIBLE, new Sprite(animation, new Vector2(-18, -18),blueGlow));
 
 
