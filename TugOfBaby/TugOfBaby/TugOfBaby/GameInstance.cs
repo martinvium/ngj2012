@@ -178,6 +178,7 @@ namespace TugOfBaby
 
             //_ragdoll.LoadContent(Content);
 
+
             _debugView = new DebugViewXNA(_world);
             _debugView.AppendFlags(DebugViewFlags.DebugPanel);
             _debugView.DefaultShapeColor = Color.Black;
@@ -289,6 +290,11 @@ namespace TugOfBaby
              {
                  _released = true;
              }
+
+            if (_state == GameState.ShowCredit && _statScreen != null)
+            {
+                _statScreen.Update(this);
+            }
         }
 
         /// <summary>

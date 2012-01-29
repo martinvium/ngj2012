@@ -13,7 +13,7 @@ namespace TugOfBaby
     {
         GraphicsDevice _graphics;
         Vector2 _angelPos = new Vector2(485, 490);
-        bool _released = true;
+        bool _released = false;
         int devilPoints = 0;
         int angelPoints = 0;
         SpriteFont _font;
