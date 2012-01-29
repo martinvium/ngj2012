@@ -133,17 +133,18 @@ namespace TugOfBaby
 
             item.Pickupable = true;
 
-            Random rand = new Random();
-            float rX = rand.Next(20);
-            float rY = rand.Next(10);
-
             item.Body = BodyFactory.CreateRectangle(_world, 1f, 1f, 1.0f);
-            item.Body.Position = new Vector2(rX, rY);
+            item.Body.Position = GetRandomVector2();
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
             item.Type = _type;
             return item;
+        }
+
+        private Vector2 GetRandomVector2()
+        {
+            return new Vector2(GetRandom(0, Game1.WIDTH) / Game1.METER_IN_PIXEL, GetRandom(0, Game1.HEIGHT) / Game1.METER_IN_PIXEL);
         }
 
         public List<GameObject> GetAll()
