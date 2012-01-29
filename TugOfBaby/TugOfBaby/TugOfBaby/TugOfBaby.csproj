@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Background.cs" />
+    <Compile Include="Blood.cs" />
+    <Compile Include="BloodManager.cs" />
     <Compile Include="Reaper.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameObject.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Sprite.cs" />
     <Compile Include="Controls.cs" />
     <Compile Include="Stats.cs" />
+    <Compile Include="StatScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

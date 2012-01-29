@@ -7,33 +7,37 @@ namespace TugOfBaby
 {
     class Stats
     {
-        private static int _pointsCollected;
-        private static int _itemsCollected;
-        private static int _deedsDone;
-    
+        private int _pointsCollected;
+
+        public int PointsCollected
+        {
+            get { return _pointsCollected; }
+            set { _pointsCollected = value; }
+        }
+        private int _itemsCollected;
+
+        public int ItemsCollected
+        {
+            get { return _itemsCollected; }
+            set { _itemsCollected = value; }
+        }
+        private int _deedsDone;
+
+        public int DeedsDone
+        {
+            get { return _deedsDone; }
+            set { _deedsDone = value; }
+        }
+        
         public Stats()         
         {
-            _pointsCollected = 0;
+            _pointsCollected = 1;
             _itemsCollected = 0;
             _deedsDone = 0;
         }
 
         #region Properties
-        public static int DeedsDone
-        {
-            get { return Stats._deedsDone; }
-            set { Stats._deedsDone = value; }
-        }
-        public static int ItemsCollected
-        {
-            get { return Stats._itemsCollected; }
-            set { Stats._itemsCollected = value; }
-        }
-        public static int PointsCollected
-        {
-            get { return Stats._pointsCollected; }
-            set { Stats._pointsCollected = value; }
-        }
+
         #endregion
     }
 }

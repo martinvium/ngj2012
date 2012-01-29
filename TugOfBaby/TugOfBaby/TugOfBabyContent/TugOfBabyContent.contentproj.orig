@@ -172,12 +172,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="Reaper.png">
-      <Name>Reaper</Name>
-=======
     <Compile Include="badpic.png">
       <Name>badpic</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Reaper.png">
+      <Name>Reaper</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -207,7 +208,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+    <Compile Include="knife.png">
+=======
     <Compile Include="placeholder.png">
+>>>>>>> 7bf2a1bc04c15b4fc9a52d739c237a6f64619677
       <Name>knife</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -228,7 +233,6 @@
     </Compile>
     <Compile Include="Animations\angel0001.png">
       <Name>angel0001</Name>
->>>>>>> 44580e3b1d57a201912d2d5575d2f427a3d41ea9
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

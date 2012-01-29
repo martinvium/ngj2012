@@ -46,6 +46,7 @@ namespace TugOfBaby
 
         GameMenu _menu;
         HeadsUpDisplay _hud;
+        StatScreen _statScreen;
 
         SpriteBatch spriteBatch;
 
@@ -65,13 +66,14 @@ namespace TugOfBaby
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
+        BloodManager _bloodManager;
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
         Controls _controls;
 
         RopeJoint jLeftArm;
         RopeJoint jRightArm;
-
+        Ragdoll _ragdoll;
 
         public Game1()
         {
@@ -101,7 +103,7 @@ namespace TugOfBaby
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
 
-           
+
 
             base.Initialize();
         }
@@ -114,6 +116,7 @@ namespace TugOfBaby
             _angel = _gameObjectManager.GetAngel();
             _reaper = _gameObjectManager.GetReaper();
             _femaleBunny = _gameObjectManager.GetFemaleBunny();
+            _gameObjectManager.GetItem(RenderManager.Texture.BUNNY);
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
@@ -122,6 +125,8 @@ namespace TugOfBaby
             jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
             jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
+
+            //_ragdoll = new Ragdoll(_world, _baby.Body, _renderManager);
         }
 
         /// <summary>
@@ -135,6 +140,7 @@ namespace TugOfBaby
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
+            _bloodManager = new BloodManager(Content);
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
@@ -145,9 +151,6 @@ namespace TugOfBaby
             _controls.Angel = _angel;
             _controls.Baby = _baby;
             _controls.Devil = _devil;
-
-            //_gameObjectManager.GetItem("knife");
-            //_gameObjectManager.GetItem("bunny");
 
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
@@ -179,10 +182,10 @@ namespace TugOfBaby
         {
             // Allows the game to exit
             _controls.Update();
+            _gameObjectManager.Update();
 
             if (_baby.HeldItem != null)
             {
-                
                 _hud.PushItem(_baby.HeldItem);
             }
 
@@ -202,7 +205,7 @@ namespace TugOfBaby
             Console.WriteLine(babyTempPos1.X);
             */
             //Console.WriteLine((DateTime.Now.Second % 3)+1);
-
+            
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
                 _state = GameState.Menu;
@@ -218,11 +221,14 @@ namespace TugOfBaby
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
             {
-                _hud.UpdateEvilOMeter(1);
+                HeadsUpDisplay.HOW_EVIL += 1;
+                _angel.Statistics.PointsCollected++;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                _hud.UpdateEvilOMeter(-1);
+                HeadsUpDisplay.HOW_EVIL -= 1;
+                _devil.Statistics.PointsCollected++;
+                _bloodManager.addBlood(_devil.Body.Position * METER_IN_PIXEL, _angel.Body.Position * METER_IN_PIXEL);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.L))
             {
@@ -230,17 +236,28 @@ namespace TugOfBaby
             }
             if (Keyboard.GetState().IsKeyDown(Keys.K))
             {
-                _hud.PopItem();
+                _state = GameState.ShowStats;
+                
             }
             if (_state == GameState.Menu)
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-
-            _renderManager.Update(gameTime, _gameObjectManager.GetAll());
-            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-
+                else
+            {
+                reaperMove();
+            }
+            if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
+            {
+                _state = GameState.ShowStats;
+            }
             
+
+                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+            _hud.Update(_devil, _angel);
+                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            
+
 
             base.Update(gameTime);
         }
@@ -264,17 +281,40 @@ namespace TugOfBaby
                 up = true;
 
         
-            theBackground.Draw(spriteBatch);
+            
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
             }
-            else
+            else if(_state == GameState.Playing)
             {
+                theBackground.Draw(spriteBatch);
+                _bloodManager.Draw(spriteBatch);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
+            }
+            else if (_state == GameState.ShowStats)
+            {
+                theBackground.Draw(spriteBatch);
+                if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("devilwin"), Content);
+                    }
+                    _statScreen.Draw(_devil, spriteBatch);
+                }
+                else if (_devil.Statistics.PointsCollected < _angel.Statistics.PointsCollected)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("angelwin"), Content);
+                    }
+                    _statScreen.Draw(_angel, spriteBatch);
+                }
+            
             }
 
             // TODO: Add your drawing code here
@@ -380,6 +420,7 @@ namespace TugOfBaby
     public enum GameState
     {
         Menu,
-        Playing
+        Playing,
+        ShowStats
     }
 }
