@@ -64,16 +64,13 @@ namespace TugOfBaby
             animation = new Animation(content.Load<Texture2D>("animations/death"), new Rectangle(0, 0, 150, 180), 60, 1.0f, 10, 6);
             _sprites.Add(Texture.REAPER, new Sprite(animation, new Vector2(-18, -18)));
 
-            animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
+            animation = new Animation(content.Load<Texture2D>("animations/bunny2"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
             _sprites.Add(Texture.BUNNY, new Sprite(animation, new Vector2(-18, -18)));
 
             animation = new Animation(content.Load<Texture2D>("animations/bunny1"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
-            _sprites.Add(Texture.BUNNY_GIRL, new Sprite(animation, new Vector2(-18, -18)));
+            _sprites.Add(Texture.BUNNY_GIRL, new Sprite(animation, new Vector2(-50, -50)));
 
-            animation = new Animation(content.Load<Texture2D>("animations/bunny2"), new Rectangle(0, 0, 90, 120), 30, 1.0f, 10, 3);
-            _sprites.Add(Texture.MANBUNNY, new Sprite(animation, new Vector2(-18, -18)));
-
-            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18), redGlow));
+            _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-40, -40), redGlow));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
             _sprites.Add(Texture.CHILD_LEFTARM, new Sprite(content.Load<Texture2D>("Child/child_leftarm"), new Vector2(0,0)));

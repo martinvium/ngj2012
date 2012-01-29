@@ -116,7 +116,7 @@ namespace TugOfBaby
                     break;
                 case RenderManager.Texture.BUNNY_GIRL:
                     item.Reward.Effect = (int)Items.BUNNY_GIRL;
-                    item.Reward.EvilPoints = 50;
+                    item.Reward.GoodPoints = 50;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY:
@@ -131,9 +131,6 @@ namespace TugOfBaby
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     item.Reward.GoodPoints = 10;
                     break;
-                case RenderManager.Texture.MANBUNNY:
-                    item.Reward.Effect = (int)Items.MANBUNNY;
-                    break;
             }
 
             item.Pickupable = true;
@@ -142,7 +139,7 @@ namespace TugOfBaby
             float rX = rand.Next(20);
             float rY = rand.Next(10);
 
-            item.Body = BodyFactory.CreateRectangle(_world, 0.5f, 0.5f, 1.0f);
+            item.Body = BodyFactory.CreateRectangle(_world, 1f, 1f, 1.0f);
             item.Body.Position = new Vector2(rX, rY);
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
@@ -187,7 +184,6 @@ namespace TugOfBaby
                 {
                     evil.Statistics.CollectItem(evil, goCollider.Reward.GetAgnosticPoints());
                     HeadsUpDisplay.HOW_EVIL += goCollider.Reward.EvilPoints;
-                        GetItem(RenderManager.Texture.MANBUNNY);
                 }
             }
             else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)

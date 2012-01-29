@@ -115,7 +115,6 @@ namespace TugOfBaby
           
             _angel = _gameObjectManager.GetAngel();
             _reaper = _gameObjectManager.GetReaper();
-            _femaleBunny = _gameObjectManager.GetFemaleBunny();
             _gameObjectManager.GetItem(RenderManager.Texture.BUNNY);
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
