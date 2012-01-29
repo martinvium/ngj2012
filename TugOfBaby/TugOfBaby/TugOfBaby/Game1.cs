@@ -98,19 +98,10 @@ namespace TugOfBaby
         protected override void Draw(GameTime gameTime)
         {
             _gameInstance.Draw(gameTime);
-                }
-
-            else if (_state == GameState.ShowCredit)
-            {
-                if (_statScreen == null)
-                    _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("credits"), Content);
-                _statScreen.ChangeImage(Content.Load<Texture2D>("credits"));
-                _statScreen.Draw(null, spriteBatch, false);
-            }
+                
             base.Draw(gameTime);
 
         }
-        ShowStats,
-        ShowCredit
+
     }
 }

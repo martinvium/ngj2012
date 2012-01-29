@@ -354,9 +354,18 @@ namespace TugOfBaby
                         _statScreen = new StatScreen(_graphicsDevice, Content.Load<Texture2D>("angelwin"), Content);
                     }
                     _statScreen.Draw(_angel, spriteBatch, false);
-                } 
+                }
 
-                 
+
+            }
+            else if (_state == GameState.ShowCredit)
+            {
+                Texture2D credits =  Content.Load<Texture2D>("Credits");
+                if (_statScreen == null)
+                    _statScreen = new StatScreen(_graphicsDevice, credits, Content);
+
+                _statScreen.ChangeImage(credits);
+                _statScreen.Draw(null, spriteBatch, false);
             }
 
             // TODO: Add your drawing code here
@@ -389,6 +398,7 @@ namespace TugOfBaby
     {
         Menu,
         Playing,
-        ShowStats
+        ShowStats,
+        ShowCredit
     }
 }
