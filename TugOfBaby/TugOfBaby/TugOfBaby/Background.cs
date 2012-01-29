@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using System;
+using Microsoft.Xna.Framework.Media;
 
 namespace TugOfBaby
 {
     class Background
     {
-        SoundEffectInstance heavenlySoundInstance, hellishSoundInstance;
-        SoundEffect heavenlySound, hellishSound;
+        
+        Song  hellishSound;
 
         Texture2D heavenBG, hellBG, nothingBG;
 
@@ -28,7 +29,7 @@ namespace TugOfBaby
             //    hellishSoundInstance.Play();
             //if (heavenlySoundInstance.State == SoundState.Stopped)
             //    heavenlySoundInstance.Play();
-
+            
             //float hellChannel = 0;
             //float heavenChannel = 0;
 
@@ -69,15 +70,10 @@ namespace TugOfBaby
             nothingBG = _contentManager.Load<Texture2D>("background2");
 
             //LOAD SOUND
-            hellishSound = _contentManager.Load<SoundEffect>("cowbell");
-            heavenlySound = _contentManager.Load<SoundEffect>("synth_beep_2");
-            hellishSoundInstance = hellishSound.CreateInstance();
-            heavenlySoundInstance = heavenlySound.CreateInstance();
-            heavenlySoundInstance.Pan = -1.0f;
-            hellishSoundInstance.Pan = 1.0f;
-
-            heavenlySoundInstance.IsLooped = true;
-            hellishSoundInstance.IsLooped = true;
+            hellishSound = _contentManager.Load<Song>("backgroundAmbience");
+            MediaPlayer.Play(hellishSound);
+            MediaPlayer.IsRepeating = true;
+            
         }
 
         public void Draw(SpriteBatch _spriteBatch)
