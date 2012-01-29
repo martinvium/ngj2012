@@ -65,7 +65,7 @@ namespace TugOfBaby
 
         RopeJoint jLeftArm;
         RopeJoint jRightArm;
-
+        Ragdoll _ragdoll;
 
         public Game1()
         {
@@ -115,6 +115,8 @@ namespace TugOfBaby
             jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
             jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
+
+            //_ragdoll = new Ragdoll(_world, _baby.Body, _renderManager);
         }
 
         /// <summary>
@@ -174,16 +176,12 @@ namespace TugOfBaby
 
             if (_baby.HeldItem != null)
             {
-                
                 _hud.PushItem(_baby.HeldItem);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
-            reaperMove();
-            
-            
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
                 _state = GameState.Menu;
@@ -221,16 +219,20 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-
+                else
+            {
+                reaperMove();
+}
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
                 _state = GameState.ShowStats;
             }
             
 
-            _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
             _hud.Update(_devil, _angel);
-            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            }
 
             base.Update(gameTime);
         }

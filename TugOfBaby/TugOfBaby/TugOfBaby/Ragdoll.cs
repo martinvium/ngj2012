@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace TugOfBaby
 {
-    public class Ragdoll
+     class Ragdoll
     {
         private const float ArmDensity = 10;
         private const float LegDensity = 15;
@@ -33,33 +33,22 @@ namespace TugOfBaby
         private Body _upperRightArm;
         private Body _upperRightLeg;
 
-        public Ragdoll(World world, Vector2 position)
+        public Ragdoll(World world, Body head, RenderManager renderMan)
         {
-            CreateBody(world, position);
+            _head = head;
+            CreateBody(world, _head.Position, renderMan);
             CreateJoints(world);
         }
 
-        public Body Body
-        {
-            get { return _body; }
-        }
-
         //Torso
-        private void CreateBody(World world, Vector2 position)
+        private void CreateBody(World world, Vector2 position, RenderManager renderMan)
         {
-            //Head
-            _head = BodyFactory.CreateCircle(world, 0.5f, 10f);
-            _head.BodyType = BodyType.Dynamic;
-            _head.AngularDamping = LimbAngularDamping;
-            _head.Mass = 2f;
-            _head.Position = position;
-
             //Body
             _body = BodyFactory.CreateRoundedRectangle(world, .5f, .5f, 0.1f, 0.1f, 2, 10f);
             _body.BodyType = BodyType.Dynamic;
             _body.Mass = 2f;
             _body.Position = position + new Vector2(0f, .8f);
-
+            /*
             //Left Arm
             _lowerLeftArm = BodyFactory.CreateCapsule(world, .5f, 0.1f, ArmDensity);
             _lowerLeftArm.BodyType = BodyType.Dynamic;
@@ -114,7 +103,7 @@ namespace TugOfBaby
             _upperRightLeg.BodyType = BodyType.Dynamic;
             _upperRightLeg.AngularDamping = LimbAngularDamping;
             _upperRightLeg.Mass = 2f;
-            _upperRightLeg.Position = position + new Vector2(0.3f, 3f);
+            _upperRightLeg.Position = position + new Vector2(0.3f, 3f);*/
         }
 
         private void CreateJoints(World world)
@@ -131,7 +120,7 @@ namespace TugOfBaby
             jHeadBody.Frequency = frequency;
             jHeadBody.Length = 0.025f;
             world.AddJoint(jHeadBody);
-
+            /*
             //lowerLeftArm -> upperLeftArm
             DistanceJoint jLeftArm = new DistanceJoint(_lowerLeftArm, _upperLeftArm,
                                                        new Vector2(0f, -1f),
@@ -211,44 +200,12 @@ namespace TugOfBaby
             jRightLegBody.DampingRatio = dampingRatio;
             jRightLegBody.Frequency = frequency;
             jRightLegBody.Length = 0.02f;
-            world.AddJoint(jRightLegBody);
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            _face = new Sprite("Child/child_face");
-            _torso = new Sprite("Child/child_body");
-            _upperArm = new Sprite("Child/child_leftarm");
-            _lowerArm = new Sprite("Child/child_lefthand");
-            _upperLeg = new Sprite("Child/child_feet");
-            _lowerLeg = new Sprite("Child/child_feet");
-
-            _face.Texture = content.Load<Texture2D>(_face.Name);
-            _torso.Texture = content.Load<Texture2D>(_torso.Name);
-            _upperArm.Texture = content.Load<Texture2D>(_upperArm.Name);
-            _lowerArm.Texture = content.Load<Texture2D>(_lowerArm.Name);
-            _upperLeg.Texture = content.Load<Texture2D>(_upperLeg.Name);
-            _lowerLeg.Texture = content.Load<Texture2D>(_lowerLeg.Name);
-
-            /*AssetCreator creator = _screen.ScreenManager.Assets;
-            _face = new Sprite(creator.CircleTexture(0.9f, MaterialType.Squares, Color.Gray, 1f));
-            _torso = new Sprite(creator.TextureFromVertices(PolygonTools.CreateRoundedRectangle(2f, 4f, 0.5f, 0.7f, 2),
-                                                             MaterialType.Squares, Color.LightSlateGray, 0.8f));
-
-            _upperArm = new Sprite(creator.TextureFromVertices(PolygonTools.CreateCapsule(1.9f, 0.45f, 16),
-                                                                MaterialType.Squares, Color.DimGray, 0.8f));
-            _lowerArm = new Sprite(creator.TextureFromVertices(PolygonTools.CreateCapsule(1.9f, 0.45f, 16),
-                                                                MaterialType.Squares, Color.DarkSlateGray, 0.8f));
-
-            _upperLeg = new Sprite(creator.TextureFromVertices(PolygonTools.CreateCapsule(2f, 0.5f, 16),
-                                                                MaterialType.Squares, Color.DimGray, 0.8f));
-            _lowerLeg = new Sprite(creator.TextureFromVertices(PolygonTools.CreateCapsule(2f, 0.5f, 16),
-                                                                MaterialType.Squares, Color.DarkSlateGray, 0.8f));*/
+            world.AddJoint(jRightLegBody);*/
         }
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(_lowerLeg.Texture, ToDisplayUnits(_lowerLeftLeg.Position), null,
+            /*batch.Draw(_lowerLeg.Texture, ToDisplayUnits(_lowerLeftLeg.Position), null,
                         Color.White, _lowerLeftLeg.Rotation, _lowerLeg.Origin, 1f, SpriteEffects.None, 0f);
             batch.Draw(_lowerLeg.Texture, ToDisplayUnits(_lowerRightLeg.Position), null,
                         Color.White, _lowerRightLeg.Rotation, _lowerLeg.Origin, 1f, SpriteEffects.None, 0f);
@@ -272,7 +229,7 @@ namespace TugOfBaby
                         Color.White, _body.Rotation, _torso.Origin, 1f, SpriteEffects.None, 0f);
 
             batch.Draw(_face.Texture, ToDisplayUnits(_head.Position), null,
-                        Color.White, _head.Rotation, _face.Origin, 1f, SpriteEffects.None, 0f);
+                        Color.White, _head.Rotation, _face.Origin, 1f, SpriteEffects.None, 0f);*/
         }
 
         private Vector2 ToDisplayUnits(Vector2 pos)
