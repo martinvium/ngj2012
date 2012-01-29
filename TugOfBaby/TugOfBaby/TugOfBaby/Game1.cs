@@ -58,6 +58,7 @@ namespace TugOfBaby
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
+        BloodManager _bloodManager;
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
         Controls _controls;
@@ -127,6 +128,7 @@ namespace TugOfBaby
             theBackground = new Background();
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
+            _bloodManager = new BloodManager(Content);
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
@@ -198,10 +200,13 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
             {
                 HeadsUpDisplay.HOW_EVIL += 1;
+                _angel.Statistics.PointsCollected++;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 HeadsUpDisplay.HOW_EVIL -= 1;
+                _devil.Statistics.PointsCollected++;
+                _bloodManager.addBlood(_devil.Body.Position * METER_IN_PIXEL, _angel.Body.Position * METER_IN_PIXEL);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.L))
             {
@@ -216,6 +221,12 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
+
+            if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
+            {
+                _state = GameState.ShowStats;
+            }
+            
 
             _renderManager.Update(gameTime, _gameObjectManager.GetAll());
             _hud.Update(_devil, _angel);
@@ -243,13 +254,15 @@ namespace TugOfBaby
                 up = true;
 
         
-            theBackground.Draw(spriteBatch);
+            
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
             }
             else if(_state == GameState.Playing)
             {
+                theBackground.Draw(spriteBatch);
+                _bloodManager.Draw(spriteBatch);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jLeftArm.BodyA.Position * Game1.METER_IN_PIXEL, jLeftArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
@@ -257,11 +270,24 @@ namespace TugOfBaby
             }
             else if (_state == GameState.ShowStats)
             {
-                if (_statScreen == null)
+                theBackground.Draw(spriteBatch);
+                if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
                 {
-                    _statScreen = new StatScreen(GraphicsDevice);
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("devilwin"), Content);
+                    }
+                    _statScreen.Draw(_devil, spriteBatch);
                 }
-                _statScreen.Draw(_devil, _angel, spriteBatch);
+                else if (_devil.Statistics.PointsCollected < _angel.Statistics.PointsCollected)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("angelwin"), Content);
+                    }
+                    _statScreen.Draw(_angel, spriteBatch);
+                }
+            
             }
 
             // TODO: Add your drawing code here
