@@ -20,6 +20,10 @@ namespace TugOfBaby
             CHILD_LEFTHAND,
             CHILD_RIGHTARM,
             CHILD_RIGHTHAND,
+            CHILD_NEW_FACE,
+            CHILD_NEW_TORSO,
+            CHILD_NEW_ARM_LEFT,
+            CHILD_NEW_ARM_RIGHT,
             BUNNY,
             BUNNY_GIRL,
             BUNNY_CAPTURED,
@@ -89,6 +93,10 @@ namespace TugOfBaby
             _sprites.Add(Texture.GAME, new Sprite(content.Load<Texture2D>("games"),redGlow));
 
             _sprites.Add(Texture.BUNNY_CAPTURED, new Sprite(content.Load<Texture2D>("cageRabit")));
+            _sprites.Add(Texture.CHILD_NEW_FACE, new Sprite(content.Load<Texture2D>("NewerChild/head")));
+
+            animation = new Animation(content.Load<Texture2D>("NewerChild/body"), new Rectangle(0, 0, 42, 54), 30, 1.0f, 10, 3);
+            _sprites.Add(Texture.CHILD_NEW_TORSO, new Sprite(animation, new Vector2(30, 80)));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
@@ -98,6 +106,12 @@ namespace TugOfBaby
                 if (gameObject.Sprite != null && gameObject.Enabled)
                 {
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
+
+                    if (gameObject.Baby != null)
+                    {
+                        gameObject.Baby.Torso.Animation.Draw(spriteBatch, pos + gameObject.Baby.Torso.Origin, 0f, false);
+                    }
+
                     if (gameObject.Sprite.BackgroundAnimation != null)
                     {
                         gameObject.Sprite.BackgroundAnimation.Draw(spriteBatch, gameObject.Position, 0f, false);
@@ -112,6 +126,8 @@ namespace TugOfBaby
                     {
                         gameObject.Sprite.Animation.Draw(spriteBatch, pos, 0f,gameObject.Sprite.Flipped);
                     }
+
+                    
                 }
             }
         }
@@ -130,6 +146,9 @@ namespace TugOfBaby
                     {       
                         
                         gameObject.Sprite.Animation.Update(gametime);
+                    }
+                    if(gameObject.Baby != null) {
+                        gameObject.Baby.Torso.Animation.Update(gametime);
                     }
                 }
             }

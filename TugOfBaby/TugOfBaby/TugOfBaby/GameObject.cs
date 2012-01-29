@@ -23,6 +23,13 @@ namespace TugOfBaby
         bool enabled = true;
         RenderManager.Texture _type;
         Sprite capturedSprite;
+        Baby _baby;
+
+        public Baby Baby
+        {
+            get { return _baby; }
+            set { _baby = value; }
+        }
 
         public Sprite CapturedSprite
         {

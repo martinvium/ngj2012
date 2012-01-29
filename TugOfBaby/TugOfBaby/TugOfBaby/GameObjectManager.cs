@@ -32,10 +32,12 @@ namespace TugOfBaby
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_FACE);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
 
+            angel.Baby = new Baby();
+            angel.Baby.Torso = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_TORSO);
             return angel;
         }
 

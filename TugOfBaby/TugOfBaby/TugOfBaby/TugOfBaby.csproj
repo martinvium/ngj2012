@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
+    <Compile Include="Baby.cs" />
     <Compile Include="Background.cs" />
     <Compile Include="GameInstance.cs" />
     <Compile Include="EffectManager.cs" />
