@@ -82,9 +82,11 @@ namespace TugOfBaby
         {
             if(_gameInstance.Restart) 
             {
+                GameState nextState = _gameInstance.PreferredNextState;
                 _gameInstance = new GameInstance(_graphics, Content, this);
                 _gameInstance.Initialize(GraphicsDevice);
                 _gameInstance.LoadContent();
+                _gameInstance.State = nextState;
             }
 
             _gameInstance.Update(gameTime);
