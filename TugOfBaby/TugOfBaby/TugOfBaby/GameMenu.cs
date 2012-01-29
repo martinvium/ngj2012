@@ -118,6 +118,7 @@ namespace TugOfBaby
                     _gameInstance.State = GameState.Playing;
                     break;
                 case 1:
+                    _game.State = GameState.ShowCredit;
                     break;
                 case 2:
                     _gameInstance.Game.Exit();

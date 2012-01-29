@@ -53,23 +53,23 @@ namespace TugOfBaby
         {
             
             batch.Draw(winningScreen, Vector2.Zero, Color.White);
-            if (!lose)
+            if (winner != null)
             {
-           
-            //batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
+                if (!lose)
+                {
 
-            if(devilPoints < winner.Statistics.PointsCollected)
-                devilPoints++;
-            } 
-            
+                    //batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
 
+                    if (devilPoints < winner.Statistics.PointsCollected)
+                        devilPoints++;
+                }
+                
+            }
 
-
-            //angel stats
-            
-            
-
-
+        }
+        public void ChangeImage(Texture2D newImage)
+        {
+            winningScreen = newImage;
         }
     }
 }
