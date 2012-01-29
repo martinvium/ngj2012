@@ -35,6 +35,7 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
+
             return angel;
         }
 
@@ -44,7 +45,7 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
             angel.LabelColor = Color.Red;
-
+            angel.Body.Enabled = true;
             evil = angel;
             evil.Statistics = new Stats();
 
@@ -70,6 +71,8 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
             angel.Body = getCircle(.3f, angel);
             angel.Body.OnCollision += OnReaperCollision;
+            angel.Body.IgnoreCollisionWith(evil.Body);
+            angel.Body.IgnoreCollisionWith(good.Body);
             return angel;
         }
         public GameObject GetFemaleBunny()
@@ -141,6 +144,8 @@ namespace TugOfBaby
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
             item.Type = _type;
+            item.Body.IgnoreCollisionWith(good.Body);
+            item.Body.IgnoreCollisionWith(evil.Body);
             return item;
         }
 
@@ -162,6 +167,7 @@ namespace TugOfBaby
         private bool OnReaperCollision(Fixture Reaper, Fixture player, Contact contact)
             {
                 GameObject goPlayer = (player.Body.UserData as GameObject);
+
                 goPlayer.Enabled = false;
 
             
