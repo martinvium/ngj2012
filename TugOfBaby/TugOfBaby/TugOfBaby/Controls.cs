@@ -17,13 +17,13 @@ namespace TugOfBaby
         GameObject gameObject;
         GameObject devilObject;
         GameObject angelObject;
-        Game1 game;
+        GameInstance gameInstance;
 
         
 
-        public Controls(Game1 game)
+        public Controls(GameInstance gameInstance)
             {
-                this.game = game;
+                this.gameInstance = gameInstance;
             }
 
         public GameObject Angel
@@ -90,14 +90,17 @@ namespace TugOfBaby
                 devilObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
             }
 
-            if(padState.Buttons.A == ButtonState.Pressed)
+            if(padState.Buttons.A == ButtonState.Pressed && gameInstance.State == GameState.ShowStats)
             {
+                gameInstance.PreferredNextState = GameState.Playing;
+                gameInstance.Restart = true;
                 GamePad.SetVibration(PlayerIndex.One, 0, 1);
             }
 
-            if (padState.Buttons.B == ButtonState.Pressed)
+            if (padState.Buttons.B == ButtonState.Pressed && gameInstance.State == GameState.ShowStats)
             {
-                GamePad.SetVibration(PlayerIndex.One, 0, 0);
+                gameInstance.PreferredNextState = GameState.Menu;
+                gameInstance.Restart = true;
             }
 
             if (padState.Buttons.X == ButtonState.Pressed)
@@ -112,7 +115,7 @@ namespace TugOfBaby
 
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                game.Exit();
+                gameInstance.Game.Exit();
 
             
         

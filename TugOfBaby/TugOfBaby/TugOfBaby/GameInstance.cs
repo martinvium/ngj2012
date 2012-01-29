@@ -44,7 +44,7 @@ namespace TugOfBaby
         
 
         GameState _state;
-
+        GameState _preferredNextState;
 
         GameMenu _menu;
         HeadsUpDisplay _hud;
@@ -160,7 +160,7 @@ namespace TugOfBaby
 
             CreateBaby();
             
-            _controls = new Controls(_game);
+            _controls = new Controls(this);
             _controls.Angel = _angel;
             _controls.Baby = _baby;
             _controls.Devil = _devil;
@@ -390,6 +390,12 @@ namespace TugOfBaby
         {
             get { return _state; }
             set { _state = value; }
+        }
+
+        public GameState PreferredNextState
+        {
+            get { return _preferredNextState; }
+            set { _preferredNextState = value; }
         }
         #endregion
     }
