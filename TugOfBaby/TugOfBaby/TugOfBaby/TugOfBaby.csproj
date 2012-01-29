@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Background.cs" />
+    <Compile Include="EffectManager.cs" />
     <Compile Include="FloatingScoreManager.cs" />
     <Compile Include="FloatingScoreLabel.cs" />
     <Compile Include="Blood.cs" />

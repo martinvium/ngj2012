@@ -31,6 +31,8 @@ namespace TugOfBaby
         bool up = true;
         int bar = 0;
 
+        bool _released = true;
+
         bool grimReaper = false;
         
         public const float REAPERVELOCITY = 2.0f;
@@ -66,6 +68,7 @@ namespace TugOfBaby
         bool _showDebug = false;
         DebugViewXNA _debugView;
 
+        EffectManager _effectManager;
         BloodManager _bloodManager;
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
@@ -103,7 +106,8 @@ namespace TugOfBaby
         protected override void Initialize()
         {
             _renderManager = new RenderManager(GraphicsDevice);
-            _gameObjectManager = new GameObjectManager(_world, _renderManager);
+            _effectManager = new EffectManager(Content);
+            _gameObjectManager = new GameObjectManager(_world, _renderManager, _effectManager);
 
             base.Initialize();
         }
@@ -117,8 +121,6 @@ namespace TugOfBaby
             _reaper = _gameObjectManager.GetReaper();
           
             _reaper.Body.Position = new Vector2(100, 100);
-            _femaleBunny = _gameObjectManager.GetFemaleBunny();
-            _gameObjectManager.GetItem(RenderManager.Texture.BUNNY);
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
@@ -145,6 +147,7 @@ namespace TugOfBaby
             theBackground.LoadContent(this.Content);
             _renderManager.LoadContent(Content, _gameObjectManager.GetAll());
             _bloodManager = new BloodManager(Content);
+            
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
@@ -159,6 +162,7 @@ namespace TugOfBaby
             _floatingScoreManager = new FloatingScoreManager(_font);
             _floatingScoreManager.Add(_devil);
             _floatingScoreManager.Add(_angel);
+            _gameObjectManager.SpawnItems();
 
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
@@ -191,6 +195,7 @@ namespace TugOfBaby
             // Allows the game to exit
             _controls.Update();
             _gameObjectManager.Update();
+            _effectManager.update(gameTime);
 
             if (_baby.HeldItem != null)
             {
@@ -234,21 +239,26 @@ namespace TugOfBaby
             {
                 HeadsUpDisplay.HOW_EVIL += 1;
                 _angel.Statistics.PointsCollected++;
+               
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 HeadsUpDisplay.HOW_EVIL -= 1;
                 _devil.Statistics.PointsCollected++;
                 _bloodManager.addBlood(_devil.Body.Position * METER_IN_PIXEL, _angel.Body.Position * METER_IN_PIXEL);
+               
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            if (_released && Keyboard.GetState().IsKeyDown(Keys.L))
             {
-                _hud.PushItem(_devil);
+                _gameObjectManager.SpawnItems();
+                _effectManager.AddAngelEffect(_devil.Body.Position * METER_IN_PIXEL);
+                _released = false;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.K))
+            if (_released && Keyboard.GetState().IsKeyDown(Keys.K))
             {
-                _state = GameState.ShowStats;
-                
+                _gameObjectManager.DespawnItems();
+                _effectManager.AddDemonEffect(_devil.Position * METER_IN_PIXEL);
+                _released = false;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.G))
             {
@@ -262,23 +272,30 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-            else
+            else if(_state == GameState.Playing)
             {
+                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+                _floatingScoreManager.Update(gameTime);
+                _hud.Update(_devil, _angel);
+                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
                 reaperUpdate(gameTime);
+                if (HeadsUpDisplay.HOW_EVIL > 250 || HeadsUpDisplay.HOW_EVIL < 60)
+                {
+                    _gameObjectManager.StartBunnyBoss();
+                }
             }
+
             if (HeadsUpDisplay.HOW_EVIL <= 0 || HeadsUpDisplay.HOW_EVIL >= 309)
             {
                 _state = GameState.ShowStats;
             }
             
 
-                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
-                _floatingScoreManager.Update(gameTime);
-             _hud.Update(_devil, _angel);
-             _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            
 
-
+             if (Keyboard.GetState().IsKeyUp(Keys.L) && Keyboard.GetState().IsKeyUp(Keys.K))
+             {
+                 _released = true;
+             }
             base.Update(gameTime);
         }
 
@@ -315,6 +332,7 @@ namespace TugOfBaby
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
+                _effectManager.draw(spriteBatch);
                 _floatingScoreManager.Draw(spriteBatch);
             }
             else if (_state == GameState.ShowStats)
@@ -344,7 +362,7 @@ namespace TugOfBaby
                     }
                     _statScreen.Draw(_angel, spriteBatch, false);
                 } 
-                /*
+
                  * else if()
                     {
                      }
