@@ -70,6 +70,18 @@ namespace TugOfBaby
             if (threeSecondTimer > 2 && !grimReaper)
                 deadLock();
         }
+        public bool IsFlipped(GameObject gameObject)
+        {
+            if (_baby.Body.Position.X - gameObject.Body.Position.X > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
 
         public void reaperMove()
         {
@@ -89,7 +101,7 @@ namespace TugOfBaby
 
             if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
                 GamePad.SetVibration(PlayerIndex.One, 1, 1);
-
+            _reaper.Sprite.Flipped = IsFlipped(_reaper);
         }
 
         public void deadLock()

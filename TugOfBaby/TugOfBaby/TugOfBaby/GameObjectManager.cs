@@ -14,7 +14,7 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
-        GameObject evil, good;
+        GameObject evil, good, baby;
 
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -35,7 +35,7 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_FACE);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
-
+            baby = angel;
             angel.Baby = new Baby();
             angel.Baby.Torso = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_TORSO);
             return angel;
@@ -245,8 +245,26 @@ namespace TugOfBaby
 
             foreach (GameObject go in removeList){
                 _gameObjects.Remove(go);
-            }            
+            }
+
+            evil.Sprite.Flipped = IsFlipped(evil);
+            good.Sprite.Flipped = IsFlipped(good);
+            
         }
+
+        public bool IsFlipped(GameObject gameObject)
+        {
+            if (baby.Body.Position.X - gameObject.Body.Position.X > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+   
+        }
+
         public void SpawnItems()
         {
             GameObject item;
