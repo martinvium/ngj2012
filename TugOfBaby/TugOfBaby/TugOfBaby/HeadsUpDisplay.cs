@@ -35,7 +35,7 @@ namespace TugOfBaby
         {
             //todo->devil.points + angel.points /2 -- 309 * taht
             int percent = (_devil.Statistics.PointsCollected + _angel.Statistics.PointsCollected / 2) * 309;
-            Console.WriteLine("" + percent);
+            //Console.WriteLine("" + percent);
             
         }
 
