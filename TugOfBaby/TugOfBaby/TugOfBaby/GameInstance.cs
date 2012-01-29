@@ -101,6 +101,7 @@ namespace TugOfBaby
             BodyFactory.CreateEdge(_world, new Vector2(WIDTH, 0) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
             //bottom
             BodyFactory.CreateEdge(_world, new Vector2(0, HEIGHT) / METER_IN_PIXEL, new Vector2(WIDTH, HEIGHT) / METER_IN_PIXEL);
+            _graphics.IsFullScreen = true;
         }
 
         /// <summary>
