@@ -60,10 +60,12 @@ namespace TugOfBaby
         GameObjectManager _gameObjectManager;
         RenderManager _renderManager;
         Controls _controls;
+        FloatingScoreManager _floatingScoreManager;
 
         RopeJoint jLeftArm;
         RopeJoint jRightArm;
         Ragdoll _ragdoll;
+        SpriteFont _font;
 
         public Game1()
         {
@@ -123,6 +125,8 @@ namespace TugOfBaby
         /// </summary>
         protected override void LoadContent()
         {
+            _font = Content.Load<SpriteFont>("Courier New");
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             theBackground = new Background();
@@ -138,6 +142,10 @@ namespace TugOfBaby
             _controls.Angel = _angel;
             _controls.Baby = _baby;
             _controls.Devil = _devil;
+
+            _floatingScoreManager = new FloatingScoreManager(_font);
+            _floatingScoreManager.Add(_devil);
+            _floatingScoreManager.Add(_angel);
 
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
                                                _graphics.GraphicsDevice.Viewport.Height / 2f);
@@ -208,6 +216,14 @@ namespace TugOfBaby
             {
                 _hud.PopItem();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.G))
+            {
+                _angel.Statistics.CollectItem(_angel, 50);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                _devil.Statistics.CollectItem(_devil, 50);
+            }
             if (_state == GameState.Menu)
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
@@ -216,6 +232,7 @@ namespace TugOfBaby
             {
                 reaperMove();
                 _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+                _floatingScoreManager.Update(gameTime);
                 _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
             }
 
@@ -252,6 +269,7 @@ namespace TugOfBaby
                 _renderManager.DrawLine(spriteBatch, 1f, Color.Black, jRightArm.BodyA.Position * Game1.METER_IN_PIXEL, jRightArm.BodyB.Position * Game1.METER_IN_PIXEL);
                 _renderManager.Draw(spriteBatch, _gameObjectManager.GetAll());
                 _hud.Draw(spriteBatch, this.Window);
+                _floatingScoreManager.Draw(spriteBatch);
             }
 
             // TODO: Add your drawing code here

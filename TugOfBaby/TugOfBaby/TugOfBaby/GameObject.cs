@@ -18,6 +18,20 @@ namespace TugOfBaby
         Animation _animation;
         GameObject target;
         bool disposed = false;
+        FloatingScoreLabel _label;
+        Color _labelColor = Color.Black;
+
+        public Color LabelColor
+        {
+            get { return _labelColor; }
+            set { _labelColor = value; }
+        }
+
+        public FloatingScoreLabel Label
+        {
+            get { return _label; }
+            set { _label = value; }
+        }
 
         public bool Disposed
         {

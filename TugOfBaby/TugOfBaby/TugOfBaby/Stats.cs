@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace TugOfBaby
 {
@@ -16,6 +17,20 @@ namespace TugOfBaby
             _pointsCollected = 0;
             _itemsCollected = 0;
             _deedsDone = 0;
+        }
+
+        public void CollectItem(GameObject go, int points)
+        {
+            _itemsCollected += 1;
+            _pointsCollected += points;
+            go.Label = new FloatingScoreLabel("+" + points);
+        }
+
+        public void CompleteDeed(GameObject go, int points)
+        {
+            _deedsDone += 1;
+            _pointsCollected += points;
+            go.Label = new FloatingScoreLabel("+" + points);
         }
 
         #region Properties

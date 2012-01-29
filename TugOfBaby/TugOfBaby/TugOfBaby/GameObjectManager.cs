@@ -41,6 +41,7 @@ namespace TugOfBaby
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
+            angel.LabelColor = Color.Red;
 
             evil = angel;
             evil.Statistics = new Stats();
@@ -52,8 +53,8 @@ namespace TugOfBaby
         {
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.ANGEL);
-            angel.Body = getCircle(.3f, angel);    
-            
+            angel.Body = getCircle(.3f, angel);
+            angel.LabelColor = Color.SkyBlue;
             good = angel;        
             
 
