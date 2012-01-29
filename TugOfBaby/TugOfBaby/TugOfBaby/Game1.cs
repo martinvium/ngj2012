@@ -230,7 +230,7 @@ namespace TugOfBaby
             
 
                 _renderManager.Update(gameTime, _gameObjectManager.GetAll());
-            _hud.Update(_devil, _angel);
+             _hud.Update(_devil, _angel);
                 _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
             
 
@@ -260,6 +260,7 @@ namespace TugOfBaby
             if (_state == GameState.Menu)
             {
                 _menu.Draw(spriteBatch);
+
             }
             else if(_state == GameState.Playing)
             {

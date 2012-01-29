@@ -41,8 +41,8 @@ namespace TugOfBaby
 
         public void Draw(SpriteBatch batch, GameWindow window)
         {                   
-            batch.Draw(_evilOMeter, new Vector2(window.ClientBounds.Width / 2, 20), Color.White);
-            batch.Draw(_goodOMeter, new Vector2(window.ClientBounds.Width / 2, 20), new Rectangle(0, 0, 93 + HOW_EVIL, _evilOMeter.Height), Color.White);
+            batch.Draw(_evilOMeter, new Vector2(360, 20), Color.White);
+            batch.Draw(_goodOMeter, new Vector2(360, 20), new Rectangle(0, 0, 93 + HOW_EVIL, _evilOMeter.Height), Color.White);
 
             if (_heldObject != null)
             {

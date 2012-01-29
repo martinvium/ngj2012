@@ -12,6 +12,9 @@ namespace TugOfBaby
         string _name = "";       
         Texture2D _texture;
         Vector2 _origin = new Vector2(0, 0);
+        Animation _backgroundAnimation;
+
+
         Animation _animation;
         bool flipped = false;
 
@@ -36,6 +39,18 @@ namespace TugOfBaby
         public Sprite(Animation animation, Vector2 origin)
         {
             _animation = animation;
+            _origin = origin;
+        }
+        public Sprite(Animation animation, Vector2 origin, Animation glow)
+        {
+            _animation = animation;
+            _backgroundAnimation = glow;
+            _origin = origin;
+        }
+        public Sprite(Texture2D texture, Vector2 origin, Animation glow)
+        {
+            _backgroundAnimation = glow;
+            _texture = texture;
             _origin = origin;
         }
         public Vector2 Origin
@@ -65,6 +80,11 @@ namespace TugOfBaby
         {
             get { return flipped; }
             set { flipped = value; }
+        }
+        internal Animation BackgroundAnimation
+        {
+            get { return _backgroundAnimation; }
+            set { _backgroundAnimation = value; }
         }
     }
 }
