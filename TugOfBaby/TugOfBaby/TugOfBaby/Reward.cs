@@ -60,5 +60,19 @@ namespace TugOfBaby
             IS_ACTIVE = true;
             return effect;
         }
+
+        public void Apply(GameObject collider, GameObject good, GameObject evil)
+        {
+            if (collider.Reward.GoodPoints > 0)
+            {
+                good.Statistics.CollectItem(good, collider.Reward.GetAgnosticPoints());
+                HeadsUpDisplay.HOW_EVIL += collider.Reward.GoodPoints;
+            }
+            else
+            {
+                evil.Statistics.CollectItem(evil, collider.Reward.GetAgnosticPoints());
+                HeadsUpDisplay.HOW_EVIL -= collider.Reward.EvilPoints;
+            }
+        }
     }
 }

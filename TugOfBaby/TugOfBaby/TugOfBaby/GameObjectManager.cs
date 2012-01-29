@@ -174,16 +174,7 @@ namespace TugOfBaby
 
             if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
             {
-                if (goCollider.Reward.GoodPoints > 0)
-                {
-                    good.Statistics.CollectItem(good, goCollider.Reward.GetAgnosticPoints());
-                    HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GoodPoints;
-                }
-                else
-                {
-                    evil.Statistics.CollectItem(evil, goCollider.Reward.GetAgnosticPoints());
-                    HeadsUpDisplay.HOW_EVIL += goCollider.Reward.EvilPoints;
-                }
+                goCollider.Reward.Apply(goCollider, good, evil);
             }
             else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
             {
@@ -192,10 +183,9 @@ namespace TugOfBaby
                 {
                     if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
                     {
+                        DespawnItems(goPlayer.HeldItem.InteractionTargetOptions);
                         goPlayer.HeldItem.Disposed = true;
-                        goCollider.Disposed = true;
-                        evil.Statistics.CompleteDeed(evil, goCollider.Reward.GetAgnosticPoints());
-                        HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GetAgnosticPoints();
+                        goCollider.Reward.Apply(goCollider, good, evil);
                     }
                 }
                 else // we dont have an item
@@ -288,25 +278,12 @@ namespace TugOfBaby
 
             }
         }
-        public void DespawnItems(List<RenderManager.Texture> list)
+
+        public void DespawnItems(List<GameObject> gameObjects)
         {
-            //List<RenderManager.Texture> lists = new List<RenderManager.Texture>();
-            //lists.Add(RenderManager.Texture.KNIFE);
-            //DespawnItems(lists);
-            foreach (GameObject item in _gameObjects)
-            {
-                foreach (RenderManager.Texture type in list)
-                {
-                    if (item.Type == type) 
-                    {
-                        item.Disposed = true;
-                    }
-                }
+            foreach(GameObject gameObject in gameObjects) {
+                gameObject.Disposed = true;
             }
-        }
-        private void Destroy(GameObject _gameobject)
-        {
-            //_gameObjects.Remove(_gameobject);
         }
     }
 }
