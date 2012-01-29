@@ -400,6 +400,9 @@ namespace TugOfBaby
 
                 if (grimReaper)
                 {
+
+                    if(!_reaper.Enabled)
+                        _effectManager.AddDeathSpawnEffect(_reaper.Body.Position * Game1.METER_IN_PIXEL);
                     _reaper.Enabled = true;
                     
                     reaperMove();
@@ -411,6 +414,8 @@ namespace TugOfBaby
 
                 if (tenSecondTimer > 10)
                 {
+                    if (grimReaper)
+                        _effectManager.AddDeathDespawnEffect(_reaper.Body.Position * Game1.METER_IN_PIXEL);
                     grimReaper = false;
                     tenSecondTimer = 0;
                 }

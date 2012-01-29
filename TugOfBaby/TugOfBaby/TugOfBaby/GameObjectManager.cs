@@ -73,6 +73,7 @@ namespace TugOfBaby
             angel.Body.OnCollision += OnReaperCollision;
             angel.Body.IgnoreCollisionWith(evil.Body);
             angel.Body.IgnoreCollisionWith(good.Body);
+            
             return angel;
         }
         public GameObject GetFemaleBunny()
