@@ -63,7 +63,7 @@ namespace TugOfBaby
 
         RopeJoint jLeftArm;
         RopeJoint jRightArm;
-
+        Ragdoll _ragdoll;
 
         public Game1()
         {
@@ -113,6 +113,8 @@ namespace TugOfBaby
             jRightArm = new RopeJoint(_angel.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(.01f, 0f));
             jRightArm.MaxLength = 2f;
             _world.AddJoint(jRightArm);
+
+            //_ragdoll = new Ragdoll(_world, _baby.Body, _renderManager);
         }
 
         /// <summary>

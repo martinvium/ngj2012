@@ -15,6 +15,11 @@ namespace TugOfBaby
             ANGEL,
             DEVIL,
             BABY,
+            BABY_TORSO,
+            CHILD_LEFTARM,
+            CHILD_LEFTHAND,
+            CHILD_RIGHTARM,
+            CHILD_RIGHTHAND,
             BUNNY,
             KNIFE,
             DRUGS,
@@ -58,6 +63,10 @@ namespace TugOfBaby
             _sprites.Add(Texture.KNIFE, new Sprite(content.Load<Texture2D>("knife"), new Vector2(-18, -18)));
 
             _sprites.Add(Texture.BABY, new Sprite(content.Load<Texture2D>("Child/child_face"), new Vector2(-55, -55)));
+            _sprites.Add(Texture.CHILD_LEFTARM, new Sprite(content.Load<Texture2D>("Child/child_leftarm"), new Vector2(0,0)));
+            _sprites.Add(Texture.CHILD_LEFTHAND, new Sprite(content.Load<Texture2D>("Child/child_lefthand"), new Vector2(0, 0)));
+            _sprites.Add(Texture.CHILD_RIGHTARM, new Sprite(content.Load<Texture2D>("Child/child_rightarm"), new Vector2(0, 0)));
+            _sprites.Add(Texture.CHILD_RIGHTHAND, new Sprite(content.Load<Texture2D>("Child/child_righthand"), new Vector2(0, 0)));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
