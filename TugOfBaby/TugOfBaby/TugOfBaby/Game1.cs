@@ -243,7 +243,7 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-                else
+            else
             {
                 reaperUpdate(gameTime);
             }
