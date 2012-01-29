@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Factories;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Dynamics.Contacts;
+using System.Security.Cryptography;
 
 namespace TugOfBaby
 {
@@ -18,11 +19,13 @@ namespace TugOfBaby
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
         RenderManager _renderManager;
+        
 
         public GameObjectManager(World world, RenderManager renderMan)
         {
             _world = world;
             _renderManager = renderMan;
+            
         }
 
         public GameObject GetBaby()
@@ -219,18 +222,47 @@ namespace TugOfBaby
                 _gameObjects.Remove(go);
             }            
         }
-        public void SpawnItem()
+        public void SpawnItem(EffectManager effectManager)
         {
+            GameObject item;
             //evil!
-            GetItem(RenderManager.Texture.DRUGS).Body.Position = new Vector2();
-            GetItem(RenderManager.Texture.GAME).Body.Position = new Vector2();
-
+            item = GetItem(RenderManager.Texture.DRUGS);
+            item.Body.Position = RandomPlace();
+            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            item = GetItem(RenderManager.Texture.GAME);
+            item.Body.Position = RandomPlace();
+            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
             //good
-            GetItem(RenderManager.Texture.VEGETABLE).Body.Position = new Vector2();
-            GetItem(RenderManager.Texture.BIBLE).Body.Position = new Vector2();
+            item = GetItem(RenderManager.Texture.VEGETABLE);
+            item.Body.Position = RandomPlace();
+            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            item = GetItem(RenderManager.Texture.BIBLE);
+            item.Body.Position = RandomPlace();
+            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
         }
-        
 
+        private Vector2 RandomPlace() 
+        {
+
+            Random ran = new Random();
+            Vector2 randomPlace = new Vector2((float)GetRandom(0,1280) / Game1.METER_IN_PIXEL, (float)GetRandom(0,720)/Game1.METER_IN_PIXEL);
+            return randomPlace;
+        }
+        private int GetRandom(int min, int max) 
+        {
+            var _rand = RandomNumberGenerator.Create();
+            if (min > max) throw new ArgumentOutOfRangeException("min");
+
+            byte[] bytes = new byte[4];
+
+            _rand.GetBytes(bytes);
+
+            uint next = BitConverter.ToUInt32(bytes, 0);
+
+            int range = max - min;
+
+            return (int)((next % range) + min);
+        }
         public void DespawnItems()
         {
             foreach (GameObject item in _gameObjects)
