@@ -125,6 +125,7 @@ namespace TugOfBaby
                     break;
                 case RenderManager.Texture.BUNNY:
                     item.Reward.Type = Reward.RewardType.BUNNY;
+                    item.CapturedSprite = _renderManager.GetSprite(RenderManager.Texture.BUNNY_CAPTURED);
                     break;
                 case RenderManager.Texture.BIBLE:
                     item.Reward.GoodPoints = 20;

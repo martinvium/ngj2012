@@ -94,7 +94,6 @@ namespace TugOfBaby
             {
                 gameInstance.PreferredNextState = GameState.Playing;
                 gameInstance.Restart = true;
-                GamePad.SetVibration(PlayerIndex.One, 0, 1);
             }
 
             if (padState.Buttons.B == ButtonState.Pressed && gameInstance.State == GameState.ShowStats)

@@ -50,6 +50,10 @@ namespace TugOfBaby
                 {
                     _heldObject = null;
                 }
+                else if(_heldObject.CapturedSprite != null) 
+                {
+                    batch.Draw(_heldObject.CapturedSprite.Texture, new Vector2((float)window.ClientBounds.Width - 165, (float)window.ClientBounds.Height - 190), Color.White);
+                }
                 else if (_heldObject.Sprite.Animation != null)
                 {
                     _heldObject.Sprite.Animation.Draw(batch, new Vector2((float)window.ClientBounds.Width / 2, (float)window.ClientBounds.Height - 50), 0f, false);

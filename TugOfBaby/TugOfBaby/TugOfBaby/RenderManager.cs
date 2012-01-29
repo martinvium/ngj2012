@@ -22,6 +22,7 @@ namespace TugOfBaby
             CHILD_RIGHTHAND,
             BUNNY,
             BUNNY_GIRL,
+            BUNNY_CAPTURED,
             KNIFE,
             DRUGS,
             VEGETABLE,
@@ -86,6 +87,8 @@ namespace TugOfBaby
             _sprites.Add(Texture.DRUGS, new Sprite(content.Load<Texture2D>("drugs"),redGlow));
 
             _sprites.Add(Texture.GAME, new Sprite(content.Load<Texture2D>("games"),redGlow));
+
+            _sprites.Add(Texture.BUNNY_CAPTURED, new Sprite(content.Load<Texture2D>("cageRabit")));
         }
 
         public void Draw(SpriteBatch spriteBatch, List<GameObject> all)
