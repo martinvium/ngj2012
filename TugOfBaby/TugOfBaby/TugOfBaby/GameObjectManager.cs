@@ -15,7 +15,7 @@ namespace TugOfBaby
     {
         GameObject evil, good;
 
-        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        enum Items { DRUGS, KNIFE, BUNNY, MANBUNNY, BIBLE, VEGETABLES };
         
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -120,6 +120,9 @@ namespace TugOfBaby
                 case RenderManager.Texture.VEGETABLE:
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     break;
+                case RenderManager.Texture.MANBUNNY:
+                    item.Reward.Effect = (int)Items.MANBUNNY;
+                    break;
             }
 
             item.Pickupable = true;
@@ -133,7 +136,7 @@ namespace TugOfBaby
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
-            
+            item.Type = _type;
             return item;
         }
 
@@ -178,6 +181,7 @@ namespace TugOfBaby
                     {
                         goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
                         goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
+                        GetItem(RenderManager.Texture.MANBUNNY);
                         Console.Write("KILLS RABBIT");
                     }
                     else if (goCollider.Reward.Effect == (int)Items.BIBLE)
@@ -217,10 +221,60 @@ namespace TugOfBaby
 
             foreach (GameObject go in removeList){
                 _gameObjects.Remove(go);
-            }
-            
+            }            
         }
+        public void SpawnItem()
+        {
+            //evil!
+            GetItem(RenderManager.Texture.DRUGS).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.GAME).Body.Position = new Vector2();
 
+            //good
+            GetItem(RenderManager.Texture.VEGETABLE).Body.Position = new Vector2();
+            GetItem(RenderManager.Texture.BIBLE).Body.Position = new Vector2();
+        }
+        
+
+        public void DespawnItems()
+        {
+            foreach (GameObject item in _gameObjects)
+            {
+                switch (item.Type)
+                {
+                    case RenderManager.Texture.DRUGS:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.VEGETABLE:
+                        item.Disposed = true;
+                        break;            
+                    case RenderManager.Texture.BIBLE:
+                        item.Disposed = true;
+                        break;
+                    case RenderManager.Texture.GAME:
+                        item.Disposed = true;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }
+        public void DespawnItems(List<RenderManager.Texture> list)
+        {
+            //List<RenderManager.Texture> lists = new List<RenderManager.Texture>();
+            //lists.Add(RenderManager.Texture.KNIFE);
+            //DespawnItems(lists);
+            foreach (GameObject item in _gameObjects)
+            {
+                foreach (RenderManager.Texture type in list)
+                {
+                    if (item.Type == type) 
+                    {
+                        item.Disposed = true;
+                    }
+                }
+            }
+        }
         private void Destroy(GameObject _gameobject)
         {
             //_gameObjects.Remove(_gameobject);
