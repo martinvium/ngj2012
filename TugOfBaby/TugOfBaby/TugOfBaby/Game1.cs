@@ -119,7 +119,8 @@ namespace TugOfBaby
           
             _angel = _gameObjectManager.GetAngel();
             _reaper = _gameObjectManager.GetReaper();
-            
+          
+            _reaper.Body.Position = new Vector2(100, 100);
 
             jLeftArm = new RopeJoint(_devil.Body, _baby.Body, new Vector2(0f, 0f), new Vector2(-.01f, 0f));
             jLeftArm.MaxLength = 2f;
@@ -204,6 +205,9 @@ namespace TugOfBaby
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
+
+            if (!_baby.Enabled)
+                _state = GameState.ShowStats;
             //reaperUpdate(gameTime);
 
             //Console.WriteLine(Vector2.Zero);
@@ -333,14 +337,23 @@ namespace TugOfBaby
             }
             else if (_state == GameState.ShowStats)
             {
+                GamePad.SetVibration(PlayerIndex.One, 0, 0);
                 theBackground.Draw(spriteBatch);
+                if(!_baby.Enabled)
+                {
+                    if (_statScreen == null)
+                    {
+                        _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("NobodyWin"), Content);
+                    }
+                    _statScreen.Draw(_devil, spriteBatch, false);
+                }
                 if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
                 {
                     if (_statScreen == null)
                     {
                         _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("devilwin"), Content);
                     }
-                    _statScreen.Draw(_devil, spriteBatch);
+                    _statScreen.Draw(_devil, spriteBatch, false);
                 }
                 else if (_devil.Statistics.PointsCollected < _angel.Statistics.PointsCollected)
                 {
@@ -348,10 +361,10 @@ namespace TugOfBaby
                     {
                         _statScreen = new StatScreen(GraphicsDevice, Content.Load<Texture2D>("angelwin"), Content);
                     }
-                    _statScreen.Draw(_angel, spriteBatch);
-                }
+                    _statScreen.Draw(_angel, spriteBatch, false);
+                } 
 
-            
+                 
             }
 
             // TODO: Add your drawing code here
@@ -405,6 +418,7 @@ namespace TugOfBaby
                 if (threeSecondTimer > 3 && !grimReaper)
                     deadLock();
             }
+
         public void reaperMove()
         {
             babyDir = new Vector2();

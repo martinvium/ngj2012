@@ -69,6 +69,7 @@ namespace TugOfBaby
             GameObject angel = GetBase();
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
             angel.Body = getCircle(.3f, angel);
+            angel.Body.OnCollision += OnReaperCollision;
             return angel;
         }
         public GameObject GetFemaleBunny()
@@ -156,7 +157,17 @@ namespace TugOfBaby
         private bool OnCollision(Fixture fixtureA, Fixture fixtureB, Contact contact)
         {
             return true;
-        }
+        } 
+
+        private bool OnReaperCollision(Fixture Reaper, Fixture player, Contact contact)
+            {
+                GameObject goPlayer = (player.Body.UserData as GameObject);
+                goPlayer.Enabled = false;
+
+            
+
+            return true;
+            } 
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
@@ -193,7 +204,7 @@ namespace TugOfBaby
                         DespawnItems();
                         SpawnItems();
                         bunnyIsONTheProwl = false;
-                    }
+                    } 
                 }
                 else // we dont have an item
                 {

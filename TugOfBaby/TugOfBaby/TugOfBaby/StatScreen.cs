@@ -30,19 +30,19 @@ namespace TugOfBaby
         }
 
 
-        public void Draw(GameObject winner, SpriteBatch batch)
+        public void Draw(GameObject winner, SpriteBatch batch, bool lose)
         {
-
-
-            batch.Draw(winningScreen, Vector2.Zero, Color.White); 
-           
+            
+            batch.Draw(winningScreen, Vector2.Zero, Color.White);
+            if (!lose)
+            {
            
             batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
 
             if(devilPoints < winner.Statistics.PointsCollected)
                 devilPoints++;
-
-         
+            } 
+            
 
 
 
