@@ -15,8 +15,6 @@ namespace TugOfBaby
     {
         GameObject evil, good;
 
-        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES, BUNNY_GIRL };
-        
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
         RenderManager _renderManager;
@@ -106,30 +104,27 @@ namespace TugOfBaby
 
             switch(_type){
                 case RenderManager.Texture.DRUGS:
-                    item.Reward.Effect = (int)Items.DRUGS;
                     item.Reward.EvilPoints = 20;
                     break;
                 case RenderManager.Texture.KNIFE:
-                    item.Reward.Effect = (int)Items.KNIFE;
                     item.Reward.EvilPoints = 50;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY_GIRL:
-                    item.Reward.Effect = (int)Items.BUNNY_GIRL;
                     item.Reward.GoodPoints = 50;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY:
-                    item.Reward.Effect = (int)Items.BUNNY;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BIBLE:
-                    item.Reward.Effect = (int)Items.BIBLE;
                     item.Reward.GoodPoints = 20;
                     break;
                 case RenderManager.Texture.VEGETABLE:
-                    item.Reward.Effect = (int)Items.VEGETABLES;
                     item.Reward.GoodPoints = 10;
+                    break;
+                case RenderManager.Texture.GAME:
+                    item.Reward.EvilPoints = 10;
                     break;
             }
 
