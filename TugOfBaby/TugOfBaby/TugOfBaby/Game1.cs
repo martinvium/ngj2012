@@ -356,8 +356,10 @@ namespace TugOfBaby
                     GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
 
                 Console.WriteLine(_reaper.Position);
-                if (!grimReaper)
+                if (!grimReaper){
                     _reaper.Enabled = false;
+                _reaper.Position = new Vector2(0.15f, 0.09f);
+                }
 
                 if (grimReaper)
                 {
