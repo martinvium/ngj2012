@@ -100,7 +100,7 @@ namespace TugOfBaby
                     Vector2 pos = gameObject.Position + gameObject.Sprite.Origin;
                     if (gameObject.Sprite.BackgroundAnimation != null)
                     {
-                        gameObject.Sprite.BackgroundAnimation.Draw(spriteBatch, gameObject.Position, 0f, false);
+                       gameObject.Sprite.BackgroundAnimation.Draw(spriteBatch, gameObject.Position, 0f, gameObject.Sprite.Flipped);
                     }
 
                     if (gameObject.Sprite.Animation == null)
