@@ -16,7 +16,7 @@ namespace TugOfBaby
         Reward reward;
         GameObject heldItem;
         Animation _animation;
-        GameObject target;
+        List<GameObject> _interactionTargetOptions = new List<GameObject>();
         bool disposed = false;
         FloatingScoreLabel _label;
         Color _labelColor = Color.Black;
@@ -50,12 +50,10 @@ namespace TugOfBaby
             }
         }
 
-
-
-        internal GameObject Target
+        public List<GameObject> InteractionTargetOptions
         {
-            get { return target; }
-            set { target = value; }
+            get { return _interactionTargetOptions; }
+            set { _interactionTargetOptions = value; }
         }
         
         Stats statistics;

@@ -15,7 +15,7 @@ namespace TugOfBaby
     {
         GameObject evil, good;
 
-        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES, BUNNY_GIRL };
         
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -112,9 +112,16 @@ namespace TugOfBaby
                 case RenderManager.Texture.KNIFE:
                     item.Reward.Effect = (int)Items.KNIFE;
                     item.Reward.EvilPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
+                    break;
+                case RenderManager.Texture.BUNNY_GIRL:
+                    item.Reward.Effect = (int)Items.BUNNY_GIRL;
+                    item.Reward.EvilPoints = 50;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY:
                     item.Reward.Effect = (int)Items.BUNNY;
+                    item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BIBLE:
                     item.Reward.Effect = (int)Items.BIBLE;
@@ -153,56 +160,51 @@ namespace TugOfBaby
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
-            if (fixtureB.Body.UserData is GameObject)
+            if (fixtureB.Body.UserData is GameObject == false)
             {
-                GameObject goCollider = (fixtureB.Body.UserData as GameObject);
-                GameObject goPlayer = (player.Body.UserData as GameObject);
+                return true;
+            }
 
-                if (goCollider.Pickupable == true)
+            GameObject goCollider = (fixtureB.Body.UserData as GameObject);
+            GameObject goPlayer = (player.Body.UserData as GameObject);
+
+            if (goCollider.Reward == null)
+            {
+                return true;
+            }
+
+            if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
+            {
+                if (goCollider.Reward.GoodPoints > 0)
                 {
-                    if (goCollider.Reward.Effect == (int)Items.DRUGS)
-                    {
-
-                        evil.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL -= 50;
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.KNIFE)
-                    {
-                        //har vi kaninen?
-                        if (goPlayer.HeldItem.Target == goCollider)
-                        {
-                            goPlayer.HeldItem.Disposed = true;
-                            goCollider.Disposed = true;
-                            evil.Statistics.CompleteDeed(evil, goCollider.Reward.GetAgnosticPoints());
-                            HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GetAgnosticPoints();
-                        }
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.BUNNY)
-                    {
-                        goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
-                        goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
-                        Console.Write("KILLS RABBIT");
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.BIBLE)
-                    {
-                        good.Statistics.CollectItem(good, goCollider.Reward.GetAgnosticPoints());
-                        HeadsUpDisplay.HOW_EVIL += goCollider.Reward.GetAgnosticPoints();
-                    }
-                    else if (goCollider.Reward.Effect == (int)Items.VEGETABLES)
-                    {
-                        good.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL += 50;
-                    }
-
-                    goPlayer.HeldItem = goCollider;
-                    Console.Write(evil.Statistics.PointsCollected);
-                    
-                    //Destroy((fixtureB.Body.UserData as GameObject));
+                    good.Statistics.CollectItem(good, goCollider.Reward.GetAgnosticPoints());
+                    HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GoodPoints;
                 }
-                else if ((fixtureB.Body.UserData as GameObject).Reward != null)
+                else
                 {
-                    (fixtureB.Body.UserData as GameObject).Reward.enable();
-                    //Destroy((fixtureB.Body.UserData as GameObject));
+                    evil.Statistics.CollectItem(evil, goCollider.Reward.GetAgnosticPoints());
+                    HeadsUpDisplay.HOW_EVIL += goCollider.Reward.EvilPoints;
+                }
+            }
+            else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
+            {
+                // already have an item, and collided is a valid destination
+                if (goPlayer.HeldItem != null)
+                {
+                    if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
+                    {
+                        goPlayer.HeldItem.Disposed = true;
+                        goCollider.Disposed = true;
+                        evil.Statistics.CompleteDeed(evil, goCollider.Reward.GetAgnosticPoints());
+                        HeadsUpDisplay.HOW_EVIL -= goCollider.Reward.GetAgnosticPoints();
+                    }
+                }
+                else // we dont have an item
+                {
+                    goPlayer.HeldItem = goCollider;
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.KNIFE));
+                    goPlayer.HeldItem.InteractionTargetOptions.Add(GetItem(RenderManager.Texture.BUNNY_GIRL));
+                    goCollider.Enabled = false;
                 }
             }
             

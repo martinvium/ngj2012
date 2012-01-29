@@ -7,7 +7,7 @@ namespace TugOfBaby
 {
     class Reward
     {
-        public enum Type
+        public enum RewardType
         {
             COLLECT,
             BUNNY
@@ -17,11 +17,12 @@ namespace TugOfBaby
         int effect;
         int _evilPoints = 0;
         int _goodPoints = 0;
-        Type _type = Type.COLLECT;
+        RewardType _type = RewardType.COLLECT;
 
-        public Type GetType()
+        public RewardType Type
         {
-            return _type;
+            get { return _type; }
+            set { _type = value; }
         }
 
         public int EvilPoints
