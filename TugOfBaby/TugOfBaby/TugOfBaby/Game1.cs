@@ -173,16 +173,12 @@ namespace TugOfBaby
 
             if (_baby.HeldItem != null)
             {
-                
                 _hud.PushItem(_baby.HeldItem);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
                 _state = GameState.Playing;
 
-            reaperMove();
-            
-            
             if(GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed)
             {
                 _state = GameState.Menu;
@@ -216,9 +212,12 @@ namespace TugOfBaby
             {
                 _menu.Update(GamePad.GetState(PlayerIndex.One));
             }
-
-            _renderManager.Update(gameTime, _gameObjectManager.GetAll());
-            _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            else
+            {
+                reaperMove();
+                _renderManager.Update(gameTime, _gameObjectManager.GetAll());
+                _world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+            }
 
             base.Update(gameTime);
         }
