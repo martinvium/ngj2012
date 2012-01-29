@@ -37,7 +37,12 @@ namespace TugOfBaby
         public bool Enabled
         {
             get { return enabled; }
-            set { enabled = value; }
+            set 
+            { 
+                enabled = value;
+                _body.Enabled = enabled;
+            
+            }   
         }
 
         public bool Disposed

@@ -356,8 +356,19 @@ namespace TugOfBaby
 
         public void reaperUpdate(GameTime _gameTime)
             {
+                if (almostDeadlock)
+                    GamePad.SetVibration(PlayerIndex.One, 0.15f, 0.15f);
+                else if(!grimReaper)
+                    GamePad.SetVibration(PlayerIndex.One, 0.0f, 0.0f);
+
+                Console.WriteLine(_reaper.Position);
+                if (!grimReaper)
+                    _reaper.Enabled = false;
+
                 if (grimReaper)
                 {
+                    _reaper.Enabled = true;
+                    
                     reaperMove();
                     tenSecondTimer += (float)_gameTime.ElapsedGameTime.TotalSeconds;
                 }
@@ -383,7 +394,7 @@ namespace TugOfBaby
             _reaper.Body.ApplyLinearImpulse(babyDir * 0.005f);
 
             //Console.WriteLine(Vector2.Distance(_baby.Position, _reaper.Position));
-            /*
+            
             if(Vector2.Distance(_baby.Position, _reaper.Position) < 300)
                 GamePad.SetVibration(PlayerIndex.One, 0.25f, 0.25f);
 
@@ -392,13 +403,13 @@ namespace TugOfBaby
 
             if (Vector2.Distance(_baby.Position, _reaper.Position) < 100)
                 GamePad.SetVibration(PlayerIndex.One, 1, 1);
-            */
+            
         }
         
         public void deadLock()
             {
 
-              
+                
           
                 
             if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
