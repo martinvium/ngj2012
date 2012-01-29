@@ -19,13 +19,14 @@ namespace TugOfBaby
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
         RenderManager _renderManager;
-        
+        EffectManager _effectManager;
+        bool bunnyIsONTheProwl = false;
 
-        public GameObjectManager(World world, RenderManager renderMan)
+        public GameObjectManager(World world, RenderManager renderMan, EffectManager effectManager)
         {
             _world = world;
             _renderManager = renderMan;
-            
+            _effectManager = effectManager;
         }
 
         public GameObject GetBaby()
@@ -110,11 +111,11 @@ namespace TugOfBaby
                     item.Reward.EvilPoints = 20;
                     break;
                 case RenderManager.Texture.KNIFE:
-                    item.Reward.EvilPoints = 50;
+                    item.Reward.EvilPoints = 100;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY_GIRL:
-                    item.Reward.GoodPoints = 50;
+                    item.Reward.GoodPoints = 100;
                     item.Reward.Type = Reward.RewardType.BUNNY;
                     break;
                 case RenderManager.Texture.BUNNY:
@@ -175,18 +176,23 @@ namespace TugOfBaby
             if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
             {
                 goCollider.Reward.Apply(goCollider, good, evil);
+                DespawnItems();
+                SpawnItems();
             }
             else if (goCollider.Reward.Type == Reward.RewardType.BUNNY)
             {
                 // already have an item, and collided is a valid destination
-                if (goPlayer.HeldItem != null)
-                        DespawnItems();
+                if (goPlayer.HeldItem != null)                        
                 {
                     if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
                     {
                         DespawnItems(goPlayer.HeldItem.InteractionTargetOptions);
                         goPlayer.HeldItem.Disposed = true;
+                        goPlayer.HeldItem = null;
                         goCollider.Reward.Apply(goCollider, good, evil);
+                        DespawnItems();
+                        SpawnItems();
+                        bunnyIsONTheProwl = false;
                     }
                 }
                 else // we dont have an item
@@ -214,23 +220,23 @@ namespace TugOfBaby
                 _gameObjects.Remove(go);
             }            
         }
-        public void SpawnItem(EffectManager effectManager)
+        public void SpawnItems()
         {
             GameObject item;
             //evil!
             item = GetItem(RenderManager.Texture.DRUGS);
             item.Body.Position = RandomPlace();
-            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            _effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
             item = GetItem(RenderManager.Texture.GAME);
             item.Body.Position = RandomPlace();
-            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            _effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
             //good
             item = GetItem(RenderManager.Texture.VEGETABLE);
             item.Body.Position = RandomPlace();
-            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            _effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
             item = GetItem(RenderManager.Texture.BIBLE);
             item.Body.Position = RandomPlace();
-            effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
+            _effectManager.AddSpawnEffect(item.Body.Position * Game1.METER_IN_PIXEL);
         }
 
         private Vector2 RandomPlace() 
@@ -284,6 +290,15 @@ namespace TugOfBaby
         {
             foreach(GameObject gameObject in gameObjects) {
                 gameObject.Disposed = true;
+            }
+        }
+        public void StartBunnyBoss()
+        {
+            if (!bunnyIsONTheProwl)
+            {
+                DespawnItems();
+                GetItem(RenderManager.Texture.BUNNY);
+                bunnyIsONTheProwl = true;
             }
         }
     }
