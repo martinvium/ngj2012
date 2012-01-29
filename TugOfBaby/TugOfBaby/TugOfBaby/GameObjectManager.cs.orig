@@ -14,7 +14,7 @@ namespace TugOfBaby
 {
     class GameObjectManager
     {
-        GameObject evil, good;
+        GameObject evil, good, baby;
 
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -32,9 +32,16 @@ namespace TugOfBaby
         public GameObject GetBaby()
         {
             GameObject angel = GetBase();
-            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.BABY);
+            angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_FACE);
             angel.Body = getCircle(.5f, angel);
             angel.Body.OnCollision += OnItemCollision;
+
+<<<<<<< HEAD
+            angel.Baby = new Baby();
+            angel.Baby.Torso = _renderManager.GetSprite(RenderManager.Texture.CHILD_NEW_TORSO);
+=======
+            baby = angel;
+>>>>>>> 15245771bafedd6874b9bd47ce3e9e0698ae008d
             return angel;
         }
 
@@ -44,7 +51,7 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.DEVIL);            
             angel.Body = getCircle(.3f, angel);
             angel.LabelColor = Color.Red;
-
+            angel.Body.Enabled = true;
             evil = angel;
             evil.Statistics = new Stats();
 
@@ -70,6 +77,9 @@ namespace TugOfBaby
             angel.Sprite = _renderManager.GetSprite(RenderManager.Texture.REAPER);
             angel.Body = getCircle(.3f, angel);
             angel.Body.OnCollision += OnReaperCollision;
+            angel.Body.IgnoreCollisionWith(evil.Body);
+            angel.Body.IgnoreCollisionWith(good.Body);
+            
             return angel;
         }
         public GameObject GetFemaleBunny()
@@ -121,6 +131,7 @@ namespace TugOfBaby
                     break;
                 case RenderManager.Texture.BUNNY:
                     item.Reward.Type = Reward.RewardType.BUNNY;
+                    item.CapturedSprite = _renderManager.GetSprite(RenderManager.Texture.BUNNY_CAPTURED);
                     break;
                 case RenderManager.Texture.BIBLE:
                     item.Reward.GoodPoints = 20;
@@ -136,17 +147,14 @@ namespace TugOfBaby
             item.Pickupable = true;
 
             item.Body = BodyFactory.CreateRectangle(_world, 1f, 1f, 1.0f);
-            item.Body.Position = GetRandomVector2();
+            item.Body.Position = RandomPlace();
             item.Body.UserData = item;
             item.Body.BodyType = BodyType.Static;
             item.Body.Mass = 1.0f;
             item.Type = _type;
+            item.Body.IgnoreCollisionWith(good.Body);
+            item.Body.IgnoreCollisionWith(evil.Body);
             return item;
-        }
-
-        private Vector2 GetRandomVector2()
-        {
-            return new Vector2(GetRandom(0, Game1.WIDTH) / Game1.METER_IN_PIXEL, GetRandom(0, Game1.HEIGHT) / Game1.METER_IN_PIXEL);
         }
 
         public List<GameObject> GetAll()
@@ -160,14 +168,18 @@ namespace TugOfBaby
         } 
 
         private bool OnReaperCollision(Fixture Reaper, Fixture player, Contact contact)
-            {
-                GameObject goPlayer = (player.Body.UserData as GameObject);
-                goPlayer.Enabled = false;
+        {
+            if (player.Body.UserData is GameObject == false)
+                return true;
 
-            
+            GameObject goPlayer = (player.Body.UserData as GameObject);
 
+            if (goPlayer.Reward != null && goPlayer.Reward.Type == Reward.RewardType.BUNNY)
+                return false;
+
+            goPlayer.Enabled = false;
             return true;
-            } 
+        } 
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
@@ -187,6 +199,14 @@ namespace TugOfBaby
             if (goCollider.Reward.Type == Reward.RewardType.COLLECT)
             {
                 goCollider.Reward.Apply(goCollider, good, evil);
+                if (goCollider.Reward.GoodPoints > 0)
+                {
+                    _effectManager.AddAngelEffect(goCollider.Body.Position * Game1.METER_IN_PIXEL);
+                }
+                else
+                {
+                    _effectManager.AddDemonEffect(goCollider.Body.Position * Game1.METER_IN_PIXEL);
+                }
                 DespawnItems();
                 SpawnItems();
             }
@@ -197,16 +217,6 @@ namespace TugOfBaby
                 {
                     if (goPlayer.HeldItem.InteractionTargetOptions.Contains(goCollider))
                     {
-<<<<<<< HEAD
-                        good.Statistics.PointsCollected += 50;
-                        HeadsUpDisplay.HOW_EVIL += 50;
-                    } 
-
-                    goPlayer.HeldItem = goCollider;
-                    Console.Write(evil.Statistics.PointsCollected);
-                    
-                    //Destroy((fixtureB.Body.UserData as GameObject));
-=======
                         DespawnItems(goPlayer.HeldItem.InteractionTargetOptions);
                         goPlayer.HeldItem.Disposed = true;
                         goPlayer.HeldItem = null;
@@ -214,8 +224,7 @@ namespace TugOfBaby
                         DespawnItems();
                         SpawnItems();
                         bunnyIsONTheProwl = false;
-                    }
->>>>>>> 9dd8aa1355b34431348c5c5eb013b34229aa0a95
+                    } 
                 }
                 else // we dont have an item
                 {
@@ -240,8 +249,26 @@ namespace TugOfBaby
 
             foreach (GameObject go in removeList){
                 _gameObjects.Remove(go);
-            }            
+            }
+
+            evil.Sprite.Flipped = IsFlipped(evil);
+            good.Sprite.Flipped = IsFlipped(good);
+            
         }
+
+        public bool IsFlipped(GameObject gameObject)
+        {
+            if (baby.Body.Position.X - gameObject.Body.Position.X > 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+   
+        }
+
         public void SpawnItems()
         {
             GameObject item;
@@ -264,8 +291,7 @@ namespace TugOfBaby
         private Vector2 RandomPlace() 
         {
 
-            Random ran = new Random();
-            Vector2 randomPlace = new Vector2((float)GetRandom(0,1280) / Game1.METER_IN_PIXEL, (float)GetRandom(0,720)/Game1.METER_IN_PIXEL);
+            Vector2 randomPlace = new Vector2((float)GetRandom(128,1158) / Game1.METER_IN_PIXEL, (float)GetRandom(128,592)/Game1.METER_IN_PIXEL);
             return randomPlace;
         }
         private int GetRandom(int min, int max) 

@@ -22,12 +22,17 @@ namespace TugOfBaby
         //todo->angel - ffcc00
         //todo->devil - fa3d27 
 
-        public StatScreen(GraphicsDevice graphics,Texture2D winningScreen, ContentManager content)
+        public Texture2D Nowin;
+        public Texture2D Devilwin;
+        public Texture2D Angelwin;
+        public Texture2D Credits;
+
+        public StatScreen(GraphicsDevice graphics, ContentManager content)
         {
             _graphics = graphics;
             _font = content.Load<SpriteFont>("Goudy Stout Regular");
             
-            this.winningScreen = winningScreen;
+       
         }
 
         public void Update(GameInstance game)
@@ -49,22 +54,11 @@ namespace TugOfBaby
             }
         }
 
-        public void Draw(GameObject winner, SpriteBatch batch, bool lose)
+        public void Draw( SpriteBatch batch, Texture2D pic)
         {
+
+            batch.Draw(pic, Vector2.Zero, Color.White);
             
-            batch.Draw(winningScreen, Vector2.Zero, Color.White);
-            if (winner != null)
-            {
-                if (!lose)
-                {
-
-                    //batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
-
-                    if (devilPoints < winner.Statistics.PointsCollected)
-                        devilPoints++;
-                }
-                
-            }
 
         }
         public void ChangeImage(Texture2D newImage)
