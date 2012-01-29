@@ -12,7 +12,7 @@ namespace TugOfBaby
 {
     class GameMenu
     {
-        private const int MAX_MENU_ITEMS = 3;
+        private const int MAX_MENU_ITEMS = 2;
         int _currentSelection;
         float _selectionOffset = 60f;
         float _selectionWidthOffset = 250;
@@ -24,6 +24,9 @@ namespace TugOfBaby
         Texture2D _selectionGod;
         Texture2D _selectionBad;
         Texture2D _background;
+
+        GameObject devil;
+        GameObject angel;
         
         Vector2 _selectionPosition;
         Vector2 _titlePosition;
@@ -31,20 +34,24 @@ namespace TugOfBaby
         Game1 _game;
   
         SpriteFont _font;
-        public GameMenu(ContentManager content, Game1 game)
+        public GameMenu(ContentManager content, Game1 game, GameObject devil, GameObject angel)
         {
             _font = content.Load<SpriteFont>("Courier New");
             _title = content.Load<Texture2D>("title");
             _selectionBad = content.Load<Texture2D>("badpic");
             _selectionGod = content.Load<Texture2D>("godpic");
             _background = content.Load<Texture2D>("main");
+            this.devil = devil;
+            this.angel = angel;
+            
+            
             _titlePosition = new Vector2(300, 100);
             _selectionPosition = new Vector2(565-_selectionOffset, 250);
             _game = game;
         }
 
 
-        public void Update(GamePadState padState)
+        public void Update(GamePadState padState, GameTime gameTime)
         {
             if (_released && padState.ThumbSticks.Left.Y < -0.5f && _currentSelection < MAX_MENU_ITEMS)
             {
@@ -57,11 +64,10 @@ namespace TugOfBaby
                 _currentSelection--;
                 UpdateSelectionImage(true);
                 _released = false;
-            }
-            
+            }            
  
 
-            if ((_released && padState.Buttons.A == ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (_released && padState.Buttons.A == ButtonState.Pressed)
             {
                 Console.WriteLine("Button pressed selection is ->" + _currentSelection);
                 ExecuteSelection();
@@ -71,7 +77,11 @@ namespace TugOfBaby
             {
                 _released = true;
             }
-
+            if (devil.Sprite.Animation !=  null)
+            {
+                devil.Sprite.Animation.Update(gameTime);
+                angel.Sprite.Animation.Update(gameTime); 
+            }
             _oldState = padState;
         }
         public void Draw(SpriteBatch batch) 
@@ -81,6 +91,12 @@ namespace TugOfBaby
 
             batch.Draw(_selectionGod,  _selectionPosition, Color.White);
             batch.Draw(_selectionBad, new Vector2(_selectionPosition.X + _selectionWidthOffset, _selectionPosition.Y), Color.White);
+
+            if (devil.Sprite.Animation != null)
+            {
+                devil.Sprite.Animation.Draw(batch, new Vector2(_titlePosition.X + 650, _titlePosition.Y + 75), 0f, true);
+                angel.Sprite.Animation.Draw(batch, new Vector2(_titlePosition.X + 75, _titlePosition.Y + 75), 0f, false); 
+            }
         }
 
         private void UpdateSelectionImage(bool up)

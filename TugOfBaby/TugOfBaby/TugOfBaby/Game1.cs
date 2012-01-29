@@ -151,9 +151,10 @@ namespace TugOfBaby
             _state = GameState.Menu;
             _hud = new HeadsUpDisplay(Content);
             
-            _menu = new GameMenu(Content, this);
+           
 
             CreateBaby();
+            
             _controls = new Controls(this);
             _controls.Angel = _angel;
             _controls.Baby = _baby;
@@ -162,6 +163,7 @@ namespace TugOfBaby
             _floatingScoreManager = new FloatingScoreManager(_font);
             _floatingScoreManager.Add(_devil);
             _floatingScoreManager.Add(_angel);
+            _menu = new GameMenu(Content, this, _devil, _angel);
             _gameObjectManager.SpawnItems();
 
             _screenCenter = new Vector2(_graphics.GraphicsDevice.Viewport.Width / 2f,
@@ -226,15 +228,7 @@ namespace TugOfBaby
             {
                 _state = GameState.Menu;
             } 
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
-            {
-                _showDebug = true;
-            }
-            else
-            {
-                _showDebug = false;
-            }
-
+         
             if (Keyboard.GetState().IsKeyDown(Keys.Up)) 
             {
                 HeadsUpDisplay.HOW_EVIL += 1;
@@ -270,7 +264,7 @@ namespace TugOfBaby
             }
             if (_state == GameState.Menu)
             {
-                _menu.Update(GamePad.GetState(PlayerIndex.One));
+                _menu.Update(GamePad.GetState(PlayerIndex.One), gameTime);
             }
             else if(_state == GameState.Playing)
             {
@@ -289,10 +283,10 @@ namespace TugOfBaby
             {
                 _state = GameState.ShowStats;
             }
-            
 
 
-             if (Keyboard.GetState().IsKeyUp(Keys.L) && Keyboard.GetState().IsKeyUp(Keys.K))
+
+            if (Keyboard.GetState().IsKeyUp(Keys.L) && Keyboard.GetState().IsKeyUp(Keys.K) && Keyboard.GetState().IsKeyUp(Keys.LeftAlt) && Keyboard.GetState().IsKeyUp(Keys.Enter))
              {
                  _released = true;
              }
