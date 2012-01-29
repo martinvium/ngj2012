@@ -11,8 +11,8 @@ namespace TugOfBaby
     class StatScreen
     {
         GraphicsDevice _graphics;
-        Vector2 _angelPos = new Vector2(480, 200);
-        Vector2 _devilPos = new Vector2(800, 200);
+        Vector2 _angelPos = new Vector2(485, 490);
+        
         int devilPoints = 0;
         int angelPoints = 0;
         SpriteFont _font;
@@ -24,7 +24,8 @@ namespace TugOfBaby
         public StatScreen(GraphicsDevice graphics,Texture2D winningScreen, ContentManager content)
         {
             _graphics = graphics;
-            _font = content.Load<SpriteFont>("Courier New");
+            _font = content.Load<SpriteFont>("Goudy Stout Regular");
+            
             this.winningScreen = winningScreen;
         }
 
@@ -36,7 +37,7 @@ namespace TugOfBaby
             batch.Draw(winningScreen, Vector2.Zero, Color.White); 
            
            
-            batch.DrawString(_font, "Points Collected " + angelPoints, new Vector2(_angelPos.X-50, _angelPos.Y + 100), Color.Black);
+            batch.DrawString(_font, " " + angelPoints, new Vector2(_angelPos.X, _angelPos.Y), Color.Yellow);
 
             if(devilPoints < winner.Statistics.PointsCollected)
                 devilPoints++;

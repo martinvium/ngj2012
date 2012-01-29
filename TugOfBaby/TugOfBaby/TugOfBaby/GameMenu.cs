@@ -14,8 +14,8 @@ namespace TugOfBaby
     {
         private const int MAX_MENU_ITEMS = 3;
         int _currentSelection;
-        float _selectionOffset = 50f;
-        float _selectionWidthOffset = 115;
+        float _selectionOffset = 60f;
+        float _selectionWidthOffset = 250;
         bool _released = true;
 
         GamePadState _oldState;
@@ -23,6 +23,7 @@ namespace TugOfBaby
         Texture2D _title;        
         Texture2D _selectionGod;
         Texture2D _selectionBad;
+        Texture2D _background;
         
         Vector2 _selectionPosition;
         Vector2 _titlePosition;
@@ -36,8 +37,9 @@ namespace TugOfBaby
             _title = content.Load<Texture2D>("title");
             _selectionBad = content.Load<Texture2D>("badpic");
             _selectionGod = content.Load<Texture2D>("godpic");
+            _background = content.Load<Texture2D>("main");
             _titlePosition = new Vector2(300, 100);
-            _selectionPosition = new Vector2(650-_selectionOffset, 250);
+            _selectionPosition = new Vector2(565-_selectionOffset, 250);
             _game = game;
         }
 
@@ -74,11 +76,9 @@ namespace TugOfBaby
         }
         public void Draw(SpriteBatch batch) 
         {
+            batch.Draw(_background, new Vector2(0, 0), Color.White);
+           // batch.Draw(_title, _titlePosition, Color.White);
 
-            batch.Draw(_title, _titlePosition, Color.White);
-            batch.DrawString(_font, "Play", new Vector2(650, 250), Color.Green);
-            batch.DrawString(_font, "Scores", new Vector2(650, 300), Color.Green);
-            batch.DrawString(_font, "Exit", new Vector2(650, 350), Color.Green);
             batch.Draw(_selectionGod,  _selectionPosition, Color.White);
             batch.Draw(_selectionBad, new Vector2(_selectionPosition.X + _selectionWidthOffset, _selectionPosition.Y), Color.White);
         }
