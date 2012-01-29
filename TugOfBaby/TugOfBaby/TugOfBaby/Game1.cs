@@ -396,10 +396,10 @@ namespace TugOfBaby
         public void deadLock()
             {
 
+              
+          
                 
-           
-                
-                if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
+            if (_baby.Body.LinearVelocity.X > -1.0f && _baby.Body.LinearVelocity.Y > -1.0f)
                     {
                         if (_baby.Body.LinearVelocity.X < 1.0f && _baby.Body.LinearVelocity.Y < 1.0f)
                             if (almostDeadlock)

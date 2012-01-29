@@ -15,7 +15,7 @@ namespace TugOfBaby
     {
         GameObject evil, good;
 
-        enum Items { DRUGS, KNIFE, BUNNY, BIBLE, VEGETABLES };
+        enum Items { DRUGS, KNIFE, BUNNY, MANBUNNY, BIBLE, VEGETABLES };
         
         List<GameObject> _gameObjects = new List<GameObject>();
         World _world;
@@ -120,6 +120,9 @@ namespace TugOfBaby
                 case RenderManager.Texture.VEGETABLE:
                     item.Reward.Effect = (int)Items.VEGETABLES;
                     break;
+                case RenderManager.Texture.MANBUNNY:
+                    item.Reward.Effect = (int)Items.MANBUNNY;
+                    break;
             }
 
             item.Pickupable = true;
@@ -178,6 +181,7 @@ namespace TugOfBaby
                     {
                         goPlayer.HeldItem = (fixtureB.Body.UserData as GameObject);
                         goPlayer.HeldItem.Target = GetItem(RenderManager.Texture.KNIFE);
+                        GetItem(RenderManager.Texture.MANBUNNY);
                         Console.Write("KILLS RABBIT");
                     }
                     else if (goCollider.Reward.Effect == (int)Items.BIBLE)
