@@ -162,15 +162,18 @@ namespace TugOfBaby
         } 
 
         private bool OnReaperCollision(Fixture Reaper, Fixture player, Contact contact)
-            {
-                GameObject goPlayer = (player.Body.UserData as GameObject);
+        {
+            if (player.Body.UserData is GameObject == false)
+                return true;
 
-                goPlayer.Enabled = false;
+            GameObject goPlayer = (player.Body.UserData as GameObject);
 
-            
+            if (goPlayer.Reward != null && goPlayer.Reward.Type == Reward.RewardType.BUNNY)
+                return false;
 
+            goPlayer.Enabled = false;
             return true;
-            } 
+        } 
 
         private bool OnItemCollision(Fixture player, Fixture fixtureB, Contact contact)
         {
