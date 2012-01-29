@@ -22,6 +22,13 @@ namespace TugOfBaby
         Color _labelColor = Color.Black;
         bool enabled = true;
         RenderManager.Texture _type;
+        Sprite capturedSprite;
+
+        public Sprite CapturedSprite
+        {
+            get { return capturedSprite; }
+            set { capturedSprite = value; }
+        }
 
         internal RenderManager.Texture Type
         {
