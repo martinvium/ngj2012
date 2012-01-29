@@ -105,8 +105,6 @@ namespace TugOfBaby
             _renderManager = new RenderManager(GraphicsDevice);
             _gameObjectManager = new GameObjectManager(_world, _renderManager);
 
-
-
             base.Initialize();
         }
 

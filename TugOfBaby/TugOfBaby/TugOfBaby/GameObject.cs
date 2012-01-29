@@ -21,6 +21,14 @@ namespace TugOfBaby
         FloatingScoreLabel _label;
         Color _labelColor = Color.Black;
         bool enabled = true;
+        RenderManager.Texture _type;
+
+        internal RenderManager.Texture Type
+        {
+            get { return _type; }
+            set { _type = value; }
+        }
+
 
         public Color LabelColor
         {
