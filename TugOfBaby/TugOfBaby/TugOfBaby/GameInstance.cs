@@ -297,31 +297,20 @@ namespace TugOfBaby
                 theBackground.Draw(spriteBatch);
                 if(!_baby.Enabled)
                 {
-         
-                    
                     _statScreen.Draw( spriteBatch, _statScreen.Nowin);
                 }
-                if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
+                else if(_devil.Statistics.PointsCollected > _angel.Statistics.PointsCollected)
                 {
-              
-                    
                     _statScreen.Draw( spriteBatch,_statScreen.Devilwin);
                 }
                 else if (_devil.Statistics.PointsCollected < _angel.Statistics.PointsCollected)
                 {
-               
-                  
                     _statScreen.Draw(spriteBatch, _statScreen.Angelwin);
                 }
-
-
             }
             else if (_state == GameState.ShowCredit)
             {
                 Texture2D credits =  Content.Load<Texture2D>("Credits");
-               
-               
-
                 _statScreen.ChangeImage(credits);
                 _statScreen.Draw( spriteBatch, _statScreen.Credits);
             }
