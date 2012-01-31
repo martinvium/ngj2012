@@ -9,7 +9,7 @@ As soon as the Sane-O-Meter reaches the end of one side, this side prevails.
 If the players neutralize each others movements for too long, the grim reaper will appear trying to collect the childs soul for himself.
 
 * [Trailer on Youtube](http://www.youtube.com/watch?v=T7W-K8bDqgM)
-* [Download Latest](https://github.com/downloads/martinvium/ngj2012/TugOfBaby1.1.zip)
+* [Download Latest](https://github.com/downloads/martinvium/ngj2012/TugOfBaby1.2.zip)
 
 ## Requirements
 
