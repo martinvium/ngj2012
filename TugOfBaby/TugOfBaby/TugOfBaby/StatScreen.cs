@@ -37,18 +37,20 @@ namespace TugOfBaby
 
         public void Update(GameInstance game)
         {
+            KeyboardState keyState = Keyboard.GetState();
             if (_released && GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed) // play again
             {
                 _released = false;
                 game.State = GameState.Playing;
             }
-            if (_released && GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed) //return to menu
+            if (_released && (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))) //return to menu
             {
                 _released = false;
                 game.State = GameState.Menu;
             }
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Released && GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Released)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Released && GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Released
+                && keyState.IsKeyUp(Keys.Escape))
             {
                 _released = true;
             }

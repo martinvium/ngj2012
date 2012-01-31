@@ -50,53 +50,53 @@ namespace TugOfBaby
             GamePadState padState = GamePad.GetState(PlayerIndex.One);
 
 
-            if(padState.ThumbSticks.Left.X > 0)
+            if (padState.ThumbSticks.Left.X > 0 || keyState.IsKeyDown(Keys.D))
             {
                 angelObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
             }
 
-            if (padState.ThumbSticks.Left.X < 0)
+            if (padState.ThumbSticks.Left.X < 0 || keyState.IsKeyDown(Keys.A))
             {
                 angelObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
             }
 
-            if (padState.ThumbSticks.Left.Y > 0)
+            if (padState.ThumbSticks.Left.Y > 0 || keyState.IsKeyDown(Keys.W))
             {
                 angelObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
             }
 
-            if (padState.ThumbSticks.Left.Y < 0)
+            if (padState.ThumbSticks.Left.Y < 0 || keyState.IsKeyDown(Keys.S))
             {
                 angelObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY)); ;
             }
 
-            if (padState.ThumbSticks.Right.X > 0)
+            if (padState.ThumbSticks.Right.X > 0 || keyState.IsKeyDown(Keys.Right))
             {
                 devilObject.Body.ApplyLinearImpulse(new Vector2(VELOCITY, 0));
             }
 
-            if (padState.ThumbSticks.Right.X < 0)
+            if (padState.ThumbSticks.Right.X < 0 || keyState.IsKeyDown(Keys.Left))
             {
                 devilObject.Body.ApplyLinearImpulse(new Vector2(-VELOCITY, 0));
             }
 
-            if (padState.ThumbSticks.Right.Y > 0)
+            if (padState.ThumbSticks.Right.Y > 0 || keyState.IsKeyDown(Keys.Up))
             {
                 devilObject.Body.ApplyLinearImpulse(new Vector2(0, -VELOCITY));
             }
 
-            if (padState.ThumbSticks.Right.Y < 0)
+            if (padState.ThumbSticks.Right.Y < 0 || keyState.IsKeyDown(Keys.Down))
             {
                 devilObject.Body.ApplyLinearImpulse(new Vector2(0, VELOCITY));
             }
 
-            if(padState.Buttons.A == ButtonState.Pressed && gameInstance.State == GameState.ShowStats)
+            if ((padState.Buttons.A == ButtonState.Pressed || keyState.IsKeyDown(Keys.Enter)) && gameInstance.State == GameState.ShowStats)
             {
                 gameInstance.PreferredNextState = GameState.Playing;
                 gameInstance.Restart = true;
             }
 
-            if (padState.Buttons.B == ButtonState.Pressed && gameInstance.State == GameState.ShowStats)
+            if ((padState.Buttons.B == ButtonState.Pressed || keyState.IsKeyDown(Keys.Escape)) && gameInstance.State == GameState.ShowStats)
             {
                 gameInstance.PreferredNextState = GameState.Menu;
                 gameInstance.Restart = true;
@@ -113,11 +113,8 @@ namespace TugOfBaby
             }
 
 
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                gameInstance.Game.Exit();
-
-            
-        
+            if (gameInstance.State == GameState.Playing && (padState.Buttons.Back == ButtonState.Pressed || keyState.IsKeyDown(Keys.Escape)))
+                gameInstance.State = GameState.Menu;
         }
 
 

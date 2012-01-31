@@ -51,37 +51,42 @@ namespace TugOfBaby
         }
 
 
-        public void Update(GamePadState padState, GameTime gameTime)
+        public void Update(GamePadState padState, KeyboardState keyState, GameTime gameTime)
         {
-            if (_released && padState.ThumbSticks.Left.Y < -0.5f && _currentSelection < MAX_MENU_ITEMS)
+            if (_released && (padState.ThumbSticks.Left.Y < -0.5f || keyState.IsKeyDown(Keys.Down)) && _currentSelection < MAX_MENU_ITEMS)
             {
                 _currentSelection++;
                 UpdateSelectionImage(false);
                 _released = false;                
             }
-            if (_released && padState.ThumbSticks.Left.Y > 0.5f && _currentSelection > 0)
+
+            if (_released && (padState.ThumbSticks.Left.Y > 0.5f || keyState.IsKeyDown(Keys.Up)) && _currentSelection > 0)
             {
                 _currentSelection--;
                 UpdateSelectionImage(true);
                 _released = false;
-            }            
- 
+            }
 
-            if (_released && padState.Buttons.A == ButtonState.Pressed)
+
+            if (_released && (padState.Buttons.A == ButtonState.Pressed || keyState.IsKeyDown(Keys.Enter)))
             {
                 Console.WriteLine("Button pressed selection is ->" + _currentSelection);
                 ExecuteSelection();
                 _released = false;
             }
-            if (padState.ThumbSticks.Left.Length() < 0.2f && padState.Buttons.A == ButtonState.Released)
+
+            if (padState.ThumbSticks.Left.Length() < 0.2f && padState.Buttons.A == ButtonState.Released && keyState.IsKeyUp(Keys.Up) 
+                && keyState.IsKeyUp(Keys.Down) && keyState.IsKeyUp(Keys.Enter))
             {
                 _released = true;
             }
+
             if (devil.Sprite.Animation !=  null)
             {
                 devil.Sprite.Animation.Update(gameTime);
                 angel.Sprite.Animation.Update(gameTime); 
             }
+
             _oldState = padState;
         }
         public void Draw(SpriteBatch batch) 
